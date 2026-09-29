@@ -1,0 +1,9 @@
+.dockerignore
+Dockerfile
+[bB]in/
+[oO]bj/
+.git/
+.gitignore
+.vs/
+.vscode/
+*.user
