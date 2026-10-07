@@ -1,0 +1,31 @@
+## Ignore Visual Studio / VS Code temporary files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userossc
+
+## Build results
+[bB]in/
+[oO]bj/
+[lL]og/
+[lL]ogs/
+
+## Environment variables & secrets (CRITICAL FOR GITHUB)
+.env
+.env.local
+.env.development.local
+*.secrets.json
+appsettings.Secrets.json
+appsettings.Production.json
+
+bin/
+obj/
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Docker & temporary DB data
+*.db
+*.sqlite

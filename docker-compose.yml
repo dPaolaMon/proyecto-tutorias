@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql-tutorias
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-030305}
+    ports:
+      - "1433:1433"
+    networks:
+      - tutorias-net
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tutorias-web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=database,1433;Database=TutoriasDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:-030305};TrustServerCertificate=True;MultipleActiveResultSets=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - tutorias-net
+    restart: always
+
+networks:
+  tutorias-net:
+    driver: bridge
