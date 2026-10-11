@@ -1,0 +1,99 @@
+@model tutorias.Models.ViewModels.EditProfileViewModel
+@{
+    ViewData["Title"] = "Editar Perfil";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white text-center py-4 border-bottom-0">
+                <h2 class="h4 fw-bold text-ipn-guinda mb-1">Editar Perfil</h2>
+                <p class="text-muted small mb-0">Actualiza tus datos personales</p>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Correo Institucional: INMUTABLE -->
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-medium"></label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control bg-light" readonly />
+                        </div>
+                        <div class="form-text text-muted small">
+                            El correo institucional no puede modificarse.
+                        </div>
+                    </div>
+
+                    <!-- Nombre Completo -->
+                    <div class="mb-3">
+                        <label asp-for="NombreCompleto" class="form-label fw-medium"></label>
+                        <input asp-for="NombreCompleto" class="form-control form-control-lg" placeholder="Nombre completo" />
+                        <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Boleta o Número de Empleado -->
+                    <div class="mb-3">
+                        <label asp-for="Boleta" class="form-label fw-medium"></label>
+                        <input asp-for="Boleta" class="form-control form-control-lg" placeholder="Boleta o N° de empleado" />
+                        <span asp-validation-for="Boleta" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Carrera o Departamento -->
+                    <div class="mb-3">
+                        <label asp-for="CarreraId" class="form-label fw-medium"></label>
+                        <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
+                            <option value="">-- Selecciona una carrera --</option>
+                        </select>
+                        <span asp-validation-for="CarreraId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Semestre (para alumnos) -->
+                    @if (!Model.EsDocente)
+                    {
+                        <div class="mb-3">
+                            <label asp-for="Semestre" class="form-label fw-medium"></label>
+                            <select asp-for="Semestre" class="form-select form-select-lg">
+                                <option value="">-- Selecciona semestre actual --</option>
+                                @for (int i = 1; i <= 8; i++)
+                                {
+                                    <option value="@i">@i ° Semestre</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Semestre" class="text-danger small"></span>
+                        </div>
+                    }
+
+                    <!-- Fotografía de Perfil -->
+                    <div class="mb-4">
+                        <label asp-for="Foto" class="form-label fw-medium"></label>
+                        @if (!string.IsNullOrEmpty(Model.FotoUrlActual))
+                        {
+                            <div class="d-flex align-items-center gap-3 mb-2 p-2 border rounded bg-light">
+                                <img src="@Model.FotoUrlActual" alt="Foto actual"
+                                     class="rounded-circle border" style="width:48px;height:48px;object-fit:cover;" />
+                                <span class="small text-muted">Fotografía actual cargada</span>
+                            </div>
+                        }
+                        <input asp-for="Foto" class="form-control" type="file" accept="image/png,image/jpeg,image/webp" />
+                        <div class="form-text text-muted small">Formatos admitidos: JPG, PNG o WEBP (Máx. 2MB).</div>
+                        <span asp-validation-for="Foto" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-ipn-guinda flex-grow-1 btn-lg fw-semibold">
+                            Guardar Cambios
+                        </button>
+                        <a asp-action="Profile" class="btn btn-outline-secondary btn-lg fw-semibold">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

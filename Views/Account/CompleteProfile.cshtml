@@ -1,0 +1,60 @@
+@model tutorias.Models.ViewModels.CompleteProfileViewModel
+@{
+    ViewData["Title"] = "Completar Perfil";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white text-center py-4 border-bottom-0">
+                <h2 class="h4 fw-bold text-ipn-guinda mb-1">Completa tu Perfil</h2>
+                <p class="text-muted small mb-0">
+                    @(Model.EsDocente ? "Selecciona tu adscripción o área para habilitar tu perfil docente" : "Selecciona tu carrera y semestre para habilitar todas las funciones")
+                </p>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="CarreraId" class="form-label fw-medium"></label>
+                        <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
+                            <option value="">-- Selecciona carrera o adscripción --</option>
+                        </select>
+                        <span asp-validation-for="CarreraId" class="text-danger small"></span>
+                    </div>
+
+                    @if (!Model.EsDocente)
+                    {
+                        <div class="mb-3">
+                            <label asp-for="Semestre" class="form-label fw-medium"></label>
+                            <select asp-for="Semestre" class="form-select form-select-lg">
+                                <option value="">-- Selecciona tu semestre actual --</option>
+                                @for (int i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">@i ° Semestre</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Semestre" class="text-danger small"></span>
+                        </div>
+                    }
+
+                    <div class="mb-4">
+                        <label asp-for="Foto" class="form-label fw-medium"></label>
+                        <input asp-for="Foto" class="form-control" type="file" accept="image/png,image/jpeg,image/webp" />
+                        <div class="form-text text-muted small">Opcional. Formatos: JPG, PNG o WEBP (máx. 2MB).</div>
+                        <span asp-validation-for="Foto" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-ipn-guinda w-100 btn-lg fw-semibold">
+                        Guardar perfil y continuar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

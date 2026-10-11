@@ -1,0 +1,49 @@
+@model tutorias.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white text-center py-4 border-bottom-0">
+                <h2 class="h4 fw-bold text-ipn-guinda mb-1">Acceso al Sistema</h2>
+                <p class="text-muted small mb-0">Tutorías Académicas IPN</p>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-medium"></label>
+                        <input asp-for="Email" class="form-control form-control-lg" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-medium"></label>
+                        <input asp-for="Password" class="form-control form-control-lg" type="password" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label text-muted small"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-ipn-guinda w-100 btn-lg fw-semibold">
+                        Iniciar sesión
+                    </button>
+                </form>
+            </div>
+            <div class="card-footer bg-white text-center py-3 border-top-0">
+                <span class="text-muted small">¿No tienes cuenta?</span>
+                <a asp-action="Register" class="fw-semibold text-decoration-none ms-1 text-ipn-guinda">Registrarme</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-6 text-center">
+        <div class="card shadow-sm border-0 rounded-3 p-4">
+            <div class="card-body">
+                <div class="display-1 text-danger mb-3">⚠️</div>
+                <h2 class="h3 fw-bold text-dark mb-2">Acceso Restringido</h2>
+                <p class="text-muted mb-4">No tienes los permisos necesarios para acceder a esta sección del sistema de tutorías.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn text-white btn-lg fw-semibold" style="background-color: #750946;">
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

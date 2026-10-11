@@ -1,0 +1,148 @@
+@model tutorias.Models.ViewModels.ProfileViewModel
+@using tutorias.Models
+@{
+    ViewData["Title"] = "Mi Perfil";
+
+    string rolBadge = Model.Roles.Contains("Coordinador") ? "Coordinador" :
+                      Model.Roles.Contains("Tutor")       ? "Tutor" :
+                      Model.Roles.Contains("Docente")     ? "Docente" : "Alumno";
+
+    string tipoTutorLabel = Model.TipoTutor switch
+    {
+        TipoTutor.AlumnoTutor  => "Alumno Tutor",
+        TipoTutor.DocenteTutor => "Docente Tutor",
+        _                      => string.Empty
+    };
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-12 col-md-8 col-lg-6">
+
+        <!-- Tarjeta de Perfil -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+            <!-- Encabezado con color institucional -->
+            <div class="py-4 px-4 text-white text-center bg-ipn-guinda">
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                    {
+                        <img src="@Model.FotoUrl" alt="Foto de perfil"
+                             class="rounded-circle border border-white border-3 shadow-sm"
+                             style="width:96px;height:96px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center border border-white border-3 shadow-sm"
+                             style="width:96px;height:96px;">
+                            <span class="fw-bold text-ipn-guinda" style="font-size:2.4rem;">
+                                @(string.IsNullOrWhiteSpace(Model.NombreCompleto) ? "?" : Model.NombreCompleto.Substring(0,1).ToUpper())
+                            </span>
+                        </div>
+                    }
+                </div>
+                <h2 class="h5 fw-bold mb-1">@Model.NombreCompleto</h2>
+                <div class="d-flex justify-content-center gap-2 flex-wrap mt-2">
+                    <span class="badge rounded-pill bg-white text-ipn-guinda px-3 py-1 small fw-semibold">
+                        @rolBadge @(!string.IsNullOrEmpty(tipoTutorLabel) ? $"— {tipoTutorLabel}" : "")
+                    </span>
+                    @if (Model.Activo)
+                    {
+                        <span class="badge rounded-pill bg-success text-white px-3 py-1 small fw-semibold">
+                            ✓ Cuenta Activa
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge rounded-pill bg-danger text-white px-3 py-1 small fw-semibold">
+                            ✕ Cuenta en Baja
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Datos del perfil -->
+            <div class="card-body p-4">
+                <dl class="row mb-0">
+                    <dt class="col-5 text-muted small fw-semibold">Boleta / N° Empleado</dt>
+                    <dd class="col-7 mb-3">@Model.Boleta</dd>
+
+                    <dt class="col-5 text-muted small fw-semibold">
+                        Correo Institucional
+                    </dt>
+                    <dd class="col-7 mb-3 text-break">
+                        <span class="fw-medium">@Model.Email</span>
+                    </dd>
+
+                    <dt class="col-5 text-muted small fw-semibold">Carrera</dt>
+                    <dd class="col-7 mb-3">
+                        @(string.IsNullOrEmpty(Model.CarreraNombre) ? "— Sin asignar —" : Model.CarreraNombre)
+                    </dd>
+
+                    @if (!Model.EsDocente)
+                    {
+                        <dt class="col-5 text-muted small fw-semibold">Semestre</dt>
+                        <dd class="col-7 mb-3">
+                            @(Model.Semestre.HasValue ? $"{Model.Semestre}° Semestre" : "—")
+                        </dd>
+                    }
+
+                    <dt class="col-5 text-muted small fw-semibold">Estado del Perfil</dt>
+                    <dd class="col-7 mb-3">
+                        @if (Model.PerfilCompleto)
+                        {
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2">✓ Completo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2">⚠ Incompleto</span>
+                        }
+                    </dd>
+
+                    @if (!Model.Activo && Model.FechaBaja.HasValue)
+                    {
+                        <dt class="col-5 text-danger small fw-semibold">Fecha de Baja</dt>
+                        <dd class="col-7 mb-0 text-danger small">
+                            @Model.FechaBaja.Value.ToLocalTime().ToString("g")
+                            @if (!string.IsNullOrEmpty(Model.MotivoBaja))
+                            {
+                                <div class="text-muted small">Motivo: @Model.MotivoBaja</div>
+                            }
+                        </dd>
+                    }
+                </dl>
+            </div>
+
+            <!-- Acciones CRUD del Perfil -->
+            <div class="card-footer bg-white border-top-0 px-4 pb-4 pt-0 d-flex gap-2 flex-wrap justify-content-between align-items-center">
+                <div class="d-flex gap-2 flex-wrap">
+                    <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
+                        Editar Perfil
+                    </a>
+                    @if (!Model.PerfilCompleto)
+                    {
+                        <a asp-action="CompleteProfile" class="btn btn-outline-warning btn-sm fw-semibold">
+                            Completar perfil
+                        </a>
+                    }
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
+                        Volver
+                    </a>
+                </div>
+                <div>
+                    <a asp-action="DeleteProfile" class="btn btn-outline-danger btn-sm fw-semibold" title="Dar de baja mi cuenta">
+                        Baja de Cuenta
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.PerfilCompleto)
+        {
+            <div class="alert alert-warning border-0 mt-3 d-flex align-items-center gap-2 small shadow-sm" role="alert">
+                <span>⚠️</span>
+                <span>Tu perfil está incompleto. Selecciona tu carrera para habilitar todas las funciones del sistema.</span>
+            </div>
+        }
+
+    </div>
+</div>

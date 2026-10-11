@@ -1,3 +1,63 @@
+:root {
+  --ipn-guinda: #750946;
+  --ipn-guinda-dark: #4d0630;
+  --ipn-guinda-light: #9c125f;
+  --ipn-gris-claro: #f8f9fa;
+  --ipn-gris-texto: #495057;
+}
+
+.bg-ipn-guinda {
+  background-color: var(--ipn-guinda) !important;
+}
+
+.bg-ipn-guinda-dark {
+  background-color: var(--ipn-guinda-dark) !important;
+}
+
+.bg-ipn-gris-claro {
+  background-color: var(--ipn-gris-claro) !important;
+}
+
+.text-ipn-guinda {
+  color: var(--ipn-guinda) !important;
+}
+
+.text-ipn-guinda-dark {
+  color: var(--ipn-guinda-dark) !important;
+}
+
+.text-ipn-gris {
+  color: var(--ipn-gris-texto) !important;
+}
+
+.border-ipn-guinda {
+  border-color: var(--ipn-guinda) !important;
+}
+
+.btn-ipn-guinda {
+  background-color: var(--ipn-guinda) !important;
+  border-color: var(--ipn-guinda) !important;
+  color: #ffffff !important;
+}
+
+.btn-ipn-guinda:hover, .btn-ipn-guinda:focus {
+  background-color: var(--ipn-guinda-dark) !important;
+  border-color: var(--ipn-guinda-dark) !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-ipn-guinda {
+  color: var(--ipn-guinda) !important;
+  border-color: var(--ipn-guinda) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-ipn-guinda:hover, .btn-outline-ipn-guinda:focus {
+  background-color: var(--ipn-guinda) !important;
+  border-color: var(--ipn-guinda) !important;
+  color: #ffffff !important;
+}
+
 html {
   font-size: 14px;
 }
