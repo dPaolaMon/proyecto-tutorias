@@ -1,0 +1,40 @@
+@model tutorias.Models.ViewModels.ResendConfirmationEmailViewModel
+@{
+    ViewData["Title"] = "Reenviar Confirmación de Correo";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white text-center py-4 border-bottom-0">
+                <h2 class="h4 fw-bold text-ipn-guinda mb-1">Reenviar Confirmación</h2>
+                <p class="text-muted small mb-0">Ingresa tu correo institucional registrado</p>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="ResendConfirmationEmail" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Email" class="form-label fw-medium"></label>
+                        <input asp-for="Email" class="form-control form-control-lg" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                        <div class="form-text small text-muted">
+                            Te enviaremos un nuevo enlace para activar tu cuenta institucional.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-ipn-guinda w-100 btn-lg fw-semibold mb-3">
+                        Reenviar correo
+                    </button>
+                    <a asp-action="Login" class="btn btn-outline-secondary w-100">
+                        Cancelar y volver al inicio de sesión
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

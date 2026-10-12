@@ -1,0 +1,65 @@
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
+@{
+    ViewData["Title"] = "Confirmación de Cuenta";
+    var email = ViewBag.Email as string ?? "tu correo institucional";
+    var devLink = ViewBag.DevLink as string;
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3 text-center p-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="rounded-circle d-inline-flex align-items-center justify-content-center bg-light text-ipn-guinda p-3 shadow-sm" style="width: 72px; height: 72px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-envelope-check" viewBox="0 0 16 16">
+                            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.549-.549a.5.5 0 1 0-.708.708l1 1a.5.5 0 0 0 .76-.062l1.5-2.5a.5.5 0 0 0-.147-.619"/>
+                        </svg>
+                    </span>
+                </div>
+
+                <h2 class="h4 fw-bold text-ipn-guinda mb-2">¡Revisa tu correo institucional!</h2>
+                <p class="text-muted mb-3">
+                    Hemos enviado un enlace de confirmación a:
+                </p>
+                <p class="fw-semibold text-dark fs-5 text-break mb-4">
+                    @email
+                </p>
+
+                <div class="alert alert-light border small text-muted text-start mb-4">
+                    <p class="mb-1 fw-medium text-dark">Instrucciones:</p>
+                    <ul class="mb-0 ps-3">
+                        <li>Haz clic en el enlace del correo para activar tu cuenta.</li>
+                        <li>Si no lo encuentras, revisa tu carpeta de <strong>Correo no deseado (Spam)</strong>.</li>
+                        <li>El enlace tiene una vigencia limitada.</li>
+                    </ul>
+                </div>
+
+                @if (Environment.IsDevelopment() && !string.IsNullOrEmpty(devLink))
+                {
+                    <div class="alert alert-success border border-success p-3 text-start mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-success">Ambiente de Desarrollo</span>
+                            <span class="small fw-semibold text-success">Simulador Local Activo</span>
+                        </div>
+                        <p class="small text-muted mb-2">
+                            En entorno local puedes confirmar la cuenta de prueba inmediatamente haciendo clic aquí:
+                        </p>
+                        <a href="@devLink" class="btn btn-success w-100 fw-semibold shadow-sm">
+                            ⚡ [DEBUG] Confirmar correo de prueba inmediatamente
+                        </a>
+                    </div>
+                }
+
+                <div class="d-flex flex-column gap-2">
+                    <a asp-action="Login" class="btn btn-ipn-guinda fw-semibold">
+                        Ir al inicio de sesión
+                    </a>
+                    <a asp-action="ResendConfirmationEmail" asp-route-email="@email" class="btn btn-link text-decoration-none text-muted small">
+                        ¿No recibiste el correo? Solicitar reenvío
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

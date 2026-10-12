@@ -12,10 +12,21 @@ namespace tutorias.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IUserProfileService _profileService;
+        private readonly IEmailSenderService _emailService;
+        private readonly IWebHostEnvironment _environment;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IUserProfileService profileService,
+            IEmailSenderService emailService,
+            IWebHostEnvironment environment)
         {
-            _userManager = userManager; _signInManager = signInManager; _profileService = profileService;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _profileService = profileService;
+            _emailService = emailService;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -58,9 +69,84 @@ namespace tutorias.Controllers
                 return View(model);
             }
 
+            // Asignar rol inicial
             await _userManager.AddToRoleAsync(user, rolInicial);
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            return RedirectToAction(nameof(CompleteProfile));
+
+            // Generar token de confirmación de correo institucional
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token }, protocol: Request.Scheme);
+
+            await _emailService.SendConfirmationEmailAsync(user.Email, confirmationLink!, user.NombreCompleto);
+
+            return RedirectToAction(nameof(RegisterConfirmation), new { email = user.Email, devLink = _environment.IsDevelopment() ? confirmationLink : null });
+        }
+
+        [HttpGet]
+        public IActionResult RegisterConfirmation(string email, string? devLink = null)
+        {
+            ViewBag.Email = email;
+            ViewBag.DevLink = devLink;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                ViewBag.ErrorMessage = "El enlace de confirmación es inválido o está incompleto.";
+                return View();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "No se encontró el usuario solicitado.";
+                return View();
+            }
+
+            if (user.EmailConfirmed)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                TempData["SuccessMessage"] = "Tu correo institucional ya ha sido verificado.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                TempData["SuccessMessage"] = "¡Tu correo institucional ha sido verificado con éxito!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.ErrorMessage = "El enlace de confirmación ha expirado o no es válido.";
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResendConfirmationEmail(string? email = null)
+        {
+            return View(new ResendConfirmationEmailViewModel { Email = email ?? string.Empty });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResendConfirmationEmail(ResendConfirmationEmailViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email.Trim().ToLowerInvariant());
+            if (user != null && !user.EmailConfirmed)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token }, protocol: Request.Scheme);
+                await _emailService.SendConfirmationEmailAsync(user.Email!, confirmationLink!, user.NombreCompleto);
+
+                return RedirectToAction(nameof(RegisterConfirmation), new { email = user.Email, devLink = _environment.IsDevelopment() ? confirmationLink : null });
+            }
+
+            TempData["SuccessMessage"] = "Si el correo corresponde a una cuenta registrada no confirmada, se ha enviado un nuevo enlace de activación.";
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]
@@ -72,15 +158,33 @@ namespace tutorias.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid) return View(model);
 
+            var user = await _userManager.FindByEmailAsync(model.Email.Trim());
+            if (user != null)
+            {
+                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    ModelState.AddModelError(string.Empty, "Contraseña incorrecta.");
+                    return View(model);
+                }
+
+                if (!user.EmailConfirmed)
+                {
+                    ModelState.AddModelError(string.Empty, "Debes confirmar tu correo institucional antes de iniciar sesión.");
+                    ViewBag.RequireEmailConfirmation = true;
+                    ViewBag.UnconfirmedEmail = user.Email;
+                    return View(model);
+                }
+
+                if (!user.Activo)
+                {
+                    await _signInManager.SignInAsync(user, model.RememberMe);
+                    TempData["WarningMessage"] = "Tu cuenta se encuentra dada de baja. Puedes reactivarla a continuación.";
+                    return RedirectToAction(nameof(Profile));
+                }
+            }
+
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
             if (!result.Succeeded) { ModelState.AddModelError(string.Empty, "Intento de inicio de sesión no válido."); return View(model); }
-
-            var user = await _userManager.FindByEmailAsync(model.Email.Trim());
-            if (user != null && !user.Activo)
-            {
-                TempData["WarningMessage"] = "Tu cuenta se encuentra dada de baja. Puedes reactivarla a continuación.";
-                return RedirectToAction(nameof(Profile));
-            }
 
             if (user != null && !user.PerfilCompleto) return RedirectToAction(nameof(CompleteProfile));
             return (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
@@ -243,6 +347,91 @@ namespace tutorias.Controllers
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout() { await _signInManager.SignOutAsync(); return RedirectToAction("Index", "Home"); }
+
+        [HttpGet]
+        public IActionResult ForgotPassword() => View();
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var emailLower = model.Email.Trim().ToLowerInvariant();
+            if (!emailLower.EndsWith("@alumno.ipn.mx") && !emailLower.EndsWith("@ipn.mx"))
+            {
+                ModelState.AddModelError("Email", "El correo debe pertenecer al dominio institucional (@alumno.ipn.mx o @ipn.mx).");
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(emailLower);
+            string? devLink = null;
+
+            if (user != null && user.EmailConfirmed)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetLink = Url.Action(nameof(ResetPassword), "Account", new { token, email = user.Email }, protocol: Request.Scheme);
+                await _emailService.SendPasswordResetEmailAsync(user.Email!, resetLink!, user.NombreCompleto);
+
+                if (_environment.IsDevelopment())
+                {
+                    devLink = resetLink;
+                }
+            }
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation), new { email = emailLower, devLink });
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation(string? email = null, string? devLink = null)
+        {
+            ViewBag.Email = email;
+            ViewBag.DevLink = devLink;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string? token = null, string? email = null)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                ViewBag.ErrorMessage = "El enlace de restablecimiento es inválido o no contiene un token.";
+                return View("Error");
+            }
+
+            var model = new ResetPasswordViewModel
+            {
+                Token = token,
+                Email = email ?? string.Empty
+            };
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email.Trim().ToLowerInvariant());
+            if (user == null)
+            {
+                // No revelar que el usuario no existe
+                TempData["SuccessMessage"] = "Tu contraseña ha sido restablecida exitosamente. Ya puedes iniciar sesión.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Tu contraseña ha sido restablecida exitosamente. Ya puedes iniciar sesión.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
 
         [HttpGet]
         public IActionResult AccessDenied() => View();

@@ -3,6 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using tutorias.Data;
 using tutorias.Models;
 
+// Cargar variables de entorno locales desde .env si existe
+if (File.Exists(".env"))
+{
+    foreach (var line in File.ReadAllLines(".env"))
+    {
+        var trimmed = line.Trim();
+        if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith("#")) continue;
+        var parts = trimmed.Split('=', 2);
+        if (parts.Length == 2)
+        {
+            var key = parts[0].Trim();
+            var val = parts[1].Trim().Trim('"', '\'');
+            Environment.SetEnvironmentVariable(key, val);
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de DbContext con SQL Server
@@ -21,6 +38,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 6;
     options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
+    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
@@ -31,6 +50,21 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
+
+// Registro condicional del servicio de correo (Azure en producción / Dev simulador en local)
+var azureConnString = builder.Configuration["AZURE_COMMUNICATION_SERVICES_CONNECTION_STRING"]
+    ?? Environment.GetEnvironmentVariable("AZURE_COMMUNICATION_SERVICES_CONNECTION_STRING");
+var azureSender = builder.Configuration["EMAIL_SENDER_ADDRESS"]
+    ?? Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
+
+if (!string.IsNullOrWhiteSpace(azureConnString) && !string.IsNullOrWhiteSpace(azureSender))
+{
+    builder.Services.AddScoped<tutorias.Services.IEmailSenderService, tutorias.Services.AzureEmailService>();
+}
+else
+{
+    builder.Services.AddScoped<tutorias.Services.IEmailSenderService, tutorias.Services.DevEmailService>();
+}
 
 // Add services to the container.
 builder.Services.AddScoped<tutorias.Services.IUserProfileService, tutorias.Services.UserProfileService>();

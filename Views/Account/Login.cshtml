@@ -21,7 +21,10 @@
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label fw-medium"></label>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label asp-for="Password" class="form-label fw-medium mb-0"></label>
+                            <a asp-action="ForgotPassword" class="small text-decoration-none text-ipn-guinda">¿Olvidaste tu contraseña?</a>
+                        </div>
                         <input asp-for="Password" class="form-control form-control-lg" type="password" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
@@ -34,6 +37,16 @@
                     <button type="submit" class="btn btn-ipn-guinda w-100 btn-lg fw-semibold">
                         Iniciar sesión
                     </button>
+
+                    @if (ViewBag.RequireEmailConfirmation == true)
+                    {
+                        <div class="alert alert-warning border border-warning small mt-3 mb-0 text-start">
+                            ¿No has recibido o expiró tu enlace de activación?
+                            <a asp-action="ResendConfirmationEmail" asp-route-email="@ViewBag.UnconfirmedEmail" class="fw-bold text-dark text-decoration-underline d-block mt-1">
+                                Solicitar un nuevo correo de confirmación
+                            </a>
+                        </div>
+                    }
                 </form>
             </div>
             <div class="card-footer bg-white text-center py-3 border-top-0">

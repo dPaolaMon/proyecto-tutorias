@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Confirmación de Correo";
+    var error = ViewBag.ErrorMessage as string;
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3 text-center p-4">
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    <div class="mb-3">
+                        <span class="rounded-circle d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger p-3 shadow-sm" style="width: 72px; height: 72px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <h2 class="h4 fw-bold text-danger mb-2">Error al confirmar correo</h2>
+                    <p class="text-muted mb-4">
+                        @error
+                    </p>
+
+                    <div class="d-flex flex-column gap-2">
+                        <a asp-action="ResendConfirmationEmail" class="btn btn-ipn-guinda fw-semibold">
+                            Solicitar nuevo enlace de confirmación
+                        </a>
+                        <a asp-action="Login" class="btn btn-outline-secondary">
+                            Volver al inicio de sesión
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <span class="rounded-circle d-inline-flex align-items-center justify-content-center bg-success-subtle text-success p-3 shadow-sm" style="width: 72px; height: 72px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <h2 class="h4 fw-bold text-success mb-2">¡Correo confirmado exitosamente!</h2>
+                    <p class="text-muted mb-4">
+                        Tu cuenta institucional ha sido verificada.
+                    </p>
+
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-ipn-guinda fw-semibold">
+                        Ir al inicio
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
