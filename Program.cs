@@ -68,6 +68,7 @@ else
 
 // Add services to the container.
 builder.Services.AddScoped<tutorias.Services.IUserProfileService, tutorias.Services.UserProfileService>();
+builder.Services.AddScoped<tutorias.Services.ICoordinacionService, tutorias.Services.CoordinacionService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {

@@ -27,10 +27,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 - [x] Verificar que no se revele la existencia de correos no registrados al solicitar restablecimiento.
 
 ### Tarea 1.4: Asignación y Promoción del Rol Coordinación (RF-32)
-- [ ] Crear `CoordinacionController` protegido con `[Authorize(Roles = "Coordinador")]`.
-- [ ] Crear servicio `CoordinacionUserService` con métodos para listar usuarios institucionales, promover al rol `Coordinador` y revocarlo.
-- [ ] Diseñar vista para gestión de roles administrativos con modal de confirmación.
-- [ ] Validar que un coordinador no pueda revocar sus propios permisos de forma accidental.
+- [x] Crear `CoordinacionController` protegido con `[Authorize(Roles = "Coordinador")]`.
+- [x] Crear servicio `CoordinacionUserService` (`ICoordinacionService` / `CoordinacionService`) con métodos para listar usuarios institucionales, promover al rol `Coordinador` y revocarlo.
+- [x] Diseñar vista para gestión de roles administrativos con modal de confirmación y ficha técnica en modal.
+- [x] Validar que un coordinador no pueda revocar sus propios permisos de forma accidental y mínimo de coordinadores.
 
 ---
 

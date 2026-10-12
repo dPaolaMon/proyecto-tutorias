@@ -19,7 +19,16 @@ namespace tutorias.Models
         public string ApellidoMaterno { get; set; } = string.Empty;
 
         [NotMapped]
-        public string NombreCompleto => $"{Nombre} {ApellidoPaterno} {ApellidoMaterno}".Trim();
+        public string NombreCompleto
+        {
+            get
+            {
+                var completo = $"{Nombre} {ApellidoPaterno} {ApellidoMaterno}".Trim();
+                if (!string.IsNullOrWhiteSpace(completo)) return completo;
+                if (!string.IsNullOrWhiteSpace(Nombre)) return Nombre;
+                return !string.IsNullOrWhiteSpace(Email) ? Email : (!string.IsNullOrWhiteSpace(UserName) ? UserName : string.Empty);
+            }
+        }
 
         [Required]
         [StringLength(20)]

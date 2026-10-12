@@ -36,9 +36,10 @@ namespace tutorias.Data
 
             // 3. Usuario Coordinador de Prueba
             var coordEmail = "coordinacion@ipn.mx";
-            if (await userManager.FindByEmailAsync(coordEmail) == null)
+            var coordUser = await userManager.FindByEmailAsync(coordEmail);
+            if (coordUser == null)
             {
-                var coordUser = new ApplicationUser
+                coordUser = new ApplicationUser
                 {
                     UserName = coordEmail,
                     Email = coordEmail,
@@ -58,12 +59,20 @@ namespace tutorias.Data
                     await userManager.AddToRoleAsync(coordUser, "Coordinador");
                 }
             }
+            else if (string.IsNullOrWhiteSpace(coordUser.Nombre))
+            {
+                coordUser.Nombre = "Coordinador";
+                coordUser.ApellidoPaterno = "Tutorías";
+                coordUser.ApellidoMaterno = "IPN";
+                await userManager.UpdateAsync(coordUser);
+            }
 
             // 4. Usuario Tutor de Prueba (Docente)
             var tutorEmail = "tutor.demo@ipn.mx";
-            if (await userManager.FindByEmailAsync(tutorEmail) == null)
+            var tutorUser = await userManager.FindByEmailAsync(tutorEmail);
+            if (tutorUser == null)
             {
-                var tutorUser = new ApplicationUser
+                tutorUser = new ApplicationUser
                 {
                     UserName = tutorEmail,
                     Email = tutorEmail,
@@ -96,12 +105,20 @@ namespace tutorias.Data
                     await context.SaveChangesAsync();
                 }
             }
+            else if (string.IsNullOrWhiteSpace(tutorUser.Nombre))
+            {
+                tutorUser.Nombre = "Demostración";
+                tutorUser.ApellidoPaterno = "Tutor";
+                tutorUser.ApellidoMaterno = "Docente";
+                await userManager.UpdateAsync(tutorUser);
+            }
 
             // 5. Usuario Alumno de Prueba
             var alumnoEmail = "alumno.demo@alumno.ipn.mx";
-            if (await userManager.FindByEmailAsync(alumnoEmail) == null)
+            var alumnoUser = await userManager.FindByEmailAsync(alumnoEmail);
+            if (alumnoUser == null)
             {
-                var alumnoUser = new ApplicationUser
+                alumnoUser = new ApplicationUser
                 {
                     UserName = alumnoEmail,
                     Email = alumnoEmail,
@@ -121,6 +138,13 @@ namespace tutorias.Data
                 {
                     await userManager.AddToRoleAsync(alumnoUser, "Alumno");
                 }
+            }
+            else if (string.IsNullOrWhiteSpace(alumnoUser.Nombre))
+            {
+                alumnoUser.Nombre = "Prueba";
+                alumnoUser.ApellidoPaterno = "Politécnico";
+                alumnoUser.ApellidoMaterno = "Alumno";
+                await userManager.UpdateAsync(alumnoUser);
             }
         }
 

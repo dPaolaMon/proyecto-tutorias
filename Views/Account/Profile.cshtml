@@ -22,14 +22,13 @@
         {
             <!-- Aviso de Cuenta en Baja y Botón de Reactivación -->
             <div class="alert alert-warning border-0 shadow-sm p-4 mb-4 rounded-3 text-center" role="alert">
-                <span class="fs-1 d-block mb-2">⚠️</span>
                 <h5 class="fw-bold text-dark mb-1">Tu cuenta se encuentra dada de baja</h5>
                 <p class="small text-muted mb-3">
                     El acceso a las funciones del sistema está deshabilitado mientras tu perfil permanezca en baja. Puedes reactivar tu cuenta en cualquier momento haciendo clic en el siguiente botón.
                 </p>
                 <form asp-action="ReactivateProfile" method="post" class="d-inline">
                     <button type="submit" class="btn btn-success btn-lg fw-semibold px-4 shadow-sm">
-                        🔄 Reactivar mi cuenta
+                        Reactivar mi cuenta
                     </button>
                 </form>
             </div>
@@ -65,13 +64,13 @@
                     @if (Model.Activo)
                     {
                         <span class="badge rounded-pill bg-success text-white px-3 py-1 small fw-semibold">
-                            ✓ Cuenta Activa
+                            Cuenta Activa
                         </span>
                     }
                     else
                     {
                         <span class="badge rounded-pill bg-danger text-white px-3 py-1 small fw-semibold">
-                            ✕ Cuenta en Baja Lógica
+                            Cuenta en Baja Lógica
                         </span>
                     }
                 </div>
@@ -116,11 +115,11 @@
                     <dd class="col-7 mb-3">
                         @if (Model.PerfilCompleto)
                         {
-                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2">✓ Completo</span>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2">Completo</span>
                         }
                         else
                         {
-                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2">⚠ Incompleto</span>
+                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2">Incompleto</span>
                         }
                     </dd>
 
@@ -144,7 +143,7 @@
                 {
                     <div class="d-flex gap-2 flex-wrap">
                         <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
-                            ✏️ Editar Perfil
+                            Editar Perfil
                         </a>
                         @if (!Model.PerfilCompleto)
                         {
@@ -158,7 +157,7 @@
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-danger btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#modalBajaCuenta" title="Dar de baja mi cuenta">
-                            🗑️ Baja de Cuenta
+                            Baja de Cuenta
                         </button>
                     </div>
                 }
@@ -167,12 +166,12 @@
                     <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                         <form asp-action="ReactivateProfile" method="post" class="d-inline">
                             <button type="submit" class="btn btn-success btn-sm fw-semibold">
-                                🔄 Reactivar mi cuenta
+                                Reactivar mi cuenta
                             </button>
                         </form>
                         <form asp-action="Logout" method="post" class="d-inline">
                             <button type="submit" class="btn btn-outline-secondary btn-sm fw-semibold">
-                                🚪 Cerrar Sesión
+                                Cerrar Sesión
                             </button>
                         </form>
                     </div>
@@ -183,7 +182,6 @@
         @if (!Model.PerfilCompleto && Model.Activo)
         {
             <div class="alert alert-warning border-0 mt-3 d-flex align-items-center gap-2 small shadow-sm" role="alert">
-                <span>⚠️</span>
                 <span>Tu perfil está incompleto. Selecciona tu carrera para habilitar todas las funciones del sistema.</span>
             </div>
         }
@@ -198,7 +196,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title fw-bold" id="modalBajaLabel">⚠️ Confirmar Baja de Perfil</h5>
+                    <h5 class="modal-title fw-bold" id="modalBajaLabel">Confirmar Baja de Perfil</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <form asp-action="DeleteProfile" method="post">

@@ -28,21 +28,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-white active" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
+                        @if (User.IsInRole("Coordinador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-semibold" asp-controller="Coordinacion" asp-action="Index">
+                                    Gestión de Usuarios
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             var user = await UserManager.GetUserAsync(User);
+                            var displayName = !string.IsNullOrWhiteSpace(user?.NombreCompleto)
+                                ? user.NombreCompleto
+                                : (!string.IsNullOrWhiteSpace(user?.Nombre) ? user.Nombre : (user?.Email ?? User.Identity?.Name ?? "Usuario"));
+                            var initial = !string.IsNullOrWhiteSpace(displayName) ? displayName.Trim().Substring(0, 1).ToUpper() : "?";
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2"
                                    href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center fw-bold text-ipn-guinda"
                                           style="width:30px;height:30px;font-size:.85rem;flex-shrink:0;">
-                                        @(user?.NombreCompleto?.Substring(0, 1).ToUpper() ?? "?")
+                                        @initial
                                     </span>
                                     <span class="d-none d-lg-inline text-truncate" style="max-width:160px;">
-                                        @(user?.NombreCompleto ?? User.Identity?.Name)
+                                        @displayName
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-1"
@@ -87,21 +99,21 @@
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
-                    <span>✓ @TempData["SuccessMessage"]</span>
+                    <span>@TempData["SuccessMessage"]</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             @if (TempData["WarningMessage"] != null)
             {
                 <div class="alert alert-warning alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
-                    <span>⚠️ @TempData["WarningMessage"]</span>
+                    <span>@TempData["WarningMessage"]</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
-                    <span>⚠️ @TempData["ErrorMessage"]</span>
+                    <span>@TempData["ErrorMessage"]</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
