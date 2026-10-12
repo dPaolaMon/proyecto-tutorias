@@ -25,32 +25,55 @@
                         </div>
                     </div>
 
-                    <!-- Nombre Completo -->
+                    <!-- Nombre(s) -->
                     <div class="mb-3">
-                        <label asp-for="NombreCompleto" class="form-label fw-medium"></label>
-                        <input asp-for="NombreCompleto" class="form-control form-control-lg" placeholder="Nombre completo" />
-                        <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                        <label asp-for="Nombre" class="form-label fw-medium"></label>
+                        <input asp-for="Nombre" class="form-control form-control-lg" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-12 col-md-6">
+                            <label asp-for="ApellidoPaterno" class="form-label fw-medium"></label>
+                            <input asp-for="ApellidoPaterno" class="form-control form-control-lg" />
+                            <span asp-validation-for="ApellidoPaterno" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label asp-for="ApellidoMaterno" class="form-label fw-medium"></label>
+                            <input asp-for="ApellidoMaterno" class="form-control form-control-lg" />
+                            <span asp-validation-for="ApellidoMaterno" class="text-danger small"></span>
+                        </div>
                     </div>
 
                     <!-- Boleta o Número de Empleado -->
                     <div class="mb-3">
                         <label asp-for="Boleta" class="form-label fw-medium"></label>
-                        <input asp-for="Boleta" class="form-control form-control-lg" placeholder="Boleta o N° de empleado" />
+                        <input asp-for="Boleta" class="form-control form-control-lg" />
                         <span asp-validation-for="Boleta" class="text-danger small"></span>
                     </div>
 
-                    <!-- Carrera o Departamento -->
-                    <div class="mb-3">
-                        <label asp-for="CarreraId" class="form-label fw-medium"></label>
-                        <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
-                            <option value="">-- Selecciona una carrera --</option>
-                        </select>
-                        <span asp-validation-for="CarreraId" class="text-danger small"></span>
-                    </div>
-
-                    <!-- Semestre (para alumnos) -->
-                    @if (!Model.EsDocente)
+                    @if (Model.EsDocente)
                     {
+                        <!-- Academia (para docentes) -->
+                        <div class="mb-3">
+                            <label asp-for="Academia" class="form-label fw-medium"></label>
+                            <input asp-for="Academia" class="form-control form-control-lg" />
+                            <span asp-validation-for="Academia" class="text-danger small"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Carrera (para alumnos) -->
+                        <div class="mb-3">
+                            <label asp-for="CarreraId" class="form-label fw-medium"></label>
+                            <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
+                                <option value="">-- Selecciona una carrera --</option>
+                            </select>
+                            <span asp-validation-for="CarreraId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Semestre (para alumnos) -->
                         <div class="mb-3">
                             <label asp-for="Semestre" class="form-label fw-medium"></label>
                             <select asp-for="Semestre" class="form-select form-select-lg">

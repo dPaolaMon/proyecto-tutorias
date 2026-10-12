@@ -14,6 +14,11 @@ namespace tutorias.Models
         [StringLength(20)]
         public string Clave { get; set; } = string.Empty;
 
+        public int? Semestre { get; set; }
+
+        [StringLength(50)]
+        public string? CodigoEquivalencia { get; set; }
+
         public int CarreraId { get; set; }
         public Carrera? Carrera { get; set; }
     }

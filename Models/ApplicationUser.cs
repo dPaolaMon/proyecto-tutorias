@@ -1,20 +1,37 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tutorias.Models
 {
     public class ApplicationUser : IdentityUser
     {
         [Required]
-        [StringLength(150)]
-        public string NombreCompleto { get; set; } = string.Empty;
+        [StringLength(100)]
+        public string Nombre { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string ApellidoPaterno { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string ApellidoMaterno { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string NombreCompleto => $"{Nombre} {ApellidoPaterno} {ApellidoMaterno}".Trim();
 
         [Required]
         [StringLength(20)]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta solo debe contener dígitos numéricos.")]
         public string Boleta { get; set; } = string.Empty;
 
         public int? CarreraId { get; set; }
         public Carrera? Carrera { get; set; }
+
+        [StringLength(150)]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$", ErrorMessage = "La academia solo puede contener letras y espacios.")]
+        public string? Academia { get; set; }
 
         public int? Semestre { get; set; }
 

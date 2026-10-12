@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4D+JGzJWNaU=",
+  "dgSpecHash": "Y5sPczGbxWI=",
   "success": true,
   "projectFilePath": "/home/diana/MEGA/Workspace/DOTNET/ProyectoTutorias/tutorias/tutorias.csproj",
   "expectedPackageFiles": [
@@ -54,6 +54,7 @@
     "/home/diana/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
     "/home/diana/.nuget/packages/qrcoder/1.6.0/qrcoder.1.6.0.nupkg.sha512",
     "/home/diana/.nuget/packages/questpdf/2024.7.2/questpdf.2024.7.2.nupkg.sha512",
+    "/home/diana/.nuget/packages/selenium.webdriver/4.51.0/selenium.webdriver.4.51.0.nupkg.sha512",
     "/home/diana/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
     "/home/diana/.nuget/packages/system.collections.immutable/6.0.0/system.collections.immutable.6.0.0.nupkg.sha512",
     "/home/diana/.nuget/packages/system.composition/6.0.0/system.composition.6.0.0.nupkg.sha512",

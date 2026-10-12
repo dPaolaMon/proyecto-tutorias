@@ -18,6 +18,23 @@
 <div class="row justify-content-center mt-4">
     <div class="col-12 col-md-8 col-lg-6">
 
+        @if (!Model.Activo)
+        {
+            <!-- Aviso de Cuenta en Baja y Botón de Reactivación -->
+            <div class="alert alert-warning border-0 shadow-sm p-4 mb-4 rounded-3 text-center" role="alert">
+                <span class="fs-1 d-block mb-2">⚠️</span>
+                <h5 class="fw-bold text-dark mb-1">Tu cuenta se encuentra dada de baja</h5>
+                <p class="small text-muted mb-3">
+                    El acceso a las funciones del sistema está deshabilitado mientras tu perfil permanezca en baja. Puedes reactivar tu cuenta en cualquier momento haciendo clic en el siguiente botón.
+                </p>
+                <form asp-action="ReactivateProfile" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-success btn-lg fw-semibold px-4 shadow-sm">
+                        🔄 Reactivar mi cuenta
+                    </button>
+                </form>
+            </div>
+        }
+
         <!-- Tarjeta de Perfil -->
         <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
 
@@ -54,7 +71,7 @@
                     else
                     {
                         <span class="badge rounded-pill bg-danger text-white px-3 py-1 small fw-semibold">
-                            ✕ Cuenta en Baja
+                            ✕ Cuenta en Baja Lógica
                         </span>
                     }
                 </div>
@@ -68,18 +85,27 @@
 
                     <dt class="col-5 text-muted small fw-semibold">
                         Correo Institucional
+                        <span class="d-block small text-muted font-monospace">(Inmutable)</span>
                     </dt>
                     <dd class="col-7 mb-3 text-break">
                         <span class="fw-medium">@Model.Email</span>
+                        <span class="badge bg-light text-secondary border ms-1 small">Fijo</span>
                     </dd>
 
-                    <dt class="col-5 text-muted small fw-semibold">Carrera</dt>
-                    <dd class="col-7 mb-3">
-                        @(string.IsNullOrEmpty(Model.CarreraNombre) ? "— Sin asignar —" : Model.CarreraNombre)
-                    </dd>
-
-                    @if (!Model.EsDocente)
+                    @if (Model.EsDocente)
                     {
+                        <dt class="col-5 text-muted small fw-semibold">Academia</dt>
+                        <dd class="col-7 mb-3">
+                            @(string.IsNullOrEmpty(Model.Academia) ? "— Sin asignar —" : Model.Academia)
+                        </dd>
+                    }
+                    else
+                    {
+                        <dt class="col-5 text-muted small fw-semibold">Carrera</dt>
+                        <dd class="col-7 mb-3">
+                            @(string.IsNullOrEmpty(Model.CarreraNombre) ? "— Sin asignar —" : Model.CarreraNombre)
+                        </dd>
+
                         <dt class="col-5 text-muted small fw-semibold">Semestre</dt>
                         <dd class="col-7 mb-3">
                             @(Model.Semestre.HasValue ? $"{Model.Semestre}° Semestre" : "—")
@@ -105,7 +131,7 @@
                             @Model.FechaBaja.Value.ToLocalTime().ToString("g")
                             @if (!string.IsNullOrEmpty(Model.MotivoBaja))
                             {
-                                <div class="text-muted small">Motivo: @Model.MotivoBaja</div>
+                                <div class="text-muted small mt-1">Motivo: @Model.MotivoBaja</div>
                             }
                         </dd>
                     }
@@ -114,29 +140,47 @@
 
             <!-- Acciones CRUD del Perfil -->
             <div class="card-footer bg-white border-top-0 px-4 pb-4 pt-0 d-flex gap-2 flex-wrap justify-content-between align-items-center">
-                <div class="d-flex gap-2 flex-wrap">
-                    <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
-                        Editar Perfil
-                    </a>
-                    @if (!Model.PerfilCompleto)
-                    {
-                        <a asp-action="CompleteProfile" class="btn btn-outline-warning btn-sm fw-semibold">
-                            Completar perfil
+                @if (Model.Activo)
+                {
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
+                            ✏️ Editar Perfil
                         </a>
-                    }
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
-                        Volver
-                    </a>
-                </div>
-                <div>
-                    <a asp-action="DeleteProfile" class="btn btn-outline-danger btn-sm fw-semibold" title="Dar de baja mi cuenta">
-                        Baja de Cuenta
-                    </a>
-                </div>
+                        @if (!Model.PerfilCompleto)
+                        {
+                            <a asp-action="CompleteProfile" class="btn btn-outline-warning btn-sm fw-semibold">
+                                Completar perfil
+                            </a>
+                        }
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
+                            Volver
+                        </a>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-danger btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#modalBajaCuenta" title="Dar de baja mi cuenta">
+                            🗑️ Baja de Cuenta
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
+                        <form asp-action="ReactivateProfile" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success btn-sm fw-semibold">
+                                🔄 Reactivar mi cuenta
+                            </button>
+                        </form>
+                        <form asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm fw-semibold">
+                                🚪 Cerrar Sesión
+                            </button>
+                        </form>
+                    </div>
+                }
             </div>
         </div>
 
-        @if (!Model.PerfilCompleto)
+        @if (!Model.PerfilCompleto && Model.Activo)
         {
             <div class="alert alert-warning border-0 mt-3 d-flex align-items-center gap-2 small shadow-sm" role="alert">
                 <span>⚠️</span>
@@ -146,3 +190,40 @@
 
     </div>
 </div>
+
+@if (Model.Activo)
+{
+    <!-- Modal de Confirmación de Baja de Cuenta -->
+    <div class="modal fade" id="modalBajaCuenta" tabindex="-1" aria-labelledby="modalBajaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold" id="modalBajaLabel">⚠️ Confirmar Baja de Perfil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form asp-action="DeleteProfile" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body p-4">
+                        <p class="text-muted small mb-3">
+                            Al dar de baja tu perfil, tu cuenta quedará desactivada y tus permisos suspendidos. Podrás reactivarla nuevamente en cualquier momento desde esta misma pantalla de perfil.
+                        </p>
+                        <div class="mb-3">
+                            <label for="motivoBajaModal" class="form-label fw-medium small">Motivo de la baja (Opcional):</label>
+                            <textarea id="motivoBajaModal" name="MotivoBaja" class="form-control" rows="2" placeholder="Indica el motivo de la baja..."></textarea>
+                        </div>
+                        <div class="form-check p-3 bg-light rounded border">
+                            <input class="form-check-input ms-0 me-2" type="checkbox" id="confirmarBajaModal" name="ConfirmarBaja" value="true" required />
+                            <label class="form-check-label text-danger fw-semibold small" for="confirmarBajaModal">
+                                Confirmo que deseo dar de baja mi cuenta del Sistema de Tutorías.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light border-0">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger btn-sm fw-semibold">Confirmar y Dar de Baja</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

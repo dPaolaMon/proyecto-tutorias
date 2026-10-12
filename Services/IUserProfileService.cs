@@ -12,5 +12,6 @@ namespace tutorias.Services
         Task<(bool Succeeded, string? ErrorMessage)> UpdateProfileAsync(ApplicationUser user, EditProfileViewModel model);
         Task<(bool Succeeded, string? ErrorMessage)> CompleteProfileAsync(ApplicationUser user, CompleteProfileViewModel model);
         Task<(bool Succeeded, string? ErrorMessage)> LogicalDeleteUserAsync(ApplicationUser user, string? motivoBaja);
+        Task<(bool Succeeded, string? ErrorMessage)> ReactivateUserAsync(ApplicationUser user);
     }
 }

@@ -160,11 +160,27 @@ namespace tutorias.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Academia")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<bool>("Activo")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("ApellidoMaterno")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ApellidoPaterno")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Boleta")
                         .IsRequired()
@@ -202,10 +218,10 @@ namespace tutorias.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("NombreCompleto")
+                    b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -334,16 +350,51 @@ namespace tutorias.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("CodigoEquivalencia")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("Semestre")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarreraId");
 
+                    b.HasIndex("CodigoEquivalencia");
+
                     b.ToTable("Materias");
+                });
+
+            modelBuilder.Entity("tutorias.Models.MateriaEquivalencia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("EsBidireccional")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MateriaEquivalenteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MateriaOrigenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MateriaEquivalenteId");
+
+                    b.HasIndex("MateriaOrigenId");
+
+                    b.ToTable("MateriasEquivalencias");
                 });
 
             modelBuilder.Entity("tutorias.Models.SesionTutoria", b =>
@@ -556,6 +607,25 @@ namespace tutorias.Migrations
                         .IsRequired();
 
                     b.Navigation("Carrera");
+                });
+
+            modelBuilder.Entity("tutorias.Models.MateriaEquivalencia", b =>
+                {
+                    b.HasOne("tutorias.Models.Materia", "MateriaEquivalente")
+                        .WithMany()
+                        .HasForeignKey("MateriaEquivalenteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("tutorias.Models.Materia", "MateriaOrigen")
+                        .WithMany()
+                        .HasForeignKey("MateriaOrigenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("MateriaEquivalente");
+
+                    b.Navigation("MateriaOrigen");
                 });
 
             modelBuilder.Entity("tutorias.Models.SesionTutoria", b =>

@@ -15,9 +15,22 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="mb-3">
-                        <label asp-for="NombreCompleto" class="form-label fw-medium"></label>
-                        <input asp-for="NombreCompleto" class="form-control form-control-lg" />
-                        <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                        <label asp-for="Nombre" class="form-label fw-medium"></label>
+                        <input asp-for="Nombre" class="form-control form-control-lg" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-12 col-md-6">
+                            <label asp-for="ApellidoPaterno" class="form-label fw-medium"></label>
+                            <input asp-for="ApellidoPaterno" class="form-control form-control-lg" />
+                            <span asp-validation-for="ApellidoPaterno" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label asp-for="ApellidoMaterno" class="form-label fw-medium"></label>
+                            <input asp-for="ApellidoMaterno" class="form-control form-control-lg" />
+                            <span asp-validation-for="ApellidoMaterno" class="text-danger small"></span>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -29,11 +42,7 @@
                     <div class="mb-3">
                         <label asp-for="Email" class="form-label fw-medium"></label>
                         <input asp-for="Email" class="form-control form-control-lg" />
-                        <div class="form-text text-muted small">
-                            El rol inicial se determina automáticamente por tu correo:<br />
-                            • <strong>@("@alumno.ipn.mx")</strong>: Perfil de Alumno<br />
-                            • <strong>@("@ipn.mx")</strong>: Perfil de Docente
-                        </div>
+                        
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 

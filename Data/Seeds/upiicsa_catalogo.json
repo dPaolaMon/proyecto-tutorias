@@ -1,0 +1,3235 @@
+{
+  "unidadAcademica": "UPIICSA - Instituto Politécnico Nacional",
+  "carreras": [
+    {
+      "nombre": "Ingeniería en Informática",
+      "clave": "N",
+      "materias": [
+        {
+          "nombre": "MATEMÁTICAS DISCRETAS",
+          "semestre": 1,
+          "clave": "N101",
+          "codigoEquivalencia": "EQ-MATEMATICASD-01"
+        },
+        {
+          "nombre": "FUNDAMENTOS DE FÍSICA",
+          "semestre": 1,
+          "clave": "N102",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FÍSICA GENERAL EXPERIMENTAL",
+          "semestre": 1,
+          "clave": "N103",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+          "semestre": 1,
+          "clave": "N104",
+          "codigoEquivalencia": "EQ-COMUNICACION-02"
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ADMINISTRACIÓN",
+          "semestre": 1,
+          "clave": "N105",
+          "codigoEquivalencia": "EQ-FUNDAMENTOSD-03"
+        },
+        {
+          "nombre": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+          "semestre": 1,
+          "clave": "N106",
+          "codigoEquivalencia": "EQ-RESPONSABILI-04"
+        },
+        {
+          "nombre": "LÓGICA DE PROGRAMACIÓN",
+          "semestre": 1,
+          "clave": "N107",
+          "codigoEquivalencia": "EQ-LOGICADEPROG-05"
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL E INTEGRAL",
+          "semestre": 2,
+          "clave": "N201",
+          "codigoEquivalencia": "EQ-CALCULODIFER-06"
+        },
+        {
+          "nombre": "PSICOLOGÍA EN EL TRABAJO",
+          "semestre": 2,
+          "clave": "N202",
+          "codigoEquivalencia": "EQ-PSICOLOGIADE-07"
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN",
+          "semestre": 2,
+          "clave": "N203",
+          "codigoEquivalencia": "EQ-METODOLOGIAD-08"
+        },
+        {
+          "nombre": "SISTEMAS DIGITALES",
+          "semestre": 2,
+          "clave": "N204",
+          "codigoEquivalencia": "EQ-SISTEMASDIGI-09"
+        },
+        {
+          "nombre": "APLICACIÓN DE SISTEMAS DIGITALES",
+          "semestre": 2,
+          "clave": "N205",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE INGENIERÍA DE SOFTWARE",
+          "semestre": 2,
+          "clave": "N206",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTRUCTURA DE DATOS",
+          "semestre": 2,
+          "clave": "N207",
+          "codigoEquivalencia": "EQ-ESTRUCTURADE-10"
+        },
+        {
+          "nombre": "PROGRAMACIÓN DE BAJO NIVEL",
+          "semestre": 2,
+          "clave": "N208",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROBABILIDAD",
+          "semestre": 3,
+          "clave": "N301",
+          "codigoEquivalencia": "EQ-PROBABILIDAD-11"
+        },
+        {
+          "nombre": "ALGORITMOS COMPUTACIONALES",
+          "semestre": 3,
+          "clave": "N302",
+          "codigoEquivalencia": "EQ-ALGORITMOSCO-12"
+        },
+        {
+          "nombre": "INGENIERÍA DE REQUERIMIENTOS",
+          "semestre": 3,
+          "clave": "N303",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO DE INTERFACES DE USUARIO",
+          "semestre": 3,
+          "clave": "N304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ARQUITECTURA Y ORGANIZACIÓN DE LAS COMPUTADORAS",
+          "semestre": 3,
+          "clave": "N305",
+          "codigoEquivalencia": "EQ-ARQUITECTURA-13"
+        },
+        {
+          "nombre": "CONSTRUCCIÓN DE BASES DE DATOS",
+          "semestre": 3,
+          "clave": "N306",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN ORIENTADA A OBJETOS",
+          "semestre": 3,
+          "clave": "N307",
+          "codigoEquivalencia": "EQ-PROGRAMACION-14"
+        },
+        {
+          "nombre": "ESTADÍSTICA",
+          "semestre": 4,
+          "clave": "N401",
+          "codigoEquivalencia": "EQ-ESTADISTICA-15"
+        },
+        {
+          "nombre": "DISPOSITIVOS PROGRAMABLES",
+          "semestre": 4,
+          "clave": "N402",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE DISEÑO",
+          "semestre": 4,
+          "clave": "N403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN DE BASES DE DATOS",
+          "semestre": 4,
+          "clave": "N404",
+          "codigoEquivalencia": "EQ-ADMINISTRACI-16"
+        },
+        {
+          "nombre": "SEGURIDAD INFORMÁTICA",
+          "semestre": 4,
+          "clave": "N405",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS OPERATIVOS",
+          "semestre": 4,
+          "clave": "N406",
+          "codigoEquivalencia": "EQ-SISTEMASOPER-17"
+        },
+        {
+          "nombre": "ADQUISICIÓN DE DATOS",
+          "semestre": 4,
+          "clave": "N407",
+          "codigoEquivalencia": "EQ-ESTRUCTURADE-10"
+        },
+        {
+          "nombre": "ÁLGEBRA LINEAL",
+          "semestre": 5,
+          "clave": "N501",
+          "codigoEquivalencia": "EQ-ALGEBRALINEA-18"
+        },
+        {
+          "nombre": "ESCENARIOS VIRTUALES",
+          "semestre": 5,
+          "clave": "N502",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "HACKEO ÉTICO",
+          "semestre": 5,
+          "clave": "N503",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS EMBEBIDOS",
+          "semestre": 5,
+          "clave": "N508",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MÉTODOS NUMÉRICOS",
+          "semestre": 5,
+          "clave": "N509",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTABILIDAD FINANCIERA Y DE COSTOS",
+          "semestre": 5,
+          "clave": "N510",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "APLICACIÓN DE LA CIENCIA ECONÓMICA",
+          "semestre": 5,
+          "clave": "N504",
+          "codigoEquivalencia": "EQ-APLICACIONDE-19"
+        },
+        {
+          "nombre": "TEORÍA DE LA COMPUTACIÓN Y COMPILADORES",
+          "semestre": 5,
+          "clave": "N505",
+          "codigoEquivalencia": "EQ-TEORIADELACO-20"
+        },
+        {
+          "nombre": "COMUNICACIÓN DE DATOS",
+          "semestre": 5,
+          "clave": "N506",
+          "codigoEquivalencia": "EQ-COMUNICACION-21"
+        },
+        {
+          "nombre": "PROGRAMACIÓN WEB",
+          "semestre": 5,
+          "clave": "N507",
+          "codigoEquivalencia": "EQ-PROGRAMACION-22"
+        },
+        {
+          "nombre": "AMBIENTES VIRTUALES INMERSIVOS",
+          "semestre": 6,
+          "clave": "N603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INFORMÁTICA EN AMBIENTES PRODUCTIVOS",
+          "semestre": 6,
+          "clave": "N605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 6,
+          "clave": "N601",
+          "codigoEquivalencia": "EQ-MODELOSDETER-23"
+        },
+        {
+          "nombre": "VIROLOGÍA Y CRIPTOGRAFÍA",
+          "semestre": 6,
+          "clave": "N606",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA ECONÓMICA",
+          "semestre": 6,
+          "clave": "N602",
+          "codigoEquivalencia": "EQ-ECONOMIADELA-24"
+        },
+        {
+          "nombre": "PRESUPUESTO Y FINANZAS",
+          "semestre": 6,
+          "clave": "N608",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "REDES Y CONECTIVIDAD",
+          "semestre": 6,
+          "clave": "N604",
+          "codigoEquivalencia": "EQ-REDESYCONECT-25"
+        },
+        {
+          "nombre": "FUNDAMENTOS DE INTELIGENCIA ARTIFICIAL",
+          "semestre": 6,
+          "clave": "N609",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE PRUEBAS",
+          "semestre": 6,
+          "clave": "N610",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN MÓVIL",
+          "semestre": 6,
+          "clave": "N607",
+          "codigoEquivalencia": "EQ-PROGRAMACION-26"
+        },
+        {
+          "nombre": "BIG DATA Y TOMA DE DECISIONES",
+          "semestre": 7,
+          "clave": "N701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MONITOREO Y ADMINISTRACIÓN DE REDES",
+          "semestre": 7,
+          "clave": "N702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "REDES Y MODELOS DE SIMULACIÓN",
+          "semestre": 7,
+          "clave": "N703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SIMULADORES VIRTUALES",
+          "semestre": 7,
+          "clave": "N704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN ESTRATÉGICA",
+          "semestre": 7,
+          "clave": "N705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LEGISLACIÓN INFORMÁTICA",
+          "semestre": 7,
+          "clave": "N706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS",
+          "semestre": 7,
+          "clave": "N707",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DEL CONOCIMIENTO",
+          "semestre": 7,
+          "clave": "N708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INTERNET DE LAS COSAS",
+          "semestre": 7,
+          "clave": "N709",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD EN REDES",
+          "semestre": 7,
+          "clave": "N710",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "HABILIDADES DIRECTIVAS",
+          "semestre": 8,
+          "clave": "N801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INFORMÁTICA EMPRESARIAL",
+          "semestre": 8,
+          "clave": "N802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROYECTO DE TITULACIÓN",
+          "semestre": 8,
+          "clave": "N803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE PROYECTOS",
+          "semestre": 8,
+          "clave": "N804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CALIDAD Y NORMALIZACIÓN DE SOFTWARE",
+          "semestre": 8,
+          "clave": "N805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN DE TECNOLOGÍAS",
+          "semestre": 8,
+          "clave": "N806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ANALÍTICA DE DATOS",
+          "semestre": 8,
+          "clave": "N807",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMPUTACIÓN EN LA NUBE",
+          "semestre": 8,
+          "clave": "N808",
+          "codigoEquivalencia": null
+        }
+      ]
+    },
+    {
+      "nombre": "Ingeniería en Transporte",
+      "clave": "T",
+      "materias": [
+        {
+          "nombre": "FUNDAMENTOS MATEMÁTICOS",
+          "semestre": 1,
+          "clave": "T101",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELEMENTOS DEL CÁLCULO VECTORIAL",
+          "semestre": 1,
+          "clave": "T102",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIBUJO ASISTIDO POR COMPUTADORA",
+          "semestre": 1,
+          "clave": "T103",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS Y LA INGENIERÍA EN TRANSPORTE",
+          "semestre": 1,
+          "clave": "T104",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INGENIERÍA",
+          "semestre": 1,
+          "clave": "T105",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+          "semestre": 1,
+          "clave": "T106",
+          "codigoEquivalencia": "EQ-RESPONSABILI-04"
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+          "semestre": 1,
+          "clave": "T107",
+          "codigoEquivalencia": "EQ-COMUNICACION-02"
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN",
+          "semestre": 1,
+          "clave": "T108",
+          "codigoEquivalencia": "EQ-METODOLOGIAD-08"
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL",
+          "semestre": 2,
+          "clave": "T201",
+          "codigoEquivalencia": "EQ-CALCULODIFER-27"
+        },
+        {
+          "nombre": "MECÁNICA CLÁSICA",
+          "semestre": 2,
+          "clave": "T202",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE MECÁNICA CLÁSICA",
+          "semestre": 2,
+          "clave": "T203",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ADMINISTRACIÓN",
+          "semestre": 2,
+          "clave": "T204",
+          "codigoEquivalencia": "EQ-FUNDAMENTOSD-03"
+        },
+        {
+          "nombre": "PROYECTO DE VÍAS TERRESTRES",
+          "semestre": 2,
+          "clave": "T205",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS DE INFORMACIÓN GEOGRÁFICA",
+          "semestre": 2,
+          "clave": "T206",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE TRANSPORTE CARRETERO",
+          "semestre": 2,
+          "clave": "T207",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE TRANSPORTE FERROVIARIO",
+          "semestre": 2,
+          "clave": "T208",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PSICOLOGÍA DEL TRABAJO",
+          "semestre": 2,
+          "clave": "T209",
+          "codigoEquivalencia": "EQ-PSICOLOGIADE-07"
+        },
+        {
+          "nombre": "CÁLCULO INTEGRAL",
+          "semestre": 3,
+          "clave": "T301",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROBABILIDAD",
+          "semestre": 3,
+          "clave": "T302",
+          "codigoEquivalencia": "EQ-PROBABILIDAD-11"
+        },
+        {
+          "nombre": "ELECTROMAGNETISMO",
+          "semestre": 3,
+          "clave": "T303",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE ELECTROMAGNETISMO",
+          "semestre": 3,
+          "clave": "T304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "QUÍMICA ENERGÉTICA Y AMBIENTAL",
+          "semestre": 3,
+          "clave": "T305",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE QUÍMICA ENERGÉTICA Y AMBIENTAL",
+          "semestre": 3,
+          "clave": "T306",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE TRANSPORTE MARÍTIMO",
+          "semestre": 3,
+          "clave": "T307",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE TRANSPORTE AÉREO",
+          "semestre": 3,
+          "clave": "T308",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN Y BASES DE DATOS",
+          "semestre": 3,
+          "clave": "T309",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ÁLGEBRA LINEAL",
+          "semestre": 4,
+          "clave": "T401",
+          "codigoEquivalencia": "EQ-ALGEBRALINEA-18"
+        },
+        {
+          "nombre": "ESTADÍSTICA",
+          "semestre": 4,
+          "clave": "T402",
+          "codigoEquivalencia": "EQ-ESTADISTICA-15"
+        },
+        {
+          "nombre": "COSTOS Y PRESUPUESTOS",
+          "semestre": 4,
+          "clave": "T403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍA DE VEHÍCULOS Y LABORATORIO",
+          "semestre": 4,
+          "clave": "T404",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE TRANSPORTE MULTIMODAL",
+          "semestre": 4,
+          "clave": "T405",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE TRÁNSITO",
+          "semestre": 4,
+          "clave": "T406",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LEGISLACIÓN PARA EL TRANSPORTE",
+          "semestre": 4,
+          "clave": "T407",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍA APLICADA AL TRANSPORTE",
+          "semestre": 4,
+          "clave": "T408",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO CORPORATIVO EN EL TRANSPORTE",
+          "semestre": 5,
+          "clave": "T501",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE OPERACIONES PARA LA CADENA DE SUMINISTRO",
+          "semestre": 5,
+          "clave": "T502",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MATEMÁTICAS APLICADAS",
+          "semestre": 5,
+          "clave": "T503",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MÉTODOS PARA LA DEMANDA",
+          "semestre": 5,
+          "clave": "T504",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TRANSPORTE Y REGIONALIZACIÓN ECONÓMICA",
+          "semestre": 5,
+          "clave": "T505",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTADÍSTICA APLICADA",
+          "semestre": 5,
+          "clave": "T506",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MICROECONOMÍA",
+          "semestre": 5,
+          "clave": "T508",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN ESTRATÉGICA PARA EL TRANSPORTE",
+          "semestre": 5,
+          "clave": "T509",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN Y SEGURIDAD DE PASAJEROS Y CARGA",
+          "semestre": 5,
+          "clave": "T510",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CADENA DE SUMINISTRO DE PROCESOS",
+          "semestre": 5,
+          "clave": "T511",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 5,
+          "clave": "T507",
+          "codigoEquivalencia": "EQ-MODELOSDETER-23"
+        },
+        {
+          "nombre": "ADMINISTRACIÓN DE LA DEMANDA",
+          "semestre": 6,
+          "clave": "T601",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO DEL TRABAJO EN EL TRANSPORTE",
+          "semestre": 6,
+          "clave": "T602",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ECONOMÍA SOCIAL Y SU IMPACTO EN EL TRANSPORTE",
+          "semestre": 6,
+          "clave": "T603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "IMPLEMENTACIÓN DE SISTEMAS DE GESTIÓN PARA EL TRANSPORTE",
+          "semestre": 6,
+          "clave": "T604",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MACROECONOMÍA",
+          "semestre": 6,
+          "clave": "T605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CAPITAL HUMANO EN EMPRESAS DE TRANSPORTE",
+          "semestre": 6,
+          "clave": "T608",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA EN TRANSPORTE TERRESTRE",
+          "semestre": 6,
+          "clave": "T609",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN DEL TRANSPORTE",
+          "semestre": 6,
+          "clave": "T610",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CADENA DE SUMINISTRO, ALMACENES E INVENTARIOS",
+          "semestre": 6,
+          "clave": "T611",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ECONOMÍA DE LA INGENIERÍA",
+          "semestre": 6,
+          "clave": "T606",
+          "codigoEquivalencia": "EQ-ECONOMIADELA-24"
+        },
+        {
+          "nombre": "MODELOS ESTOCÁSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 6,
+          "clave": "T607",
+          "codigoEquivalencia": "EQ-MODELOSESTOC-28"
+        },
+        {
+          "nombre": "ECONOMÍA DEL TRANSPORTE Y SUSTENTABILIDAD",
+          "semestre": 7,
+          "clave": "T701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GOBIERNO CORPORATIVO",
+          "semestre": 7,
+          "clave": "T702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LEGISLACIÓN ESPECÍFICA PARA EL TRANSPORTE",
+          "semestre": 7,
+          "clave": "T703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE REEMPLAZO Y MANTENIMIENTO",
+          "semestre": 7,
+          "clave": "T704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SIMULACIÓN DE SISTEMAS PARA LA DEMANDA",
+          "semestre": 7,
+          "clave": "T705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA EN TRANSPORTE AÉREO",
+          "semestre": 7,
+          "clave": "T706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA EN TRANSPORTE MARÍTIMO",
+          "semestre": 7,
+          "clave": "T707",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CADENA DE SUMINISTRO DISEÑO DE RED",
+          "semestre": 7,
+          "clave": "T708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD INTEGRAL DEL TRANSPORTE",
+          "semestre": 7,
+          "clave": "T709",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE TRANSPORTE",
+          "semestre": 7,
+          "clave": "T710",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS",
+          "semestre": 7,
+          "clave": "T711",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROYECTO DE TITULACIÓN",
+          "semestre": 8,
+          "clave": "T801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN INTEGRAL DE PROYECTOS DE TRANSPORTE",
+          "semestre": 8,
+          "clave": "T802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIRECCIÓN Y OPERACIÓN DE TERMINALES",
+          "semestre": 8,
+          "clave": "T803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CADENA DE SUMINISTRO GLOBAL",
+          "semestre": 8,
+          "clave": "T804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIRECCIÓN Y OPERACIÓN DE FLOTAS",
+          "semestre": 8,
+          "clave": "T805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE TRANSPORTE APLICACIÓN",
+          "semestre": 8,
+          "clave": "T806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CALIDAD DE SERVICIO EN EMPRESAS DE TRANSPORTE",
+          "semestre": 8,
+          "clave": "T807",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MERCADOS INTERNACIONALES",
+          "semestre": 8,
+          "clave": "T808",
+          "codigoEquivalencia": null
+        }
+      ]
+    },
+    {
+      "nombre": "Ingeniería Ferroviaria",
+      "clave": "F",
+      "materias": [
+        {
+          "nombre": "FUNDAMENTOS MATEMÁTICOS",
+          "semestre": 1,
+          "clave": "F101",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MECÁNICA CLÁSICA APLICADA",
+          "semestre": 1,
+          "clave": "F102",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ÉTICA Y RESPONSABILIDAD SOCIAL",
+          "semestre": 1,
+          "clave": "F103",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA Y SISTEMAS DE TRANSPORTE",
+          "semestre": 1,
+          "clave": "F104",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROCESOS DE PRODUCCIÓN Y DE MANUFACTURA",
+          "semestre": 1,
+          "clave": "F105",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIBUJO ASISTIDO POR COMPUTADORA",
+          "semestre": 1,
+          "clave": "F106",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE INGENIERÍA CIVIL Y ARQUITECTURA",
+          "semestre": 1,
+          "clave": "F107",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL E INTEGRAL",
+          "semestre": 2,
+          "clave": "F201",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELECTROMAGNETISMO APLICADO",
+          "semestre": 2,
+          "clave": "F202",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TRANSPORTE FERROVIARIO",
+          "semestre": 2,
+          "clave": "F203",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "NORMALIZACIÓN FERROVIARIA",
+          "semestre": 2,
+          "clave": "F204",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELECTRICIDAD Y ELECTRÓNICA EXPERIMENTAL",
+          "semestre": 2,
+          "clave": "F205",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍA Y RESISTENCIA DE MATERIALES",
+          "semestre": 2,
+          "clave": "F206",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN INTEGRAL",
+          "semestre": 2,
+          "clave": "F207",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ENTORNO SOCIOECONÓMICO DE MÉXICO",
+          "semestre": 2,
+          "clave": "F208",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÁLCULO VECTORIAL",
+          "semestre": 3,
+          "clave": "F301",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROBABILIDAD Y ESTADÍSTICA",
+          "semestre": 3,
+          "clave": "F302",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INGENIERÍA",
+          "semestre": 3,
+          "clave": "F303",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MATERIAL RODANTE",
+          "semestre": 3,
+          "clave": "F304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA AMBIENTAL Y CLIMATOLOGÍA",
+          "semestre": 3,
+          "clave": "F305",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN DEL TRANSPORTE URBANO Y REGIONAL",
+          "semestre": 3,
+          "clave": "F306",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INTRODUCCIÓN A LA ECONOMÍA",
+          "semestre": 3,
+          "clave": "F307",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MÉTODOS MATEMÁTICOS DE LA INGENIERÍA",
+          "semestre": 4,
+          "clave": "F401",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ÁLGEBRA LINEAL",
+          "semestre": 4,
+          "clave": "F402",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "QUÍMICA ENERGÉTICA Y AMBIENTAL",
+          "semestre": 4,
+          "clave": "F403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTUDIOS PARA PROYECTOS FERROVIARIOS",
+          "semestre": 4,
+          "clave": "F404",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CRUCEROS Y SEÑALIZACIÓN INTELIGENTES",
+          "semestre": 4,
+          "clave": "F405",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SUMINISTRO DE COMBUSTIBLE Y ENERGÍA ELÉCTRICA",
+          "semestre": 4,
+          "clave": "F406",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INFORMÁTICA Y TELECOMUNICACIONES",
+          "semestre": 4,
+          "clave": "F407",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTABILIDAD Y FINANZAS",
+          "semestre": 4,
+          "clave": "F408",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DINÁMICA TREN-VÍA",
+          "semestre": 5,
+          "clave": "F501",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTADÍSTICA APLICADA",
+          "semestre": 5,
+          "clave": "F502",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INFRAESTRUCTURA EN INSTALACIONES FIJAS",
+          "semestre": 5,
+          "clave": "F503",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "VÍAS Y DISEÑO GEOMÉTRICO DEL TRAZO",
+          "semestre": 5,
+          "clave": "F504",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA BÁSICA Y PROYECTO EJECUTIVO",
+          "semestre": 5,
+          "clave": "F505",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LOGÍSTICA Y CADENA DE SUMINISTRO",
+          "semestre": 5,
+          "clave": "F506",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN LINEAL",
+          "semestre": 5,
+          "clave": "F507",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTRATACIÓN Y EJECUCIÓN DE OBRAS FERROVIARIAS",
+          "semestre": 6,
+          "clave": "F601",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANTENIMIENTO DE OBRAS E INSTALACIONES FIJAS",
+          "semestre": 6,
+          "clave": "F602",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INSTRUMENTACIÓN MECATRÓNICA FERROVIARIA",
+          "semestre": 6,
+          "clave": "F603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LOGÍSTICA DE FLUJOS INTERNACIONALES",
+          "semestre": 6,
+          "clave": "F604",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ECONOMÍA DE LA INGENIERÍA",
+          "semestre": 6,
+          "clave": "F605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "REDES Y SIMULACIÓN",
+          "semestre": 6,
+          "clave": "F606",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL",
+          "semestre": 6,
+          "clave": "F607",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN DEL SERVICIO FERROVIARIO",
+          "semestre": 7,
+          "clave": "F701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "OPERACIONES FERROVIARIAS DE CARGA",
+          "semestre": 7,
+          "clave": "F702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANTENIMIENTO DE MATERIAL RODANTE",
+          "semestre": 7,
+          "clave": "F703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE SIMULACIÓN",
+          "semestre": 7,
+          "clave": "F704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO FERROVIARIO",
+          "semestre": 7,
+          "clave": "F705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TRANSPORTE MULTIMODAL",
+          "semestre": 7,
+          "clave": "F706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS",
+          "semestre": 7,
+          "clave": "F707",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD OPERACIONAL DEL TRANSPORTE FERROVIARIO",
+          "semestre": 7,
+          "clave": "F708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "OPERACIONES FERROVIARIAS DE PASAJEROS",
+          "semestre": 8,
+          "clave": "F801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DESEMPEÑO Y CALIDAD DEL SERVICIO",
+          "semestre": 8,
+          "clave": "F802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "EMPRESAS Y ECONOMÍA DEL TRANSPORTE FERROVIARIO",
+          "semestre": 8,
+          "clave": "F803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "HABILIDADES DIRECTIVAS",
+          "semestre": 8,
+          "clave": "F804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEMINARIO DE INGENIERÍA FERROVIARIA",
+          "semestre": 8,
+          "clave": "F805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIRECCIÓN DE PROYECTOS",
+          "semestre": 8,
+          "clave": "F806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD PATRIMONIAL DEL TRANSPORTE FERROVIARIO",
+          "semestre": 8,
+          "clave": "F807",
+          "codigoEquivalencia": null
+        }
+      ]
+    },
+    {
+      "nombre": "Ingeniería Industrial",
+      "clave": "I",
+      "materias": [
+        {
+          "nombre": "HABILIDADES DEL PENSAMIENTO",
+          "semestre": 1,
+          "clave": "I101",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ADMINISTRACIÓN",
+          "semestre": 1,
+          "clave": "I102",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "BASES DE LA INFORMACIÓN FINANCIERA",
+          "semestre": 1,
+          "clave": "I103",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+          "semestre": 1,
+          "clave": "I104",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL",
+          "semestre": 1,
+          "clave": "I105",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO MERCANTIL",
+          "semestre": 1,
+          "clave": "I106",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+          "semestre": 1,
+          "clave": "I107",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMA DE RECURSOS HUMANOS",
+          "semestre": 2,
+          "clave": "I201",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS Y ESTRUCTURAS ORGANIZACIONALES",
+          "semestre": 2,
+          "clave": "I202",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COSTOS APLICADOS A LA INDUSTRIA",
+          "semestre": 2,
+          "clave": "I203",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN",
+          "semestre": 2,
+          "clave": "I204",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INTEGRACIÓN Y MATEMÁTICAS FINANCIERAS",
+          "semestre": 2,
+          "clave": "I205",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO DEL TRABAJO Y DE LA SEGURIDAD SOCIAL",
+          "semestre": 2,
+          "clave": "I206",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MARKETING",
+          "semestre": 2,
+          "clave": "I207",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MICROECONOMÍA APLICADA",
+          "semestre": 3,
+          "clave": "I301",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMPORTAMIENTO ORGANIZACIONAL",
+          "semestre": 3,
+          "clave": "I302",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTABILIDAD ADMINISTRATIVA",
+          "semestre": 3,
+          "clave": "I303",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍAS DE INFORMACIÓN",
+          "semestre": 3,
+          "clave": "I304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROBABILIDAD",
+          "semestre": 3,
+          "clave": "I305",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DERECHO FISCAL",
+          "semestre": 3,
+          "clave": "I306",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROCESOS INDUSTRIALES",
+          "semestre": 3,
+          "clave": "I307",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE PROCESOS INDUSTRIALES",
+          "semestre": 3,
+          "clave": "I308",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ENTORNO MACROECONÓMICO Y APLICACIONES A LA EMPRESA",
+          "semestre": 4,
+          "clave": "I401",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTROL ADMINISTRATIVO",
+          "semestre": 4,
+          "clave": "I402",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PRESUPUESTOS",
+          "semestre": 4,
+          "clave": "I403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INFORMÁTICA ADMINISTRATIVA",
+          "semestre": 4,
+          "clave": "I404",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTADÍSTICA",
+          "semestre": 4,
+          "clave": "I405",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS DE FABRICACIÓN",
+          "semestre": 4,
+          "clave": "I406",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "APLICACIÓN DE PROCESOS INDUSTRIALES",
+          "semestre": 4,
+          "clave": "I407",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE APLICACIÓN DE PROCESOS INDUSTRIALES",
+          "semestre": 4,
+          "clave": "I408",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROCESOS DE MANUFACTURA",
+          "semestre": 4,
+          "clave": "I409",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "RECURSOS HUMANOS E INNOVACIÓN",
+          "semestre": 5,
+          "clave": "I501",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN ESTRATÉGICA",
+          "semestre": 5,
+          "clave": "I502",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTUDIO Y APLICACIÓN DE LOS IMPUESTOS",
+          "semestre": 5,
+          "clave": "I503",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTROL DE LOS PROCESOS",
+          "semestre": 5,
+          "clave": "I504",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ÁLGEBRA LINEAL",
+          "semestre": 5,
+          "clave": "I505",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD Y SALUD EN EL TRABAJO Y SISTEMAS AMBIENTALES",
+          "semestre": 5,
+          "clave": "I506",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTRUCTURA ECONÓMICA DE LA PRODUCCIÓN",
+          "semestre": 5,
+          "clave": "I507",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DESARROLLO DEL TALENTO HUMANO",
+          "semestre": 6,
+          "clave": "I601",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE RIESGOS",
+          "semestre": 6,
+          "clave": "I602",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LIDERAZGO EMPRESARIAL Y RESPONSABILIDAD SOCIAL",
+          "semestre": 6,
+          "clave": "I603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN INTEGRAL DE RECURSOS HUMANOS",
+          "semestre": 6,
+          "clave": "I604",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GENERACIÓN E INNOVACIÓN DE NEGOCIOS",
+          "semestre": 6,
+          "clave": "I605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE FINANZAS CORPORATIVAS",
+          "semestre": 6,
+          "clave": "I606",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN Y CONTROL DE INVENTARIOS",
+          "semestre": 6,
+          "clave": "I607",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS DE GESTIÓN",
+          "semestre": 6,
+          "clave": "I608",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 6,
+          "clave": "I609",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE TECNOLOGÍA E INNOVACIÓN",
+          "semestre": 6,
+          "clave": "I610",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN DE PYMES",
+          "semestre": 7,
+          "clave": "I701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIRECCIÓN DE MARKETING",
+          "semestre": 7,
+          "clave": "I702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FINANZAS BURSÁTILES",
+          "semestre": 7,
+          "clave": "I703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MEDICIÓN DEL CAPITAL HUMANO",
+          "semestre": 7,
+          "clave": "I704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN Y CONTROL MAESTRO DE PRODUCCIÓN",
+          "semestre": 7,
+          "clave": "I705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "EVALUACIÓN FINANCIERA",
+          "semestre": 7,
+          "clave": "I706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INVESTIGACIÓN Y ANÁLISIS DE MERCADO",
+          "semestre": 7,
+          "clave": "I707",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO Y DOCUMENTACIÓN DE SISTEMAS DE GESTIÓN",
+          "semestre": 7,
+          "clave": "I708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO DE SISTEMAS DE REMUNERACIONES",
+          "semestre": 7,
+          "clave": "I709",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS ESTOCÁSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 7,
+          "clave": "I710",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FINANCIAMIENTO EMPRESARIAL",
+          "semestre": 8,
+          "clave": "I801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE CAPITAL HUMANO EN ORGANIZACIONES COMPLEJAS",
+          "semestre": 8,
+          "clave": "I802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MARKETING CORPORATIVO",
+          "semestre": 8,
+          "clave": "I803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PRINCIPIOS Y APLICACIONES DE LOS NEGOCIOS INTERNACIONALES",
+          "semestre": 8,
+          "clave": "I804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIRECCIÓN ESTRATÉGICA",
+          "semestre": 8,
+          "clave": "I805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "EMPRENDIMIENTO DE EMPRESAS ECONÓMICAMENTE PRODUCTIVAS",
+          "semestre": 8,
+          "clave": "I806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE GESTIÓN DE CAPITAL INTELECTUAL",
+          "semestre": 8,
+          "clave": "I807",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "AUDITORIA A SISTEMAS DE GESTIÓN",
+          "semestre": 8,
+          "clave": "I808",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONSULTORÍA",
+          "semestre": 8,
+          "clave": "I809",
+          "codigoEquivalencia": null
+        }
+      ]
+    },
+    {
+      "nombre": "Licenciatura en Ciencias de la Informática",
+      "clave": "C",
+      "materias": [
+        {
+          "nombre": "MATEMÁTICAS DISCRETAS",
+          "semestre": 1,
+          "clave": "C101",
+          "codigoEquivalencia": "EQ-MATEMATICASD-01"
+        },
+        {
+          "nombre": "SISTEMAS DIGITALES",
+          "semestre": 1,
+          "clave": "C102",
+          "codigoEquivalencia": "EQ-SISTEMASDIGI-09"
+        },
+        {
+          "nombre": "LÓGICA DE PROGRAMACIÓN",
+          "semestre": 1,
+          "clave": "C103",
+          "codigoEquivalencia": "EQ-LOGICADEPROG-05"
+        },
+        {
+          "nombre": "TEORÍA INFORMÁTICA",
+          "semestre": 1,
+          "clave": "C104",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ARQUITECTURA Y ORGANIZACIÓN DE LAS COMPUTADORAS",
+          "semestre": 1,
+          "clave": "C105",
+          "codigoEquivalencia": "EQ-ARQUITECTURA-13"
+        },
+        {
+          "nombre": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+          "semestre": 1,
+          "clave": "C106",
+          "codigoEquivalencia": "EQ-RESPONSABILI-04"
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+          "semestre": 1,
+          "clave": "C107",
+          "codigoEquivalencia": "EQ-COMUNICACION-02"
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL E INTEGRAL",
+          "semestre": 2,
+          "clave": "C201",
+          "codigoEquivalencia": "EQ-CALCULODIFER-06"
+        },
+        {
+          "nombre": "PROGRAMACIÓN ORIENTADA A OBJETOS",
+          "semestre": 2,
+          "clave": "C202",
+          "codigoEquivalencia": "EQ-PROGRAMACION-14"
+        },
+        {
+          "nombre": "HERRAMIENTAS MULTIMEDIA",
+          "semestre": 2,
+          "clave": "C203",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "BUENAS PRÁCTICAS DE SOFTWARE",
+          "semestre": 2,
+          "clave": "C204",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ADMINISTRACIÓN",
+          "semestre": 2,
+          "clave": "C205",
+          "codigoEquivalencia": "EQ-FUNDAMENTOSD-03"
+        },
+        {
+          "nombre": "PSICOLOGÍA EN EL TRABAJO",
+          "semestre": 2,
+          "clave": "C206",
+          "codigoEquivalencia": "EQ-PSICOLOGIADE-07"
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN",
+          "semestre": 2,
+          "clave": "C207",
+          "codigoEquivalencia": "EQ-METODOLOGIAD-08"
+        },
+        {
+          "nombre": "PROBABILIDAD",
+          "semestre": 3,
+          "clave": "C301",
+          "codigoEquivalencia": "EQ-PROBABILIDAD-11"
+        },
+        {
+          "nombre": "ALGORITMOS COMPUTACIONALES",
+          "semestre": 3,
+          "clave": "C302",
+          "codigoEquivalencia": "EQ-ALGORITMOSCO-12"
+        },
+        {
+          "nombre": "ABSTRACCIÓN Y USO DE DATOS",
+          "semestre": 3,
+          "clave": "C303",
+          "codigoEquivalencia": "EQ-ESTRUCTURADE-10"
+        },
+        {
+          "nombre": "REQUERIMIENTOS DE SOFTWARE",
+          "semestre": 3,
+          "clave": "C304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS OPERATIVOS",
+          "semestre": 3,
+          "clave": "C305",
+          "codigoEquivalencia": "EQ-SISTEMASOPER-17"
+        },
+        {
+          "nombre": "ÁLGEBRA LINEAL",
+          "semestre": 3,
+          "clave": "C306",
+          "codigoEquivalencia": "EQ-ALGEBRALINEA-18"
+        },
+        {
+          "nombre": "APLICACIONES DE LA CIENCIA ECONÓMICA",
+          "semestre": 3,
+          "clave": "C307",
+          "codigoEquivalencia": "EQ-APLICACIONDE-19"
+        },
+        {
+          "nombre": "ESTADÍSTICA",
+          "semestre": 4,
+          "clave": "C401",
+          "codigoEquivalencia": "EQ-ESTADISTICA-15"
+        },
+        {
+          "nombre": "TEORÍA DE COMPUTACIÓN Y COMPILADORES",
+          "semestre": 4,
+          "clave": "C402",
+          "codigoEquivalencia": "EQ-TEORIADELACO-20"
+        },
+        {
+          "nombre": "DISEÑO DE BASES DE DATOS",
+          "semestre": 4,
+          "clave": "C403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONSTRUCCIÓN DE SOFTWARE",
+          "semestre": 4,
+          "clave": "C404",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMUNICACIÓN DE DATOS",
+          "semestre": 4,
+          "clave": "C405",
+          "codigoEquivalencia": "EQ-COMUNICACION-21"
+        },
+        {
+          "nombre": "MODELOS DETERMINISTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 4,
+          "clave": "C406",
+          "codigoEquivalencia": "EQ-MODELOSDETER-23"
+        },
+        {
+          "nombre": "CONTABILIDAD Y COSTOS",
+          "semestre": 4,
+          "clave": "C407",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "BIG DATA",
+          "semestre": 5,
+          "clave": "C504",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO MULTIMEDIA",
+          "semestre": 5,
+          "clave": "C506",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN DE DISPOSITIVOS MÓVILES",
+          "semestre": 5,
+          "clave": "C501",
+          "codigoEquivalencia": "EQ-PROGRAMACION-26"
+        },
+        {
+          "nombre": "RECURSOS HUMANOS Y CAPITAL INTELECTUAL",
+          "semestre": 5,
+          "clave": "C507",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROGRAMACIÓN WEB",
+          "semestre": 5,
+          "clave": "C502",
+          "codigoEquivalencia": "EQ-PROGRAMACION-22"
+        },
+        {
+          "nombre": "SISTEMAS MANEJADORES DE BASES DE DATOS",
+          "semestre": 5,
+          "clave": "C503",
+          "codigoEquivalencia": "EQ-ADMINISTRACI-16"
+        },
+        {
+          "nombre": "MODELOS DE PRUEBA DE SOFTWARE",
+          "semestre": 5,
+          "clave": "C508",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "REDES Y CONECTIVIDAD",
+          "semestre": 5,
+          "clave": "C505",
+          "codigoEquivalencia": "EQ-REDESYCONECT-25"
+        },
+        {
+          "nombre": "REDES Y SIMULACIÓN",
+          "semestre": 5,
+          "clave": "C509",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FINANZAS",
+          "semestre": 5,
+          "clave": "C510",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN ESTRATÉGICA",
+          "semestre": 6,
+          "clave": "C601",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "BASES DE DATOS NO SQL",
+          "semestre": 6,
+          "clave": "C602",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CIUDADANÍA DIGITAL",
+          "semestre": 6,
+          "clave": "C603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELADO GRÁFICO DE INTERFASES",
+          "semestre": 6,
+          "clave": "C605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MARKETING DIGITAL",
+          "semestre": 6,
+          "clave": "C606",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ANALÍTICA DE DATOS",
+          "semestre": 6,
+          "clave": "C607",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA ECONÓMICA",
+          "semestre": 6,
+          "clave": "C604",
+          "codigoEquivalencia": "EQ-ECONOMIADELA-24"
+        },
+        {
+          "nombre": "DISEÑO DE AMBIENTES UBICUOS",
+          "semestre": 6,
+          "clave": "C608",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ADMINISTRACIÓN INFORMÁTICA",
+          "semestre": 6,
+          "clave": "C609",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LEGISLACIÓN INFORMÁTICA",
+          "semestre": 6,
+          "clave": "C610",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "4ª. REVOLUCIÓN INDUSTRIAL Y LA ECONOMÍA DIGITAL",
+          "semestre": 7,
+          "clave": "C701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "APLICACIONES MULTIMEDIA",
+          "semestre": 7,
+          "clave": "C702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LIDERAZGO Y DESARROLLO DIRECTIVO",
+          "semestre": 7,
+          "clave": "C703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MINERÍA DE DATOS",
+          "semestre": 7,
+          "clave": "C704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÓMPUTO EN LA NUBE",
+          "semestre": 7,
+          "clave": "C705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "AUDITORÍA DE TECNOLOGÍAS DE INFORMACIÓN",
+          "semestre": 7,
+          "clave": "C706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS",
+          "semestre": 7,
+          "clave": "C707",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE SERVICIOS DE TECNOLOGÍAS DE INFORMACIÓN",
+          "semestre": 7,
+          "clave": "C708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DESARROLLO EMPRENDEDOR",
+          "semestre": 7,
+          "clave": "C709",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD INFORMÁTICA",
+          "semestre": 7,
+          "clave": "C710",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO DE PROYECTOS DE SISTEMAS INFORMÁTICOS",
+          "semestre": 8,
+          "clave": "C801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ARQUITECTURA DE LAS ORGANIZACIONES",
+          "semestre": 8,
+          "clave": "C802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "AUDITORÍA DE SEGURIDAD",
+          "semestre": 8,
+          "clave": "C803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE PROYECTOS",
+          "semestre": 8,
+          "clave": "C804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MEJORES PRÁCTICAS DE TECNOLOGÍAS DE INFORMACIÓN",
+          "semestre": 8,
+          "clave": "C805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS DE GESTIÓN INFORMÁTICA",
+          "semestre": 8,
+          "clave": "C806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROYECTO TERMINAL",
+          "semestre": 8,
+          "clave": "C807",
+          "codigoEquivalencia": null
+        }
+      ]
+    },
+    {
+      "nombre": "Licenciatura en Administración Industrial",
+      "clave": "A",
+      "materias": [
+        {
+          "nombre": "CÁLCULO VECTORIAL",
+          "semestre": 1,
+          "clave": "A101",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÁLCULO DIFERENCIAL",
+          "semestre": 1,
+          "clave": "A105",
+          "codigoEquivalencia": "EQ-CALCULODIFER-27"
+        },
+        {
+          "nombre": "FUNDAMENTOS DE INGENIERÍA INDUSTRIAL",
+          "semestre": 1,
+          "clave": "A103",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DIBUJO INDUSTRIAL ASISTIDO POR COMPUTADORA",
+          "semestre": 1,
+          "clave": "A104",
+          "codigoEquivalencia": "EQ-COMUNICACION-02"
+        },
+        {
+          "nombre": "TECNOLOGÍA INFORMÁTICA",
+          "semestre": 1,
+          "clave": "A106",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FUNDAMENTOS DE ADMINISTRACIÓN",
+          "semestre": 1,
+          "clave": "A102",
+          "codigoEquivalencia": "EQ-FUNDAMENTOSD-03"
+        },
+        {
+          "nombre": "METODOLOGÍA DE LA INVESTIGACIÓN",
+          "semestre": 1,
+          "clave": "A108",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+          "semestre": 1,
+          "clave": "A107",
+          "codigoEquivalencia": "EQ-RESPONSABILI-04"
+        },
+        {
+          "nombre": "MECÁNICA CLÁSICA",
+          "semestre": 2,
+          "clave": "A201",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE MECÁNICA CLÁSICA",
+          "semestre": 2,
+          "clave": "A202",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CÁLCULO INTEGRAL",
+          "semestre": 2,
+          "clave": "A203",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PROBABILIDAD",
+          "semestre": 2,
+          "clave": "A204",
+          "codigoEquivalencia": "EQ-METODOLOGIAD-08"
+        },
+        {
+          "nombre": "ADMINISTRACIÓN DE CAPITAL HUMANO",
+          "semestre": 2,
+          "clave": "A205",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LEGISLACIÓN INDUSTRIAL",
+          "semestre": 2,
+          "clave": "A206",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMUNICACIÓN PROFESIONAL",
+          "semestre": 2,
+          "clave": "A207",
+          "codigoEquivalencia": "EQ-COMUNICACION-02"
+        },
+        {
+          "nombre": "PSICOLOGÍA EN EL TRABAJO",
+          "semestre": 2,
+          "clave": "A208",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ESTADÍSTICA",
+          "semestre": 3,
+          "clave": "A301",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELECTROMAGNETISMO",
+          "semestre": 3,
+          "clave": "A302",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO DE ELECTROMAGNETISMO",
+          "semestre": 3,
+          "clave": "A303",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MÉTODOS MATEMÁTICOS",
+          "semestre": 3,
+          "clave": "A304",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "QUÍMICA APLICADA",
+          "semestre": 3,
+          "clave": "A305",
+          "codigoEquivalencia": "EQ-PROBABILIDAD-11"
+        },
+        {
+          "nombre": "LABORATORIO DE QUÍMICA APLICADA",
+          "semestre": 3,
+          "clave": "A306",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ECONOMÍA",
+          "semestre": 3,
+          "clave": "A307",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MECÁNICA DE MATERIALES",
+          "semestre": 3,
+          "clave": "A308",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO Y EVALUACIÓN DE ESTACIONES DE TRABAJO",
+          "semestre": 3,
+          "clave": "A309",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PRODUCTIVIDAD Y DISEÑO DEL TRABAJO",
+          "semestre": 3,
+          "clave": "A310",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "NORMALIZACIÓN Y METROLOGÍA DIMENSIONAL",
+          "semestre": 4,
+          "clave": "A401",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ALGEBRA LINEAL",
+          "semestre": 4,
+          "clave": "A402",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DINÁMICA DE MECANISMOS",
+          "semestre": 4,
+          "clave": "A403",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "QUÍMICA INDUSTRIAL",
+          "semestre": 4,
+          "clave": "A404",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LABORATORIO QUÍMICA INDUSTRIAL",
+          "semestre": 4,
+          "clave": "A405",
+          "codigoEquivalencia": "EQ-ESTADISTICA-15"
+        },
+        {
+          "nombre": "CONTROL DE CALIDAD",
+          "semestre": 4,
+          "clave": "A406",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELECTRICIDAD Y ELECTRÓNICA",
+          "semestre": 4,
+          "clave": "A407",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍA DE MATERIALES",
+          "semestre": 4,
+          "clave": "A408",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS NEUMÁTICOS E HIDRÁULICOS",
+          "semestre": 4,
+          "clave": "A409",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONTABILIDAD Y COSTOS",
+          "semestre": 4,
+          "clave": "A410",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANTAS Y PROCESOS INDUSTRIALES",
+          "semestre": 5,
+          "clave": "A501",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "ELECTRICIDAD APLICADA",
+          "semestre": 5,
+          "clave": "A502",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DETERMINACIÓN Y APLICACIÓN DE ESTÁNDARES",
+          "semestre": 5,
+          "clave": "A503",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE ESTÁNDARES",
+          "semestre": 5,
+          "clave": "A504",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PRUEBAS DE CONTROL DE CALIDAD",
+          "semestre": 5,
+          "clave": "A505",
+          "codigoEquivalencia": "EQ-ALGEBRALINEA-18"
+        },
+        {
+          "nombre": "MODELOS DETERMINISTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 5,
+          "clave": "A506",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INSTRUMENTACIÓN Y CONTROL",
+          "semestre": 5,
+          "clave": "A507",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN FINANCIERA",
+          "semestre": 5,
+          "clave": "A508",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MERCADOTECNIA",
+          "semestre": 5,
+          "clave": "A509",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN Y CONTROL DE INVENTARIOS",
+          "semestre": 5,
+          "clave": "A510",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MODELOS ESTOCÁSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+          "semestre": 6,
+          "clave": "A601",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA ECONÓMICA",
+          "semestre": 6,
+          "clave": "A602",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANEACIÓN Y CONTROL MAESTRO DE LA PRODUCCIÓN",
+          "semestre": 6,
+          "clave": "A603",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "CONFORMADO DE MATERIALES",
+          "semestre": 6,
+          "clave": "A604",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANUFACTURA ESBELTA",
+          "semestre": 6,
+          "clave": "A605",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISTRIBUCIÓN DE PLANTA Y MANEJO DE MATERIALES",
+          "semestre": 6,
+          "clave": "A606",
+          "codigoEquivalencia": "EQ-MODELOSDETER-23"
+        },
+        {
+          "nombre": "ADMINISTRACIÓN ESTRATÉGICA",
+          "semestre": 6,
+          "clave": "A607",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS HÍBRIDOS",
+          "semestre": 6,
+          "clave": "A608",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANUFACTURA INTEGRAL",
+          "semestre": 6,
+          "clave": "A609",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DISEÑO Y VALIDACIÓN DE UN PROTOTIPO",
+          "semestre": 6,
+          "clave": "A610",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD EN EL TRABAJO",
+          "semestre": 6,
+          "clave": "A611",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INGENIERÍA DE OPERACIONES",
+          "semestre": 6,
+          "clave": "A612",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "TECNOLOGÍAS INTELIGENTES",
+          "semestre": 6,
+          "clave": "A613",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MECANIZADO INDUSTRIAL",
+          "semestre": 7,
+          "clave": "A701",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANUFACTURA ADITIVA Y SUSTRACTIVA",
+          "semestre": 7,
+          "clave": "A702",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS",
+          "semestre": 7,
+          "clave": "A703",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "MANTENIMIENTO",
+          "semestre": 7,
+          "clave": "A704",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SEGURIDAD Y SALUD EN EL TRABAJO",
+          "semestre": 7,
+          "clave": "A705",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "LOGÍSTICA",
+          "semestre": 7,
+          "clave": "A706",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SIMULACIÓN DE SISTEMAS",
+          "semestre": 7,
+          "clave": "A707",
+          "codigoEquivalencia": "EQ-MODELOSESTOC-28"
+        },
+        {
+          "nombre": "GESTIÓN DE LA INNOVACIÓN",
+          "semestre": 7,
+          "clave": "A708",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "DESARROLLO DEL PRODUCTO",
+          "semestre": 7,
+          "clave": "A709",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SALUD EN EL TRABAJO",
+          "semestre": 7,
+          "clave": "A710",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SOLUCIÓN A PROBLEMAS DE LA ALTA DIRECCIÓN",
+          "semestre": 7,
+          "clave": "A711",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "INTEGRACIÓN DE LAS TECNOLOGÍAS EN LA INDUSTRIA 5.0",
+          "semestre": 7,
+          "clave": "A712",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE LA CADENA DE SUMINISTRO",
+          "semestre": 8,
+          "clave": "A801",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN AMBIENTAL",
+          "semestre": 8,
+          "clave": "A802",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS INTEGRADOS DE MANUFACTURA",
+          "semestre": 8,
+          "clave": "A803",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE PROYECTOS",
+          "semestre": 8,
+          "clave": "A804",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "EMPRENDIMIENTO",
+          "semestre": 8,
+          "clave": "A805",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "SISTEMAS DE GESTIÓN",
+          "semestre": 8,
+          "clave": "A806",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "HABILIDADES DIRECTIVAS",
+          "semestre": 8,
+          "clave": "A807",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "PLANIFICACIÓN AVANZADA DE LA CALIDAD DEL PRODUCTO",
+          "semestre": 8,
+          "clave": "A808",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "GESTIÓN DE RIESGO Y PROTECCIÓN CIVIL",
+          "semestre": 8,
+          "clave": "A809",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "IMPLEMENTACIÓN DE SISTEMAS DE GESTIÓN",
+          "semestre": 8,
+          "clave": "A810",
+          "codigoEquivalencia": null
+        },
+        {
+          "nombre": "COMERCIALIZACIÓN INTERNACIONAL Y DIGITAL",
+          "semestre": 8,
+          "clave": "A811",
+          "codigoEquivalencia": null
+        }
+      ]
+    }
+  ],
+  "equivalencias": [
+    {
+      "clave_origen": "A102",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "A",
+      "clave_equivalente": "C205",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A207",
+      "materia_origen": "COMUNICACIÓN PROFESIONAL",
+      "carrera_origen": "A",
+      "clave_equivalente": "C107",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A107",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "A",
+      "clave_equivalente": "C106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A204",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "C207",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A305",
+      "materia_origen": "QUÍMICA APLICADA",
+      "carrera_origen": "A",
+      "clave_equivalente": "C301",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A405",
+      "materia_origen": "LABORATORIO QUÍMICA INDUSTRIAL",
+      "carrera_origen": "A",
+      "clave_equivalente": "C401",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A505",
+      "materia_origen": "PRUEBAS DE CONTROL DE CALIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "C306",
+      "materia_equivalente": "ÁLGEBRA LINEAL",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A606",
+      "materia_origen": "DISTRIBUCIÓN DE PLANTA Y MANEJO DE MATERIALES",
+      "carrera_origen": "A",
+      "clave_equivalente": "C406",
+      "materia_equivalente": "MODELOS DETERMINISTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "C",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A102",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "A",
+      "clave_equivalente": "N105",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A104",
+      "materia_origen": "DIBUJO INDUSTRIAL ASISTIDO POR COMPUTADORA",
+      "carrera_origen": "A",
+      "clave_equivalente": "N104",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A107",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "A",
+      "clave_equivalente": "N106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A204",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "N203",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A305",
+      "materia_origen": "QUÍMICA APLICADA",
+      "carrera_origen": "A",
+      "clave_equivalente": "N301",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A405",
+      "materia_origen": "LABORATORIO QUÍMICA INDUSTRIAL",
+      "carrera_origen": "A",
+      "clave_equivalente": "N401",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A505",
+      "materia_origen": "PRUEBAS DE CONTROL DE CALIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "N501",
+      "materia_equivalente": "ÁLGEBRA LINEAL",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A606",
+      "materia_origen": "DISTRIBUCIÓN DE PLANTA Y MANEJO DE MATERIALES",
+      "carrera_origen": "A",
+      "clave_equivalente": "N601",
+      "materia_equivalente": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A102",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "A",
+      "clave_equivalente": "T204",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A104",
+      "materia_origen": "DIBUJO INDUSTRIAL ASISTIDO POR COMPUTADORA",
+      "carrera_origen": "A",
+      "clave_equivalente": "T107",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A105",
+      "materia_origen": "CÁLCULO DIFERENCIAL",
+      "carrera_origen": "A",
+      "clave_equivalente": "T201",
+      "materia_equivalente": "CÁLCULO DIFERENCIAL",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A107",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "A",
+      "clave_equivalente": "T106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A204",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "T108",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A305",
+      "materia_origen": "QUÍMICA APLICADA",
+      "carrera_origen": "A",
+      "clave_equivalente": "T302",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A405",
+      "materia_origen": "LABORATORIO QUÍMICA INDUSTRIAL",
+      "carrera_origen": "A",
+      "clave_equivalente": "T402",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A505",
+      "materia_origen": "PRUEBAS DE CONTROL DE CALIDAD",
+      "carrera_origen": "A",
+      "clave_equivalente": "T401",
+      "materia_equivalente": "ÁLGEBRA LINEAL",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A606",
+      "materia_origen": "DISTRIBUCIÓN DE PLANTA Y MANEJO DE MATERIALES",
+      "carrera_origen": "A",
+      "clave_equivalente": "T507",
+      "materia_equivalente": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "A707",
+      "materia_origen": "SIMULACIÓN DE SISTEMAS",
+      "carrera_origen": "A",
+      "clave_equivalente": "T607",
+      "materia_equivalente": "MODELOS ESTOCÁSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C101",
+      "materia_origen": "MATEMÁTICAS DISCRETAS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N101",
+      "materia_equivalente": "MATEMÁTICAS DISCRETAS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C102",
+      "materia_origen": "SISTEMAS DIGITALES",
+      "carrera_origen": "C",
+      "clave_equivalente": "N204",
+      "materia_equivalente": "SISTEMAS DIGITALES",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C103",
+      "materia_origen": "LÓGICA DE PROGRAMACIÓN",
+      "carrera_origen": "C",
+      "clave_equivalente": "N107",
+      "materia_equivalente": "LÓGICA DE PROGRAMACIÓN",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C105",
+      "materia_origen": "ARQUITECTURA Y ORGANIZACIÓN DE LAS COMPUTADORAS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N305",
+      "materia_equivalente": "ARQUITECTURA Y ORGANIZACIÓN DE LAS COMPUTADORAS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C106",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "N106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C107",
+      "materia_origen": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_origen": "C",
+      "clave_equivalente": "N104",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C201",
+      "materia_origen": "CÁLCULO DIFERENCIAL E INTEGRAL",
+      "carrera_origen": "C",
+      "clave_equivalente": "N201",
+      "materia_equivalente": "CÁLCULO DIFERENCIAL E INTEGRAL",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C202",
+      "materia_origen": "PROGRAMACIÓN ORIENTADA A OBJETOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N307",
+      "materia_equivalente": "PROGRAMACIÓN ORIENTADA A OBJETOS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C205",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "C",
+      "clave_equivalente": "N105",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C206",
+      "materia_origen": "PSICOLOGÍA EN EL TRABAJO",
+      "carrera_origen": "C",
+      "clave_equivalente": "N202",
+      "materia_equivalente": "PSICOLOGÍA EN EL TRABAJO",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C207",
+      "materia_origen": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_origen": "C",
+      "clave_equivalente": "N203",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C301",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "C",
+      "clave_equivalente": "N301",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C302",
+      "materia_origen": "ALGORITMOS COMPUTACIONALES",
+      "carrera_origen": "C",
+      "clave_equivalente": "N302",
+      "materia_equivalente": "ALGORITMOS COMPUTACIONALES",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C303",
+      "materia_origen": "ABSTRACCIÓN Y USO DE DATOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N407",
+      "materia_equivalente": "ADQUISICIÓN DE DATOS",
+      "carrera_equivalente": "N",
+      "bidireccional": false
+    },
+    {
+      "clave_origen": "C303",
+      "materia_origen": "ABSTRACCIÓN Y USO DE DATOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N207",
+      "materia_equivalente": "ESTRUCTURA DE DATOS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C305",
+      "materia_origen": "SISTEMAS OPERATIVOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N406",
+      "materia_equivalente": "SISTEMAS OPERATIVOS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C306",
+      "materia_origen": "ÁLGEBRA LINEAL",
+      "carrera_origen": "C",
+      "clave_equivalente": "N501",
+      "materia_equivalente": "ÁLGEBRA LINEAL",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C307",
+      "materia_origen": "APLICACIONES DE LA CIENCIA ECONÓMICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "N504",
+      "materia_equivalente": "APLICACIÓN DE LA CIENCIA ECONÓMICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C401",
+      "materia_origen": "ESTADÍSTICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "N401",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C402",
+      "materia_origen": "TEORÍA DE COMPUTACIÓN Y COMPILADORES",
+      "carrera_origen": "C",
+      "clave_equivalente": "N505",
+      "materia_equivalente": "TEORÍA DE LA COMPUTACIÓN Y COMPILADORES",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C405",
+      "materia_origen": "COMUNICACIÓN DE DATOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N506",
+      "materia_equivalente": "COMUNICACIÓN DE DATOS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C406",
+      "materia_origen": "MODELOS DETERMINISTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_origen": "C",
+      "clave_equivalente": "N601",
+      "materia_equivalente": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C501",
+      "materia_origen": "PROGRAMACIÓN DE DISPOSITIVOS MÓVILES",
+      "carrera_origen": "C",
+      "clave_equivalente": "N607",
+      "materia_equivalente": "PROGRAMACIÓN MÓVIL",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C502",
+      "materia_origen": "PROGRAMACIÓN WEB",
+      "carrera_origen": "C",
+      "clave_equivalente": "N507",
+      "materia_equivalente": "PROGRAMACIÓN WEB",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C503",
+      "materia_origen": "SISTEMAS MANEJADORES DE BASES DE DATOS",
+      "carrera_origen": "C",
+      "clave_equivalente": "N404",
+      "materia_equivalente": "ADMINISTRACIÓN DE BASES DE DATOS",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C505",
+      "materia_origen": "REDES Y CONECTIVIDAD",
+      "carrera_origen": "C",
+      "clave_equivalente": "N604",
+      "materia_equivalente": "REDES Y CONECTIVIDAD",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C604",
+      "materia_origen": "INGENIERÍA ECONÓMICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "N602",
+      "materia_equivalente": "INGENIERÍA ECONÓMICA",
+      "carrera_equivalente": "N",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C106",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "T106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C107",
+      "materia_origen": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_origen": "C",
+      "clave_equivalente": "T107",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C205",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "C",
+      "clave_equivalente": "T204",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C206",
+      "materia_origen": "PSICOLOGÍA EN EL TRABAJO",
+      "carrera_origen": "C",
+      "clave_equivalente": "T209",
+      "materia_equivalente": "PSICOLOGÍA DEL TRABAJO",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C207",
+      "materia_origen": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_origen": "C",
+      "clave_equivalente": "T108",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C301",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "C",
+      "clave_equivalente": "T302",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "C401",
+      "materia_origen": "ESTADÍSTICA",
+      "carrera_origen": "C",
+      "clave_equivalente": "T402",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": false
+    },
+    {
+      "clave_origen": "N104",
+      "materia_origen": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_origen": "N",
+      "clave_equivalente": "A104",
+      "materia_equivalente": "DIBUJO INDUSTRIAL ASISTIDO POR COMPUTADORA",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N105",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "N",
+      "clave_equivalente": "A102",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N106",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "N",
+      "clave_equivalente": "A107",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N203",
+      "materia_origen": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_origen": "N",
+      "clave_equivalente": "A204",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N301",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "N",
+      "clave_equivalente": "A305",
+      "materia_equivalente": "QUÍMICA APLICADA",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N401",
+      "materia_origen": "ESTADÍSTICA",
+      "carrera_origen": "N",
+      "clave_equivalente": "A405",
+      "materia_equivalente": "LABORATORIO QUÍMICA INDUSTRIAL",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N501",
+      "materia_origen": "ÁLGEBRA LINEAL",
+      "carrera_origen": "N",
+      "clave_equivalente": "A505",
+      "materia_equivalente": "PRUEBAS DE CONTROL DE CALIDAD",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N601",
+      "materia_origen": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_origen": "N",
+      "clave_equivalente": "A606",
+      "materia_equivalente": "DISTRIBUCIÓN DE PLANTA Y MANEJO DE MATERIALES",
+      "carrera_equivalente": "A",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N104",
+      "materia_origen": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_origen": "N",
+      "clave_equivalente": "T107",
+      "materia_equivalente": "COMUNICACIÓN PROFESIONAL INTERDISCIPLINARIA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N105",
+      "materia_origen": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_origen": "N",
+      "clave_equivalente": "T204",
+      "materia_equivalente": "FUNDAMENTOS DE ADMINISTRACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N106",
+      "materia_origen": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_origen": "N",
+      "clave_equivalente": "T106",
+      "materia_equivalente": "RESPONSABILIDAD SOCIAL Y ÉTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N202",
+      "materia_origen": "PSICOLOGÍA EN EL TRABAJO",
+      "carrera_origen": "N",
+      "clave_equivalente": "T209",
+      "materia_equivalente": "PSICOLOGÍA DEL TRABAJO",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N203",
+      "materia_origen": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_origen": "N",
+      "clave_equivalente": "T108",
+      "materia_equivalente": "METODOLOGÍA DE LA INVESTIGACIÓN",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N301",
+      "materia_origen": "PROBABILIDAD",
+      "carrera_origen": "N",
+      "clave_equivalente": "T302",
+      "materia_equivalente": "PROBABILIDAD",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N401",
+      "materia_origen": "ESTADÍSTICA",
+      "carrera_origen": "N",
+      "clave_equivalente": "T402",
+      "materia_equivalente": "ESTADÍSTICA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N501",
+      "materia_origen": "ÁLGEBRA LINEAL",
+      "carrera_origen": "N",
+      "clave_equivalente": "T401",
+      "materia_equivalente": "ÁLGEBRA LINEAL",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N601",
+      "materia_origen": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_origen": "N",
+      "clave_equivalente": "T507",
+      "materia_equivalente": "MODELOS DETERMINÍSTICOS DE INVESTIGACIÓN DE OPERACIONES",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    },
+    {
+      "clave_origen": "N602",
+      "materia_origen": "INGENIERÍA ECONÓMICA",
+      "carrera_origen": "N",
+      "clave_equivalente": "T606",
+      "materia_equivalente": "ECONOMÍA DE LA INGENIERÍA",
+      "carrera_equivalente": "T",
+      "bidireccional": true
+    }
+  ]
+}

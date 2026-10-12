@@ -16,16 +16,24 @@
                 <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="CarreraId" class="form-label fw-medium"></label>
-                        <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
-                            <option value="">-- Selecciona carrera o adscripción --</option>
-                        </select>
-                        <span asp-validation-for="CarreraId" class="text-danger small"></span>
-                    </div>
-
-                    @if (!Model.EsDocente)
+                    @if (Model.EsDocente)
                     {
+                        <div class="mb-3">
+                            <label asp-for="Academia" class="form-label fw-medium"></label>
+                            <input asp-for="Academia" class="form-control form-control-lg" />
+                            <span asp-validation-for="Academia" class="text-danger small"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label asp-for="CarreraId" class="form-label fw-medium"></label>
+                            <select asp-for="CarreraId" asp-items="ViewBag.Carreras" class="form-select form-select-lg">
+                                <option value="">-- Selecciona tu carrera --</option>
+                            </select>
+                            <span asp-validation-for="CarreraId" class="text-danger small"></span>
+                        </div>
+
                         <div class="mb-3">
                             <label asp-for="Semestre" class="form-label fw-medium"></label>
                             <select asp-for="Semestre" class="form-select form-select-lg">

@@ -68,6 +68,10 @@
             "QuestPDF": {
               "target": "Package",
               "version": "[2024.7.2, )"
+            },
+            "Selenium.WebDriver": {
+              "target": "Package",
+              "version": "[4.51.0, )"
             }
           },
           "imports": [

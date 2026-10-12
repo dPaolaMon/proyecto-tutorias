@@ -48,10 +48,14 @@ namespace tutorias.Services
             return new ProfileViewModel
             {
                 Id             = user.Id,
+                Nombre         = user.Nombre,
+                ApellidoPaterno = user.ApellidoPaterno,
+                ApellidoMaterno = user.ApellidoMaterno,
                 NombreCompleto = user.NombreCompleto,
                 Boleta         = user.Boleta,
                 Email          = user.Email ?? string.Empty,
                 CarreraNombre  = user.Carrera?.Nombre,
+                Academia       = user.Academia,
                 Semestre       = user.Semestre,
                 FotoUrl        = user.FotoUrl,
                 TipoTutor      = user.TipoTutor,
@@ -71,10 +75,13 @@ namespace tutorias.Services
 
             return new EditProfileViewModel
             {
-                NombreCompleto = user.NombreCompleto,
+                Nombre         = user.Nombre,
+                ApellidoPaterno = user.ApellidoPaterno,
+                ApellidoMaterno = user.ApellidoMaterno,
                 Boleta         = user.Boleta,
                 Email          = user.Email ?? string.Empty, // Solo lectura en vista
                 CarreraId      = user.CarreraId,
+                Academia       = user.Academia,
                 Semestre       = user.Semestre,
                 FotoUrlActual  = user.FotoUrl,
                 EsDocente      = roles.Contains("Docente")
@@ -90,11 +97,33 @@ namespace tutorias.Services
                 return (false, "El usuario no fue encontrado.");
             }
 
+            if (!model.Boleta.Trim().All(char.IsDigit))
+            {
+                return (false, "La boleta solo debe contener dígitos numéricos.");
+            }
+
             // REGLA: El correo es estrictamente inmutable; no se altera Email ni UserName
-            user.NombreCompleto = model.NombreCompleto.Trim();
+            user.Nombre = model.Nombre.Trim();
+            user.ApellidoPaterno = model.ApellidoPaterno.Trim();
+            user.ApellidoMaterno = model.ApellidoMaterno.Trim();
             user.Boleta = model.Boleta.Trim();
-            user.CarreraId = model.CarreraId;
-            user.Semestre = model.EsDocente ? null : model.Semestre;
+
+            if (model.EsDocente)
+            {
+                if (!string.IsNullOrWhiteSpace(model.Academia) && !System.Text.RegularExpressions.Regex.IsMatch(model.Academia.Trim(), @"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$"))
+                {
+                    return (false, "La academia solo debe contener letras y espacios.");
+                }
+                user.Academia = model.Academia?.Trim();
+                user.CarreraId = null;
+                user.Semestre = null;
+            }
+            else
+            {
+                user.CarreraId = model.CarreraId;
+                user.Semestre = model.Semestre;
+                user.Academia = null;
+            }
 
             if (model.Foto != null && model.Foto.Length > 0)
             {
@@ -125,8 +154,22 @@ namespace tutorias.Services
                 return (false, "El usuario no fue encontrado.");
             }
 
-            user.CarreraId = model.CarreraId;
-            user.Semestre = model.EsDocente ? null : model.Semestre;
+            if (model.EsDocente)
+            {
+                if (!string.IsNullOrWhiteSpace(model.Academia) && !System.Text.RegularExpressions.Regex.IsMatch(model.Academia.Trim(), @"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$"))
+                {
+                    return (false, "La academia solo debe contener letras y espacios.");
+                }
+                user.Academia = model.Academia?.Trim();
+                user.CarreraId = null;
+                user.Semestre = null;
+            }
+            else
+            {
+                user.CarreraId = model.CarreraId;
+                user.Semestre = model.Semestre;
+                user.Academia = null;
+            }
             user.PerfilCompleto = true;
 
             if (model.Foto != null && model.Foto.Length > 0)
@@ -163,6 +206,27 @@ namespace tutorias.Services
             user.MotivoBaja = string.IsNullOrWhiteSpace(motivoBaja)
                 ? "Baja de cuenta solicitada por el usuario"
                 : motivoBaja.Trim();
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                var errorMsg = string.Join("; ", result.Errors.Select(e => e.Description));
+                return (false, errorMsg);
+            }
+
+            return (true, null);
+        }
+
+        public async Task<(bool Succeeded, string? ErrorMessage)> ReactivateUserAsync(ApplicationUser user)
+        {
+            if (user == null)
+            {
+                return (false, "El usuario no fue encontrado.");
+            }
+
+            user.Activo = true;
+            user.FechaBaja = null;
+            user.MotivoBaja = null;
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)

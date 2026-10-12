@@ -4,12 +4,25 @@ namespace tutorias.Models.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "El nombre completo es obligatorio.")]
-        [Display(Name = "Nombre Completo")]
-        public string NombreCompleto { get; set; } = string.Empty;
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres.")]
+        [Display(Name = "Nombre(s)")]
+        public string Nombre { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La boleta o número de empleado es obligatorio.")]
-        [Display(Name = "Boleta / Número de Empleado")]
+        [Required(ErrorMessage = "El apellido paterno es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El apellido paterno no puede exceder 100 caracteres.")]
+        [Display(Name = "Apellido Paterno")]
+        public string ApellidoPaterno { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El apellido materno es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El apellido materno no puede exceder 100 caracteres.")]
+        [Display(Name = "Apellido Materno")]
+        public string ApellidoMaterno { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La boleta es obligatoria.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta solo debe contener dígitos numéricos.")]
+        [StringLength(20, ErrorMessage = "La boleta no puede exceder 20 dígitos.")]
+        [Display(Name = "Boleta")]
         public string Boleta { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El correo institucional es obligatorio.")]
@@ -47,9 +60,13 @@ namespace tutorias.Models.ViewModels
 
     public class CompleteProfileViewModel
     {
-        [Required(ErrorMessage = "Debe seleccionar una carrera o departamento.")]
-        [Display(Name = "Carrera / Departamento")]
-        public int CarreraId { get; set; }
+        [Display(Name = "Carrera")]
+        public int? CarreraId { get; set; }
+
+        [StringLength(150, ErrorMessage = "La academia no puede exceder 150 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$", ErrorMessage = "La academia solo debe contener letras y espacios.")]
+        [Display(Name = "Academia")]
+        public string? Academia { get; set; }
 
         [Range(1, 12, ErrorMessage = "El semestre debe estar entre 1 y 12.")]
         [Display(Name = "Semestre")]
@@ -64,10 +81,14 @@ namespace tutorias.Models.ViewModels
     public class ProfileViewModel
     {
         public string Id { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string ApellidoPaterno { get; set; } = string.Empty;
+        public string ApellidoMaterno { get; set; } = string.Empty;
         public string NombreCompleto { get; set; } = string.Empty;
         public string Boleta { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? CarreraNombre { get; set; }
+        public string? Academia { get; set; }
         public int? Semestre { get; set; }
         public string? FotoUrl { get; set; }
         public TipoTutor TipoTutor { get; set; }
@@ -81,22 +102,38 @@ namespace tutorias.Models.ViewModels
 
     public class EditProfileViewModel
     {
-        [Required(ErrorMessage = "El nombre completo es obligatorio.")]
-        [StringLength(150, ErrorMessage = "El nombre no puede exceder 150 caracteres.")]
-        [Display(Name = "Nombre Completo")]
-        public string NombreCompleto { get; set; } = string.Empty;
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres.")]
+        [Display(Name = "Nombre(s)")]
+        public string Nombre { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La boleta o número de empleado es obligatorio.")]
-        [StringLength(20, ErrorMessage = "La boleta no puede exceder 20 caracteres.")]
-        [Display(Name = "Boleta / Número de Empleado")]
+        [Required(ErrorMessage = "El apellido paterno es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El apellido paterno no puede exceder 100 caracteres.")]
+        [Display(Name = "Apellido Paterno")]
+        public string ApellidoPaterno { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El apellido materno es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El apellido materno no puede exceder 100 caracteres.")]
+        [Display(Name = "Apellido Materno")]
+        public string ApellidoMaterno { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La boleta es obligatoria.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta solo debe contener dígitos numéricos.")]
+        [StringLength(20, ErrorMessage = "La boleta no puede exceder 20 dígitos.")]
+        [Display(Name = "Boleta")]
         public string Boleta { get; set; } = string.Empty;
 
         // Inmutable: solo lectura informativa
         [Display(Name = "Correo Institucional (Inmutable)")]
         public string Email { get; set; } = string.Empty;
 
-        [Display(Name = "Carrera / Adscripción")]
+        [Display(Name = "Carrera")]
         public int? CarreraId { get; set; }
+
+        [StringLength(150, ErrorMessage = "La academia no puede exceder 150 caracteres.")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$", ErrorMessage = "La academia solo debe contener letras y espacios.")]
+        [Display(Name = "Academia")]
+        public string? Academia { get; set; }
 
         [Range(1, 12, ErrorMessage = "El semestre debe estar entre 1 y 12.")]
         [Display(Name = "Semestre actual")]
@@ -112,12 +149,10 @@ namespace tutorias.Models.ViewModels
 
     public class DeleteProfileViewModel
     {
-        [Display(Name = "Motivo de la baja")]
+        [Display(Name = "Motivo de la baja (Opcional)")]
         [StringLength(500, ErrorMessage = "El motivo no puede exceder 500 caracteres.")]
         public string? MotivoBaja { get; set; }
 
-        [Required(ErrorMessage = "Debes confirmar que deseas dar de baja tu cuenta.")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "Debes confirmar la baja para continuar.")]
         [Display(Name = "Confirmo que deseo dar de baja mi cuenta y desactivar mi perfil institucional.")]
         public bool ConfirmarBaja { get; set; }
     }

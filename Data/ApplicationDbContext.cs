@@ -13,6 +13,7 @@ namespace tutorias.Data
 
         public DbSet<Carrera> Carreras => Set<Carrera>();
         public DbSet<Materia> Materias => Set<Materia>();
+        public DbSet<MateriaEquivalencia> MateriasEquivalencias => Set<MateriaEquivalencia>();
         public DbSet<TutorPerfil> TutoresPerfiles => Set<TutorPerfil>();
         public DbSet<SolicitudTutor> SolicitudesTutor => Set<SolicitudTutor>();
         public DbSet<SesionTutoria> SesionesTutoria => Set<SesionTutoria>();
@@ -21,6 +22,21 @@ namespace tutorias.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Materia>()
+                .HasIndex(m => m.CodigoEquivalencia);
+
+            builder.Entity<MateriaEquivalencia>()
+                .HasOne(e => e.MateriaOrigen)
+                .WithMany()
+                .HasForeignKey(e => e.MateriaOrigenId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<MateriaEquivalencia>()
+                .HasOne(e => e.MateriaEquivalente)
+                .WithMany()
+                .HasForeignKey(e => e.MateriaEquivalenteId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Relación ApplicationUser -> Carrera
             builder.Entity<ApplicationUser>()

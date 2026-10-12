@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tutorias.Models;
@@ -26,38 +28,11 @@ namespace tutorias.Data
                 }
             }
 
-            // 2. Seeding de Catálogo de Carreras y Materias
-            if (!await context.Carreras.AnyAsync())
-            {
-                var carreraInfo = new Carrera
-                {
-                    Nombre = "Ingeniería en Informática",
-                    Clave = "II",
-                    Materias = new List<Materia>
-                    {
-                        new Materia { Nombre = "Cálculo Diferencial e Integral", Clave = "CALC01" },
-                        new Materia { Nombre = "Estructura de Datos", Clave = "ED01" },
-                        new Materia { Nombre = "Bases de Datos", Clave = "BD01" },
-                        new Materia { Nombre = "Programación Orientada a Objetos", Clave = "POO01" }
-                    }
-                };
+            // 2. Seeding de Catálogo UPIICSA (Carreras, Materias y Equivalencias)
+            await SeedUpiicsaCatalogAsync(context);
 
-                var carreraInd = new Carrera
-                {
-                    Nombre = "Ingeniería Industrial",
-                    Clave = "IND",
-                    Materias = new List<Materia>
-                    {
-                        new Materia { Nombre = "Estadística Aplicada", Clave = "EST01" },
-                        new Materia { Nombre = "Investigación de Operaciones", Clave = "INV01" }
-                    }
-                };
-
-                context.Carreras.AddRange(carreraInfo, carreraInd);
-                await context.SaveChangesAsync();
-            }
-
-            var carreraPrincipal = await context.Carreras.FirstOrDefaultAsync();
+            var carreraInformatica = await context.Carreras.FirstOrDefaultAsync(c => c.Clave == "N")
+                ?? await context.Carreras.FirstOrDefaultAsync();
 
             // 3. Usuario Coordinador de Prueba
             var coordEmail = "coordinacion@ipn.mx";
@@ -68,11 +43,13 @@ namespace tutorias.Data
                     UserName = coordEmail,
                     Email = coordEmail,
                     EmailConfirmed = true,
-                    NombreCompleto = "Coordinador de Tutorías IPN",
-                    Boleta = "EMP990011",
-                    CarreraId = carreraPrincipal?.Id,
-                    Semestre = 9,
-                    PerfilCompleto = true
+                    Nombre = "Coordinador",
+                    ApellidoPaterno = "Tutorías",
+                    ApellidoMaterno = "IPN",
+                    Boleta = "9900112233",
+                    Academia = "Academia de Informática",
+                    PerfilCompleto = true,
+                    Activo = true
                 };
 
                 var result = await userManager.CreateAsync(coordUser, "CoordTutorias#2026");
@@ -82,7 +59,7 @@ namespace tutorias.Data
                 }
             }
 
-            // 4. Usuario Tutor de Prueba
+            // 4. Usuario Tutor de Prueba (Docente)
             var tutorEmail = "tutor.demo@ipn.mx";
             if (await userManager.FindByEmailAsync(tutorEmail) == null)
             {
@@ -91,23 +68,26 @@ namespace tutorias.Data
                     UserName = tutorEmail,
                     Email = tutorEmail,
                     EmailConfirmed = true,
-                    NombreCompleto = "Mtro. Tutor Demostración",
-                    Boleta = "EMP881122",
-                    CarreraId = carreraPrincipal?.Id,
-                    Semestre = 8,
+                    Nombre = "Demostración",
+                    ApellidoPaterno = "Tutor",
+                    ApellidoMaterno = "Docente",
+                    Boleta = "8811223344",
+                    Academia = "Academia de Ciencias Básicas",
                     TipoTutor = TipoTutor.DocenteTutor,
-                    PerfilCompleto = true
+                    PerfilCompleto = true,
+                    Activo = true
                 };
 
                 var result = await userManager.CreateAsync(tutorUser, "TutorDemo#2026");
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(tutorUser, "Tutor");
+                    await userManager.AddToRoleAsync(tutorUser, "Docente");
 
                     var perfil = new TutorPerfil
                     {
                         UserId = tutorUser.Id,
-                        Biografia = "Docente especialista en Algoritmos y Programación en C# / .NET.",
+                        Biografia = "Docente especialista en Algoritmos y Programación en C# / .NET en UPIICSA.",
                         EsPublico = true,
                         ReputacionPromedio = 4.8,
                         SalonAsignado = "Edificio 2, Salón 204"
@@ -126,11 +106,14 @@ namespace tutorias.Data
                     UserName = alumnoEmail,
                     Email = alumnoEmail,
                     EmailConfirmed = true,
-                    NombreCompleto = "Alumno Prueba Politécnico",
+                    Nombre = "Prueba",
+                    ApellidoPaterno = "Politécnico",
+                    ApellidoMaterno = "Alumno",
                     Boleta = "2024600123",
-                    CarreraId = carreraPrincipal?.Id,
+                    CarreraId = carreraInformatica?.Id,
                     Semestre = 4,
-                    PerfilCompleto = true
+                    PerfilCompleto = true,
+                    Activo = true
                 };
 
                 var result = await userManager.CreateAsync(alumnoUser, "AlumnoDemo#2026");
@@ -139,6 +122,166 @@ namespace tutorias.Data
                     await userManager.AddToRoleAsync(alumnoUser, "Alumno");
                 }
             }
+        }
+
+        private static async Task SeedUpiicsaCatalogAsync(ApplicationDbContext context)
+        {
+            var jsonPath = Path.Combine(AppContext.BaseDirectory, "Data", "Seeds", "upiicsa_catalogo.json");
+            if (!File.Exists(jsonPath))
+            {
+                jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Seeds", "upiicsa_catalogo.json");
+            }
+
+            if (!File.Exists(jsonPath)) return;
+
+            var jsonText = await File.ReadAllTextAsync(jsonPath);
+            var catalog = JsonSerializer.Deserialize<CatalogoSeedDto>(jsonText, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (catalog == null || catalog.Carreras.Count == 0) return;
+
+            // 1. Cargar o actualizar carreras y materias
+            foreach (var cDto in catalog.Carreras)
+            {
+                var carrera = await context.Carreras
+                    .Include(c => c.Materias)
+                    .FirstOrDefaultAsync(c => c.Clave == cDto.Clave || c.Nombre == cDto.Nombre);
+
+                if (carrera == null)
+                {
+                    carrera = new Carrera
+                    {
+                        Nombre = cDto.Nombre,
+                        Clave = cDto.Clave
+                    };
+                    context.Carreras.Add(carrera);
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+                    carrera.Nombre = cDto.Nombre;
+                    carrera.Clave = cDto.Clave;
+                }
+
+                // Cargar materias de esta carrera
+                var materiasExistentes = carrera.Materias.ToDictionary(m => m.Clave);
+                foreach (var mDto in cDto.Materias)
+                {
+                    if (materiasExistentes.TryGetValue(mDto.Clave, out var materiaExistente))
+                    {
+                        materiaExistente.Nombre = mDto.Nombre;
+                        materiaExistente.Semestre = mDto.Semestre;
+                        materiaExistente.CodigoEquivalencia = mDto.CodigoEquivalencia;
+                    }
+                    else
+                    {
+                        carrera.Materias.Add(new Materia
+                        {
+                            Nombre = mDto.Nombre,
+                            Clave = mDto.Clave,
+                            Semestre = mDto.Semestre,
+                            CodigoEquivalencia = mDto.CodigoEquivalencia,
+                            CarreraId = carrera.Id
+                        });
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            // 2. Cargar tabla de equivalencias explícitas
+            if (catalog.Equivalencias.Count > 0)
+            {
+                var todasMaterias = await context.Materias
+                    .GroupBy(m => m.Clave)
+                    .ToDictionaryAsync(g => g.Key, g => g.First());
+
+                foreach (var eqDto in catalog.Equivalencias)
+                {
+                    if (todasMaterias.TryGetValue(eqDto.ClaveOrigen, out var mOrigen) &&
+                        todasMaterias.TryGetValue(eqDto.ClaveEquivalente, out var mDestino))
+                    {
+                        var yaExiste = await context.MateriasEquivalencias.AnyAsync(e =>
+                            e.MateriaOrigenId == mOrigen.Id && e.MateriaEquivalenteId == mDestino.Id);
+
+                        if (!yaExiste)
+                        {
+                            context.MateriasEquivalencias.Add(new MateriaEquivalencia
+                            {
+                                MateriaOrigenId = mOrigen.Id,
+                                MateriaEquivalenteId = mDestino.Id,
+                                EsBidireccional = eqDto.Bidireccional
+                            });
+                        }
+
+                        if (eqDto.Bidireccional)
+                        {
+                            var yaExisteInverso = await context.MateriasEquivalencias.AnyAsync(e =>
+                                e.MateriaOrigenId == mDestino.Id && e.MateriaEquivalenteId == mOrigen.Id);
+
+                            if (!yaExisteInverso)
+                            {
+                                context.MateriasEquivalencias.Add(new MateriaEquivalencia
+                                {
+                                    MateriaOrigenId = mDestino.Id,
+                                    MateriaEquivalenteId = mOrigen.Id,
+                                    EsBidireccional = true
+                                });
+                            }
+                        }
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private class CatalogoSeedDto
+        {
+            public string? UnidadAcademica { get; set; }
+            public List<CarreraSeedDto> Carreras { get; set; } = new();
+            public List<EquivalenciaSeedDto> Equivalencias { get; set; } = new();
+        }
+
+        private class CarreraSeedDto
+        {
+            public string Nombre { get; set; } = string.Empty;
+            public string Clave { get; set; } = string.Empty;
+            public List<MateriaSeedDto> Materias { get; set; } = new();
+        }
+
+        private class MateriaSeedDto
+        {
+            public string Nombre { get; set; } = string.Empty;
+            public string Clave { get; set; } = string.Empty;
+            public int? Semestre { get; set; }
+            public string? CodigoEquivalencia { get; set; }
+        }
+
+        private class EquivalenciaSeedDto
+        {
+            [JsonPropertyName("clave_origen")]
+            public string ClaveOrigen { get; set; } = string.Empty;
+
+            [JsonPropertyName("materia_origen")]
+            public string MateriaOrigen { get; set; } = string.Empty;
+
+            [JsonPropertyName("carrera_origen")]
+            public string CarreraOrigen { get; set; } = string.Empty;
+
+            [JsonPropertyName("clave_equivalente")]
+            public string ClaveEquivalente { get; set; } = string.Empty;
+
+            [JsonPropertyName("materia_equivalente")]
+            public string MateriaEquivalente { get; set; } = string.Empty;
+
+            [JsonPropertyName("carrera_equivalente")]
+            public string CarreraEquivalente { get; set; } = string.Empty;
+
+            [JsonPropertyName("bidireccional")]
+            public bool Bidireccional { get; set; } = true;
         }
     }
 }
