@@ -43,16 +43,16 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 - [x] Implementar vista en el panel del alumno/docente con el estado de su solicitud actual.
 
 ### Tarea 2.2: Bandeja de Coordinación para Aprobación/Rechazo de Tutores (RF-06, RF-07, RF-08)
-- [ ] Crear vista y acción en `CoordinacionController` para listar solicitudes pendientes con filtros por rol y fecha.
-- [ ] Implementar acción de **Aprobación**:
-  - [ ] Asignar rol `Tutor` mediante `UserManager.AddToRoleAsync`.
-  - [ ] Actualizar `TipoTutor` en `ApplicationUser` (`AlumnoTutor` o `DocenteTutor`).
-  - [ ] Crear registro `TutorPerfil` inicial asociado al usuario.
-  - [ ] Actualizar estado de solicitud a `Aprobada`.
-- [ ] Implementar acción de **Rechazo**:
-  - [ ] Actualizar estado a `Rechazada` y registrar mensaje oficial: *"Pasa a Coordinación para validar tu situación"*.
-- [ ] Implementar acción de **Suspensión / Revocación**:
-  - [ ] Permitir a Coordinación suspender el rol de tutor, despublicando automáticamente sus horarios y perfil (`EsPublico = false`).
+- [x] Crear vista y acción en `CoordinacionController` para listar solicitudes pendientes con filtros por rol y fecha.
+- [x] Implementar acción de **Aprobación**:
+  - [x] Asignar rol `Tutor` mediante `UserManager.AddToRoleAsync`.
+  - [x] Actualizar `TipoTutor` en `ApplicationUser` (`AlumnoTutor` o `DocenteTutor`).
+  - [x] Crear registro `TutorPerfil` inicial asociado al usuario.
+  - [x] Actualizar estado de solicitud a `Aprobada`.
+- [x] Implementar acción de **Rechazo**:
+  - [x] Actualizar estado a `Rechazada` y registrar mensaje oficial: *"Pasa a Coordinación para validar tu situación"*.
+- [x] Implementar acción de **Suspensión / Revocación**:
+  - [x] Permitir a Coordinación suspender el rol de tutor, despublicando automáticamente sus horarios y perfil (`EsPublico = false`).
 
 ### Tarea 2.3: Perfil Público Académico del Tutor y Materias Impartidas (RF-09, RF-10, RF-11, RF-12)
 - [ ] Crear entidad `TutorMateria` (relación N:M entre `TutorPerfil` y `Materia`) en EF Core y migración.

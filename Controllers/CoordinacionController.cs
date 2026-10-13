@@ -75,5 +75,84 @@ namespace tutorias.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SolicitudesTutores(string? busqueda, string? rolFiltro, EstadoSolicitud? estadoFiltro, int pagina = 1)
+        {
+            var vm = await _coordinacionService.GetBandejaSolicitudesAsync(busqueda, rolFiltro, estadoFiltro, pagina, 10);
+            return View(vm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> AprobarSolicitud(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Identificador de solicitud inválido.";
+                return RedirectToAction(nameof(SolicitudesTutores));
+            }
+
+            var currentUserId = _userManager.GetUserId(User) ?? string.Empty;
+            var (success, error) = await _coordinacionService.AprobarSolicitudTutorAsync(id, currentUserId);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Solicitud aprobada correctamente. El rol de Tutor y perfil han sido habilitados.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = error ?? "Error al aprobar la solicitud.";
+            }
+
+            return RedirectToAction(nameof(SolicitudesTutores));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> RechazarSolicitud(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Identificador de solicitud inválido.";
+                return RedirectToAction(nameof(SolicitudesTutores));
+            }
+
+            var currentUserId = _userManager.GetUserId(User) ?? string.Empty;
+            var (success, error) = await _coordinacionService.RechazarSolicitudTutorAsync(id, currentUserId);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Solicitud rechazada. Se ha emitido la notificación oficial al solicitante.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = error ?? "Error al rechazar la solicitud.";
+            }
+
+            return RedirectToAction(nameof(SolicitudesTutores));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuspenderTutor(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                TempData["ErrorMessage"] = "Identificador de tutor inválido.";
+                return RedirectToAction(nameof(SolicitudesTutores));
+            }
+
+            var currentUserId = _userManager.GetUserId(User) ?? string.Empty;
+            var (success, error) = await _coordinacionService.SuspenderTutorAsync(id, currentUserId);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Estatus de tutor suspendido y perfil despublicado exitosamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = error ?? "Error al suspender el estatus de tutor.";
+            }
+
+            return RedirectToAction(nameof(SolicitudesTutores));
+        }
     }
 }
