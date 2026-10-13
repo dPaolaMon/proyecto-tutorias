@@ -37,10 +37,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 ## 🎓 Fase 2: Solicitudes, Aprobación y Perfil Académico de Tutores (RF-05 a RF-12)
 
 ### Tarea 2.1: Solicitud de Estatus de Tutor (RF-05, RF-06)
-- [ ] Crear ViewModel `SolicitudTutorViewModel` para que alumnos postulen a *Tutoría entre Pares* y docentes a *Tutoría Individual*.
-- [ ] Crear servicio `TutorSolicitudService` para registrar `SolicitudTutor` con estado inicial `Pendiente`.
-- [ ] Agregar validación de reglas de negocio: el usuario no debe tener ya una solicitud pendiente o el rol `Tutor` activo.
-- [ ] Implementar vista en el panel del alumno/docente con el estado de su solicitud actual.
+- [x] Crear ViewModel `SolicitudTutorViewModel` para que alumnos postulen a *Tutoría entre Pares* y docentes a *Tutoría Individual*.
+- [x] Crear servicio `TutorSolicitudService` para registrar `SolicitudTutor` con estado inicial `Pendiente`.
+- [x] Agregar validación de reglas de negocio: el usuario no debe tener ya una solicitud pendiente o el rol `Tutor` activo.
+- [x] Implementar vista en el panel del alumno/docente con el estado de su solicitud actual.
 
 ### Tarea 2.2: Bandeja de Coordinación para Aprobación/Rechazo de Tutores (RF-06, RF-07, RF-08)
 - [ ] Crear vista y acción en `CoordinacionController` para listar solicitudes pendientes con filtros por rol y fecha.

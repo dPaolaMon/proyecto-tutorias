@@ -1,0 +1,226 @@
+@model tutorias.Models.ViewModels.SolicitudTutorViewModel
+@using tutorias.Models
+@{
+    ViewData["Title"] = "Solicitud de Estatus de Tutor";
+}
+
+<div class="row justify-content-center mt-3 mb-5">
+    <div class="col-12 col-md-10 col-lg-8">
+
+        <!-- Encabezado Institucional -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+            <div class="py-4 px-4 text-white text-center bg-ipn-guinda">
+                <h1 class="h4 fw-bold mb-1">Solicitud de Estatus de Tutor</h1>
+                <p class="small text-white-50 mb-0">Programa Institucional de Tutorías — UPIICSA IPN</p>
+            </div>
+            <div class="card-body p-4 bg-white">
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label text-muted small fw-semibold mb-0">Nombre del Solicitante</label>
+                        <p class="fw-bold text-dark mb-0">@Model.NombreCompleto</p>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label text-muted small fw-semibold mb-0">Boleta / N° Empleado</label>
+                        <p class="fw-bold text-dark mb-0">@Model.Boleta</p>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label text-muted small fw-semibold mb-0">Correo Institucional</label>
+                        <p class="fw-medium text-dark mb-0 text-break">@Model.Email</p>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label text-muted small fw-semibold mb-0">
+                            @(Model.EsDocente ? "Academia de Adscripción" : "Programa Académico / Carrera")
+                        </label>
+                        <p class="fw-medium text-dark mb-0">@Model.ProgramaOAcademia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Modalidad de Tutoría -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <h2 class="h5 fw-bold text-dark mb-0">Modalidad Asignada</h2>
+                    <span class="badge bg-ipn-guinda px-3 py-2 fs-6">
+                        @Model.ModalidadTitulo
+                    </span>
+                </div>
+                <p class="text-muted small mb-0">
+                    @Model.ModalidadDescripcion
+                </p>
+            </div>
+        </div>
+
+        <!-- Estado Actual de la Solicitud / Acciones -->
+        @if (Model.YaEsTutor)
+        {
+            <div class="card border-0 shadow-sm rounded-3 border-start border-4 border-success mb-4">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <span class="badge rounded-pill bg-success-subtle text-success fs-5 px-3 py-2 fw-bold">
+                            Tutor Activo
+                        </span>
+                    </div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Ya cuentas con el rol de Tutor en el sistema</h3>
+                    <p class="text-muted small mb-4">
+                        Tu estatus se encuentra activo. Ya puedes gestionar tus unidades de aprendizaje y disponibilidad horaria.
+                    </p>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-secondary btn-sm fw-semibold px-3">
+                            Ver mi Perfil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.TieneSolicitudPendiente)
+        {
+            <div class="card border-0 shadow-sm rounded-3 border-start border-4 border-warning mb-4">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis fs-5 px-3 py-2 fw-bold">
+                            Solicitud en Revisión
+                        </span>
+                    </div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Tu solicitud ha sido recibida</h3>
+                    <p class="text-muted small mb-2">
+                        Se encuentra en proceso de validación por parte de la Coordinación de Tutorías.
+                    </p>
+                    @if (Model.FechaUltimaSolicitud.HasValue)
+                    {
+                        <p class="text-muted small mb-4">
+                            Fecha de solicitud: <strong>@Model.FechaUltimaSolicitud.Value.ToLocalTime().ToString("g")</strong>
+                        </p>
+                    }
+                    <div class="d-flex justify-content-center gap-2">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold px-3">
+                            Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.UltimoEstado == EstadoSolicitud.Rechazada)
+        {
+            <div class="card border-0 shadow-sm rounded-3 border-start border-4 border-danger mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <h3 class="h5 fw-bold text-danger mb-0">Estatus: No Aprobada</h3>
+                        <span class="badge bg-danger-subtle text-danger px-3 py-1">Rechazada</span>
+                    </div>
+                    <div class="alert alert-danger border-0 p-3 mb-3">
+                        <p class="fw-bold mb-1">
+                            @(string.IsNullOrWhiteSpace(Model.RespuestaCoordinacion) 
+                                ? "Pasa a Coordinación para validar tu situación." 
+                                : Model.RespuestaCoordinacion)
+                        </p>
+                        @if (Model.FechaRespuesta.HasValue)
+                        {
+                            <span class="small text-muted d-block mt-1">
+                                Dictaminado el: @Model.FechaRespuesta.Value.ToLocalTime().ToString("g")
+                            </span>
+                        }
+                    </div>
+                    <p class="text-muted small mb-3">
+                        Si ya regularizaste tus trámites con la Coordinación, puedes enviar una nueva solicitud de alta.
+                    </p>
+                    @if (Model.PerfilCompleto)
+                    {
+                        <div class="text-end">
+                            <button type="button" class="btn btn-ipn-guinda btn-sm fw-semibold px-4" data-bs-toggle="modal" data-bs-target="#modalConfirmarSolicitud">
+                                Solicitar Nuevamente
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (!Model.PerfilCompleto && !Model.YaEsTutor)
+        {
+            <div class="alert alert-warning border-0 shadow-sm p-4 rounded-3 mb-4">
+                <h3 class="h6 fw-bold mb-2">Perfil Incompleto</h3>
+                <p class="small text-muted mb-3">
+                    Para poder solicitar el estatus de tutor es requisito indispensable completar tu información académica (carrera o academia).
+                </p>
+                <a asp-controller="Account" asp-action="CompleteProfile" class="btn btn-warning btn-sm fw-semibold">
+                    Completar Perfil Ahora
+                </a>
+            </div>
+        }
+        else if (Model.PuedeSolicitar)
+        {
+            <!-- Tarjeta de Solicitud con Doble Verificación -->
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body p-4 text-center">
+                    <h3 class="h5 fw-bold text-dark mb-2">Registro de Solicitud</h3>
+                    <p class="text-muted small mb-4">
+                        Al enviar la solicitud, la Coordinación de Tutorías validará tu registro para activar tu rol y habilitar la publicación de tus horarios.
+                    </p>
+                    <button type="button" class="btn btn-ipn-guinda btn-lg fw-semibold px-5 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalConfirmarSolicitud">
+                        Solicitar Alta como Tutor
+                    </button>
+                </div>
+            </div>
+        }
+
+        <div class="text-center mt-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-link text-decoration-none text-muted small">
+                &larr; Volver a la pantalla principal
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@if (Model.PuedeSolicitar || Model.UltimoEstado == EstadoSolicitud.Rechazada)
+{
+    <!-- Modal de Doble Verificación -->
+    <div class="modal fade" id="modalConfirmarSolicitud" tabindex="-1" aria-labelledby="modalConfirmarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-ipn-guinda text-white">
+                    <h5 class="modal-title fw-bold" id="modalConfirmarLabel">Confirmar Solicitud de Tutor</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form asp-controller="Tutorias" asp-action="Solicitar" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-3">
+                            <span class="badge bg-ipn-guinda px-3 py-2 mb-2">
+                                @Model.ModalidadTitulo
+                            </span>
+                            <h6 class="fw-bold text-dark">¿Estás seguro de que deseas solicitar el estatus de tutor?</h6>
+                        </div>
+                        <p class="text-muted small text-center mb-3">
+                            Se enviará tu solicitud a la Coordinación de Tutorías para su validación oficial con los siguientes datos institucionales:
+                        </p>
+                        <div class="p-3 bg-light rounded-3 small">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Solicitante:</span>
+                                <span class="fw-semibold text-dark text-end">@Model.NombreCompleto</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Boleta / N° Empleado:</span>
+                                <span class="fw-semibold text-dark">@Model.Boleta</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">@(Model.EsDocente ? "Academia:" : "Carrera:")</span>
+                                <span class="fw-semibold text-dark text-end">@Model.ProgramaOAcademia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light border-0">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-ipn-guinda btn-sm fw-semibold px-3">
+                            Confirmar y Enviar Solicitud
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

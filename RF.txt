@@ -1,0 +1,26 @@
+ID	Nombre del Requisito	Descripción
+RF-01	Registrar Usuarios	Registrar usuarios ingresando datos personales y un correo institucional.
+RF-02	Iniciar Sesión	Iniciar sesión utilizando su correo institucional y contraseña.
+RF-03	Cerrar Sesión	Finalizar su sesión activa en el sistema de forma segura.
+RF-04	Recuperar Contraseña	Solicitar el restablecimiento de contraseña mediante el envío de un código de verificación al correo institucional.
+RF-05	Desactivar Usuarios	Permitir al rol de Coordinación desactivar la cuenta de un usuario en el sistema, revocando su acceso a la plataforma sin eliminar su historial de registros
+RF-06	Solicitar Estatus de Tutor	Permitir a los docentes y alumnos enviar una solicitud dentro del sistema al rol de Coordinación para requerir el alta como tutor activo.
+RF-07	Evaluar Solicitud de Tutor	Permitir a Coordinación visualizar las solicitudes pendientes y autorizar o rechazar el estatus de tutor activo para los usuarios solicitantes.
+RF-08	Revocación de Estatus	Permitir a Coordinación retirar o desactivar el estatus de tutor activo.
+RF-09	Crear Perfil Académico	Permitir a los tutores aprobados registrar por primera vez su perfil público, especificando las materias que imparten, la carrera y la academia correspondiente.
+RF-10	Actualizar Perfil Académico	Permitir a los tutores aprobados actualizar la información de su perfil público (materias que imparten, carrera o academia).
+RF-11	Eliminar Perfil Académico	Permitir a los tutores aprobados eliminar la información de su perfil público del sistema.
+RF-12	Registrar Horarios y Ubicación	Permitir a los tutores aprobados registrar sus días y horarios de atención, indicando el espacio asignado donde impartirán las sesiones de tutoría.
+RF-13	Consultar Horarios y Tutorías	Consultar lista de tutorías disponibles con sus respectivos días, horarios de atención y ubicaciones asignadas.
+RF-14	Actualizar Horarios	Permitir a los tutores modificar sus días, horarios de atención y la ubicación registrada para la impartición de las tutorías.
+RF-15	Eliminar Horarios	Permitir a los tutores eliminar registros específicos de sus días, horarios de atención o ubicaciones asignadas.
+RF-16	Registrar Asistencia Manual	Permitir al tutor buscar a un alumno tutorado por número de boleta o nombre y registrar su asistencia a la sesión de tutoría, enviando una solicitud de confirmación al alumno.
+RF-17	Confirmar Asistencia Manual	Permitir al alumno tutorado visualizar en su perfil la asistencia registrada por el tutor y confirmar su validez dentro del sistema.
+RF-18	Generar Código QR	Permitir al tutor generar un código QR dinámico por sesión para la validación presencial de asistencia.
+RF-19	Tomar Asistencia por QR	Permitir a los alumnos tutorados escanear el código QR proporcionado por el tutor para confirmar su asistencia de manera automática.
+RF-20	Consultar Historial de Asistencias	Permitir a tutores y alumnos visualizar su historial de asistencias registradas y confirmadas, detallando fecha, hora, materia impartida y ubicación.
+RF-21	Registrar Encuesta	Permitir al alumno responder una encuesta de retroalimentación sobre la tutoría recibida una vez confirmada su asistencia.
+RF-22	Consultar Resultados de Encuesta	Permitir a Coordinación visualizar los resultados e indicadores de las encuestas para identificar áreas de oportunidad.
+RF-23	Enviar Notificaciones Manuales	Permitir a los roles de Coordinación y Tutor redactar y enviar notificaciones a alumnos.
+RF-24	Consultar Notificaciones	Permitir a todos los usuarios acceder a una bandeja de entrada para visualizar las notificaciones recibidas.
+RF-25	Generar de Métricas	Permitir a Coordinación generar reportes estadísticos que incluyan el total de asistencias presenciales confirmadas, el índice de atención por maestro/alumno tutor y las materias con mayor demanda en UPIICSA para después exportarlas en PDF.

@@ -64,6 +64,14 @@
                                             Mi Perfil
                                         </a>
                                     </li>
+                                    @if (!User.IsInRole("Coordinador"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Tutorias" asp-action="Solicitud">
+                                                Solicitud de Tutor
+                                            </a>
+                                        </li>
+                                    }
                                     <li><hr class="dropdown-divider my-1"></li>
                                     <li>
                                         <form asp-controller="Account" asp-action="Logout" method="post">
