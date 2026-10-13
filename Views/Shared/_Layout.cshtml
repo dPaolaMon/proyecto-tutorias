@@ -64,7 +64,15 @@
                                             Mi Perfil
                                         </a>
                                     </li>
-                                    @if (!User.IsInRole("Coordinador"))
+                                    @if (User.IsInRole("Tutor"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item py-2 fw-semibold text-ipn-guinda" asp-controller="TutorPerfil" asp-action="Index">
+                                                Panel de Tutor y Horarios
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (!User.IsInRole("Coordinador") && !User.IsInRole("Tutor"))
                                     {
                                         <li>
                                             <a class="dropdown-item py-2" asp-controller="Tutorias" asp-action="Solicitud">

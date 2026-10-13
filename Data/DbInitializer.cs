@@ -98,8 +98,7 @@ namespace tutorias.Data
                         UserId = tutorUser.Id,
                         Biografia = "Docente especialista en Algoritmos y Programación en C# / .NET en UPIICSA.",
                         EsPublico = true,
-                        ReputacionPromedio = 4.8,
-                        SalonAsignado = "Edificio 2, Salón 204"
+                        ReputacionPromedio = 4.8
                     };
                     context.TutoresPerfiles.Add(perfil);
                     await context.SaveChangesAsync();

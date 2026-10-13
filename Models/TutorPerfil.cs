@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace tutorias.Models
@@ -17,7 +18,8 @@ namespace tutorias.Models
 
         public double ReputacionPromedio { get; set; } = 0.0;
 
-        [StringLength(50)]
-        public string? SalonAsignado { get; set; }
+        public ICollection<TutorMateria> MateriasImpartidas { get; set; } = new List<TutorMateria>();
+
+        public ICollection<TutorHorario> Horarios { get; set; } = new List<TutorHorario>();
     }
 }

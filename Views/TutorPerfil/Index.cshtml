@@ -1,0 +1,517 @@
+@model tutorias.Models.ViewModels.TutorPerfilViewModel
+@using tutorias.Models
+@{
+    ViewData["Title"] = "Mi Perfil de Tutor y Horarios";
+    var diasSemana = new[]
+    {
+        DiaSemana.Lunes,
+        DiaSemana.Martes,
+        DiaSemana.Miercoles,
+        DiaSemana.Jueves,
+        DiaSemana.Viernes
+    };
+}
+
+<div class="container-fluid px-0 mb-5">
+    <!-- Encabezado Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                    {
+                        <img src="@Model.FotoUrl" alt="Foto de tutor" class="rounded-circle border border-white border-2" style="width:64px;height:64px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center fw-bold text-ipn-guinda" style="width:64px;height:64px;font-size:1.6rem;">
+                            @(string.IsNullOrWhiteSpace(Model.NombreCompleto) ? "?" : Model.NombreCompleto.Substring(0, 1).ToUpper())
+                        </div>
+                    }
+                    <div>
+                        <h1 class="h4 fw-bold mb-0">@Model.NombreCompleto</h1>
+                        <p class="small text-white-50 mb-0">
+                            @Model.ModalidadTitulo &bull; @Model.ProgramaOAcademia
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a asp-action="VistaPrevia" class="btn btn-light text-ipn-guinda btn-sm fw-semibold shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye me-1" viewBox="0 0 16 16">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                        </svg>
+                        Vista Previa
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-3 bg-white border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="small text-muted fw-semibold">Estado de Visibilidad:</span>
+                @if (Model.EsPublico)
+                {
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">
+                        ● Público en el Catálogo
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-1">
+                        ○ En Borrador (Oculto)
+                    </span>
+                }
+            </div>
+            <form asp-action="ToggleVisibilidad" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="esPublico" value="@(!Model.EsPublico ? "true" : "false")" />
+                <button type="submit" class="btn btn-sm @(Model.EsPublico ? "btn-outline-secondary" : "btn-success") fw-semibold">
+                    @(Model.EsPublico ? "Despublicar del Catálogo" : "Publicar Perfil")
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pestañas de Navegación del Panel del Tutor -->
+    <ul class="nav nav-tabs mb-4 border-bottom-0 gap-2" id="tutorTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-semibold text-dark shadow-sm rounded-top border" id="horarios-tab" data-bs-toggle="tab" data-bs-target="#horariosPane" type="button" role="tab" aria-controls="horariosPane" aria-selected="true">
+                📅 Calendario y Salones Asignados
+                <span class="badge bg-ipn-guinda text-white ms-1">@Model.Horarios.Count</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-semibold text-dark shadow-sm rounded-top border" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfilPane" type="button" role="tab" aria-controls="perfilPane" aria-selected="false">
+                ✍️ Semblanza y Materias
+                <span class="badge bg-secondary text-white ms-1">@Model.MateriasAsignadas.Count</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="tutorTabsContent">
+        <!-- PESTAÑA 1: CALENDARIO Y SALONES -->
+        <div class="tab-pane fade show active" id="horariosPane" role="tabpanel" aria-labelledby="horarios-tab">
+            <div class="card border-0 shadow-sm rounded-3 mb-4">
+                <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center flex-wrap gap-2 border-0">
+                    <div>
+                        <h2 class="h5 fw-bold text-dark mb-0">Horarios Semanales de Tutoría</h2>
+                        <p class="small text-muted mb-0">Gestiona tus bloques de atención de Lunes a Viernes (07:00 a 22:00) y los salones asignados.</p>
+                    </div>
+                    <button type="button" class="btn btn-ipn-guinda btn-sm fw-semibold px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalHorario">
+                        ➕ Asignar Horario y Salón
+                    </button>
+                </div>
+                <div class="card-body p-3">
+
+                    @if (!Model.Horarios.Any())
+                    {
+                        <div class="text-center py-5 bg-light rounded-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-calendar-x text-muted mb-2" viewBox="0 0 16 16">
+                                <path d="M6.146 7.146a.5.5 0 0 1 .708 0L8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 0 1 0-.708"/>
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Aún no tienes horarios ni salones registrados</h5>
+                            <p class="small text-muted mb-3">Agrega las sesiones y aulas que te asignó gestión escolar para que los alumnos puedan conocer tu disponibilidad.</p>
+                            <button type="button" class="btn btn-ipn-guinda btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#modalHorario">
+                                Agregar Primer Horario
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Cuadrícula Semanal Visual (Desktop) -->
+                        <div class="d-none d-lg-block">
+                            <div class="row g-2">
+                                @foreach (var dia in diasSemana)
+                                {
+                                    var itemsDia = Model.Horarios.Where(h => h.DiaSemana == dia).OrderBy(h => h.HoraInicio).ToList();
+                                    <div class="col" style="min-width: 180px;">
+                                        <div class="card h-100 border-0 bg-light rounded-3">
+                                            <div class="card-header bg-white border-0 py-2 text-center rounded-top-3 shadow-none">
+                                                <h6 class="fw-bold text-ipn-guinda mb-0">@dia</h6>
+                                                <span class="small text-muted" style="font-size:0.75rem;">@itemsDia.Count sesiones</span>
+                                            </div>
+                                            <div class="card-body p-2 d-flex flex-column gap-2" style="min-height: 280px;">
+                                                @if (!itemsDia.Any())
+                                                {
+                                                    <div class="text-center text-muted small my-auto fst-italic">
+                                                        Sin sesiones
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var h in itemsDia)
+                                                    {
+                                                        <div class="card border-0 shadow-sm p-2 bg-white rounded-3">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <span class="badge bg-ipn-guinda text-white fw-medium" style="font-size:0.75rem;">
+                                                                    @h.HorarioFormato
+                                                                </span>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <button type="button" class="btn btn-link text-primary p-0 border-0 text-decoration-none" title="Editar horario y salón"
+                                                                            data-bs-toggle="modal" data-bs-target="#modalEditarHorario_@h.Id">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-link text-danger p-0 border-0 text-decoration-none" title="Eliminar horario"
+                                                                            data-bs-toggle="modal" data-bs-target="#modalEliminarHorario_@h.Id">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="fw-bold text-dark small text-truncate mb-1" title="@h.MateriaNombre">
+                                                                @h.MateriaNombre
+                                                            </div>
+                                                            <div class="text-muted small text-truncate" title="@h.Lugar" style="font-size:0.75rem;">
+                                                                📍 <strong>@h.Lugar</strong>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Vista Móvil por Días -->
+                        <div class="d-lg-none">
+                            <ul class="nav nav-pills nav-fill mb-3 gap-1" id="mobileDiasTabs" role="tablist">
+                                @for (int i = 0; i < diasSemana.Length; i++)
+                                {
+                                    var dia = diasSemana[i];
+                                    var count = Model.Horarios.Count(h => h.DiaSemana == dia);
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link py-1 px-2 small @(i == 0 ? "active bg-ipn-guinda text-white" : "text-dark bg-light")"
+                                                id="tab_dia_@dia" data-bs-toggle="tab" data-bs-target="#pane_dia_@dia" type="button" role="tab">
+                                            @dia.ToString().Substring(0, 3)
+                                            @if (count > 0)
+                                            {
+                                                <span class="badge bg-secondary ms-1">@count</span>
+                                            }
+                                        </button>
+                                    </li>
+                                }
+                            </ul>
+                            <div class="tab-content" id="mobileDiasContent">
+                                @for (int i = 0; i < diasSemana.Length; i++)
+                                {
+                                    var dia = diasSemana[i];
+                                    var itemsDia = Model.Horarios.Where(h => h.DiaSemana == dia).OrderBy(h => h.HoraInicio).ToList();
+                                    <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="pane_dia_@dia" role="tabpanel">
+                                        @if (!itemsDia.Any())
+                                        {
+                                            <p class="text-center text-muted small py-4">No tienes sesiones registradas para el día @dia.</p>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex flex-column gap-2">
+                                                @foreach (var h in itemsDia)
+                                                {
+                                                    <div class="card border rounded-3 p-3 shadow-none">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="badge bg-ipn-guinda">@h.HorarioFormato</span>
+                                                            <div class="d-flex gap-1">
+                                                                <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2 fw-semibold"
+                                                                        data-bs-toggle="modal" data-bs-target="#modalEditarHorario_@h.Id">
+                                                                    Editar
+                                                                </button>
+                                                                <button type="button" class="btn btn-outline-danger btn-sm py-0 px-2 fw-semibold"
+                                                                        data-bs-toggle="modal" data-bs-target="#modalEliminarHorario_@h.Id">
+                                                                    Eliminar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fw-bold text-dark mt-1">@h.MateriaNombre</div>
+                                                        <div class="small text-muted mt-1">📍 Aula / Salón: <strong>@h.Lugar</strong></div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 2: SEMBLANZA Y MATERIAS -->
+        <div class="tab-pane fade" id="perfilPane" role="tabpanel" aria-labelledby="perfil-tab">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body p-4">
+                    <form asp-action="GuardarPerfil" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row g-4">
+                            <!-- Semblanza / Biografía -->
+                            <div class="col-12">
+                                <label for="biografiaInput" class="form-label fw-bold text-dark">
+                                    Semblanza o Biografía Académica
+                                </label>
+                                <p class="small text-muted mb-2">
+                                    Describe brevemente tu trayectoria, motivación o áreas de fortaleza pedagógica (máximo 500 caracteres).
+                                </p>
+                                <textarea id="biografiaInput" name="Biografia" class="form-control" rows="4" maxlength="500" placeholder="Ej. Estudiante de 8vo semestre con gusto por la algoritmia y programación orientada a objetos. Apoyo a compañeros en dudas de lógica y ejercicios prácticos...">@Model.Biografia</textarea>
+                                <div class="form-text text-end text-muted small">
+                                    <span id="charCounter">@(Model.Biografia?.Length ?? 0)</span> / 500 caracteres
+                                </div>
+                            </div>
+
+                            <!-- Selector de Materias que Imparte -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-dark mb-1">
+                                    Unidades de Aprendizaje / Materias que Impartes
+                                </label>
+                                <p class="small text-muted mb-3">
+                                    Selecciona las materias que dominas y en las cuales brindarás tutorías académicas.
+                                </p>
+
+                                <div class="mb-3">
+                                    <input type="text" id="buscadorMaterias" class="form-control form-control-sm" placeholder="🔍 Filtrar materias por nombre o clave..." />
+                                </div>
+
+                                <div class="border rounded-3 p-3 bg-light" style="max-height: 320px; overflow-y: auto;">
+                                    <div class="row g-2" id="contenedorMaterias">
+                                        @foreach (var m in Model.MateriasDisponibles)
+                                        {
+                                            var isChecked = Model.MateriasSeleccionadasIds.Contains(m.Id);
+                                            <div class="col-12 col-md-6 item-materia" data-nombre="@m.Nombre.ToLower()" data-clave="@m.Clave.ToLower()">
+                                                <div class="form-check p-2 bg-white rounded border">
+                                                    <input class="form-check-input ms-0 me-2" type="checkbox" name="MateriasSeleccionadasIds" value="@m.Id" id="mat_@m.Id" @(isChecked ? "checked" : "") />
+                                                    <label class="form-check-label text-dark small w-100" for="mat_@m.Id">
+                                                        <span class="badge bg-light text-secondary border me-1">@m.Clave</span>
+                                                        <strong>@m.Nombre</strong>
+                                                        @if (m.Semestre.HasValue)
+                                                        {
+                                                            <span class="text-muted d-block small" style="font-size:0.75rem;">Semestre @m.Semestre &bull; @m.CarreraNombre</span>
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Interruptor EsPublico -->
+                            <div class="col-12">
+                                <div class="form-check form-switch p-3 bg-light rounded-3 border">
+                                    <input class="form-check-input ms-0 me-3" type="checkbox" role="switch" id="switchPublico" name="EsPublico" value="true" @(Model.EsPublico ? "checked" : "") />
+                                    <label class="form-check-label text-dark fw-semibold" for="switchPublico">
+                                        Publicar mi perfil en el Catálogo de Tutorías de UPIICSA
+                                    </label>
+                                    <p class="small text-muted mb-0 ms-5">
+                                        Al activarlo, tu perfil, materias y horarios serán visibles para todos los alumnos en el catálogo general.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-ipn-guinda fw-semibold px-4 shadow-sm">
+                                    Guardar Perfil y Materias
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Asignar / Editar Horario y Aula -->
+<div class="modal fade" id="modalHorario" tabindex="-1" aria-labelledby="modalHorarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-ipn-guinda text-white">
+                <h5 class="modal-title fw-bold" id="modalHorarioLabel">Asignar Horario y Salón</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form asp-action="GuardarHorario" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label for="diaSemanaSelect" class="form-label fw-bold small">Día de la semana:</label>
+                        <select id="diaSemanaSelect" name="DiaSemana" class="form-select" required>
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miércoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viernes</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label for="horaInicioInput" class="form-label fw-bold small">Hora de Inicio:</label>
+                            <input type="time" id="horaInicioInput" name="HoraInicio" class="form-control" min="07:00" max="21:00" value="09:00" required />
+                            <div class="form-text small">Desde las 07:00</div>
+                        </div>
+                        <div class="col-6">
+                            <label for="horaFinInput" class="form-label fw-bold small">Hora de Fin:</label>
+                            <input type="time" id="horaFinInput" name="HoraFin" class="form-control" min="08:00" max="22:00" value="11:00" required />
+                            <div class="form-text small">Hasta las 22:00</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lugarInput" class="form-label fw-bold small">Salón o Lugar Asignado por Gestión Escolar:</label>
+                        <input type="text" id="lugarInput" name="Lugar" class="form-control" maxlength="100" placeholder="Ej. Salón C-1 Culturales / Sala de juntas Computación" required />
+                        <div class="form-text small">Indica el aula, laboratorio o cubículo asignado.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="materiaSelect" class="form-label fw-bold small">Materia Específica (Opcional):</label>
+                        <select id="materiaSelect" name="MateriaId" class="form-select">
+                            <option value="">— Tutoría General / Varias materias —</option>
+                            @foreach (var m in Model.MateriasAsignadas)
+                            {
+                                <option value="@m.Id">@m.Clave - @m.Nombre</option>
+                            }
+                        </select>
+                        <div class="form-text small">Puedes especificar la materia o dejarlo general.</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-ipn-guinda btn-sm fw-semibold px-3">Guardar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modales de Edición y Confirmación para Horarios -->
+@foreach (var h in Model.Horarios)
+{
+    <!-- Modal Editar Horario -->
+    <div class="modal fade" id="modalEditarHorario_@h.Id" tabindex="-1" aria-labelledby="labelEditar_@h.Id" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-ipn-guinda text-white">
+                    <h5 class="modal-title fw-bold" id="labelEditar_@h.Id">Editar Horario y Salón</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form asp-action="GuardarHorario" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" value="@h.Id" />
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Día de la semana:</label>
+                            <select name="DiaSemana" class="form-select" required>
+                                @foreach (var d in diasSemana)
+                                {
+                                    <option value="@((int)d)" selected="@(h.DiaSemana == d)">@d</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold small">Hora de Inicio:</label>
+                                <input type="time" name="HoraInicio" class="form-control" min="07:00" max="21:00" value="@h.HoraInicio.ToString(@"hh\:mm")" required />
+                                <div class="form-text small">Desde las 07:00</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold small">Hora de Fin:</label>
+                                <input type="time" name="HoraFin" class="form-control" min="08:00" max="22:00" value="@h.HoraFin.ToString(@"hh\:mm")" required />
+                                <div class="form-text small">Hasta las 22:00</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Salón o Lugar Asignado por Gestión Escolar:</label>
+                            <input type="text" name="Lugar" class="form-control" maxlength="100" value="@h.Lugar" placeholder="Ej. Salón C-1 Culturales / Sala de juntas Computación" required />
+                            <div class="form-text small">Indica el aula, laboratorio o cubículo asignado.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Materia Específica (Opcional):</label>
+                            <select name="MateriaId" class="form-select">
+                                <option value="">— Tutoría General / Varias materias —</option>
+                                @foreach (var m in Model.MateriasAsignadas)
+                                {
+                                    <option value="@m.Id" selected="@(h.MateriaId == m.Id)">@m.Clave - @m.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light border-0">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-ipn-guinda btn-sm fw-semibold px-3">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Horario -->
+    <div class="modal fade" id="modalEliminarHorario_@h.Id" tabindex="-1" aria-labelledby="labelEliminar_@h.Id" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold" id="labelEliminar_@h.Id">Eliminar Bloque de Horario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form asp-action="EliminarHorario" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@h.Id" />
+                    <div class="modal-body p-4">
+                        <p class="text-muted small mb-3">
+                            ¿Estás seguro de que deseas eliminar este bloque de atención presencial?
+                        </p>
+                        <div class="bg-light p-3 rounded-3 small">
+                            <div><strong>Día:</strong> @h.DiaSemanaNombre</div>
+                            <div><strong>Horario:</strong> @h.HorarioFormato</div>
+                            <div><strong>Lugar:</strong> @h.Lugar</div>
+                            <div><strong>Materia:</strong> @h.MateriaNombre</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light border-0">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger btn-sm fw-semibold">Confirmar y Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Contador de caracteres para la biografía
+        var bio = document.getElementById('biografiaInput');
+        var counter = document.getElementById('charCounter');
+        if (bio && counter) {
+            bio.addEventListener('input', function () {
+                counter.textContent = bio.value.length;
+            });
+        }
+
+        // Buscador interactivo de materias
+        var buscador = document.getElementById('buscadorMaterias');
+        var items = document.querySelectorAll('.item-materia');
+        if (buscador && items.length > 0) {
+            buscador.addEventListener('input', function () {
+                var query = buscador.value.trim().toLowerCase();
+                items.forEach(function (el) {
+                    var nombre = el.getAttribute('data-nombre') || '';
+                    var clave = el.getAttribute('data-clave') || '';
+                    if (nombre.includes(query) || clave.includes(query)) {
+                        el.style.display = '';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>

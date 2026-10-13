@@ -55,26 +55,23 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
   - [x] Permitir a Coordinación suspender el rol de tutor, despublicando automáticamente sus horarios y perfil (`EsPublico = false`).
 
 ### Tarea 2.3: Perfil Público Académico del Tutor y Materias Impartidas (RF-09, RF-10, RF-11, RF-12)
-- [ ] Crear entidad `TutorMateria` (relación N:M entre `TutorPerfil` y `Materia`) en EF Core y migración.
-- [ ] Crear `TutorPerfilController` protegido con `[Authorize(Roles = "Tutor")]`.
-- [ ] Implementar interfaz para que el tutor capture:
-  - [ ] Biografía / semblanza académica (máx. 500 caracteres).
-  - [ ] Salón asignado (máx. 50 caracteres).
-  - [ ] Selección múltiple de materias que imparte según su carrera o academia.
-  - [ ] Bandera `EsPublico` para activar/desactivar su visibilidad en el catálogo general.
-- [ ] Implementar vista previa del perfil público del tutor.
+- [x] Crear entidad `TutorMateria` (relación N:M entre `TutorPerfil` y `Materia`) en EF Core y migración.
+- [x] Crear `TutorPerfilController` protegido con `[Authorize(Roles = "Tutor")]`.
+- [x] Implementar interfaz para que el tutor capture:
+  - [x] Biografía / semblanza académica (máx. 500 caracteres).
+  - [x] Salón asignado por bloque horario en calendario de Lunes a Viernes (07:00 a 22:00).
+  - [x] Selección múltiple de materias que imparte según su carrera o academia con buscador interactivo.
+  - [x] Bandera `EsPublico` para activar/desactivar su visibilidad en el catálogo general.
+- [x] Implementar vista previa del perfil público del tutor.
 
 ---
 
 ## 📚 Fase 3: Disponibilidad, Horarios y Catálogo de Tutorías (RF-13 a RF-17)
 
 ### Tarea 3.1: Administración de Horarios y Disponibilidad Presencial (RF-13, RF-15, RF-16)
-- [ ] Crear entidad `TutorDisponibilidad` (Día de la semana, `HoraInicio`, `HoraFin`, `Lugar`/Salón, `Activo`) en EF Core y migración.
-- [ ] Crear servicio `TutorHorarioService` con validación de no solapamiento de horarios para el mismo tutor.
-- [ ] Implementar regla de capacidad:
-  - [ ] Docente Tutor (*Tutoría Individual*): restricción de cupo estricto a **10 alumnos** inscritos/atendidos.
-  - [ ] Alumno Tutor (*Tutoría entre Pares*): capacidad delimitada por el cupo físico del salón o tutor.
-- [ ] Implementar CRUD responsivo (Alta, Edición, Baja) de bloques horarios desde el panel del tutor.
+- [x] Crear entidad `TutorHorario` (Día de la semana L-V, `HoraInicio`, `HoraFin`, `Lugar`/Salón, `Activo`) en EF Core y migración.
+- [x] Crear servicio `TutorPerfilService` con validación de no solapamiento de horarios dentro del rango escolar (07:00 a 22:00).
+- [x] Implementar CRUD responsivo (Alta, Edición, Baja) de bloques horarios desde el panel del tutor con calendario semanal.
 
 ### Tarea 3.2: Catálogo Público de Tutorías y Búsqueda Avanzada (RF-14, RF-17)
 - [ ] Crear `CatalogoController` con acceso público para usuarios autenticados y no autenticados.

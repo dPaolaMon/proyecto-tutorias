@@ -484,6 +484,73 @@ namespace tutorias.Migrations
                     b.ToTable("SolicitudesTutor");
                 });
 
+            modelBuilder.Entity("tutorias.Models.TutorHorario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DiaSemana")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("HoraFin")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("HoraInicio")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Lugar")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("MateriaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TutorPerfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MateriaId");
+
+                    b.HasIndex("TutorPerfilId");
+
+                    b.ToTable("TutoresHorarios");
+                });
+
+            modelBuilder.Entity("tutorias.Models.TutorMateria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaAsignacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TutorPerfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MateriaId");
+
+                    b.HasIndex("TutorPerfilId", "MateriaId")
+                        .IsUnique();
+
+                    b.ToTable("TutoresMaterias");
+                });
+
             modelBuilder.Entity("tutorias.Models.TutorPerfil", b =>
                 {
                     b.Property<int>("Id")
@@ -501,10 +568,6 @@ namespace tutorias.Migrations
 
                     b.Property<double>("ReputacionPromedio")
                         .HasColumnType("float");
-
-                    b.Property<string>("SalonAsignado")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -657,6 +720,43 @@ namespace tutorias.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("tutorias.Models.TutorHorario", b =>
+                {
+                    b.HasOne("tutorias.Models.Materia", "Materia")
+                        .WithMany()
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("tutorias.Models.TutorPerfil", "TutorPerfil")
+                        .WithMany("Horarios")
+                        .HasForeignKey("TutorPerfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Materia");
+
+                    b.Navigation("TutorPerfil");
+                });
+
+            modelBuilder.Entity("tutorias.Models.TutorMateria", b =>
+                {
+                    b.HasOne("tutorias.Models.Materia", "Materia")
+                        .WithMany()
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("tutorias.Models.TutorPerfil", "TutorPerfil")
+                        .WithMany("MateriasImpartidas")
+                        .HasForeignKey("TutorPerfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Materia");
+
+                    b.Navigation("TutorPerfil");
+                });
+
             modelBuilder.Entity("tutorias.Models.TutorPerfil", b =>
                 {
                     b.HasOne("tutorias.Models.ApplicationUser", "User")
@@ -683,6 +783,13 @@ namespace tutorias.Migrations
             modelBuilder.Entity("tutorias.Models.SesionTutoria", b =>
                 {
                     b.Navigation("Asistencias");
+                });
+
+            modelBuilder.Entity("tutorias.Models.TutorPerfil", b =>
+                {
+                    b.Navigation("Horarios");
+
+                    b.Navigation("MateriasImpartidas");
                 });
 #pragma warning restore 612, 618
         }

@@ -70,6 +70,7 @@ else
 builder.Services.AddScoped<tutorias.Services.IUserProfileService, tutorias.Services.UserProfileService>();
 builder.Services.AddScoped<tutorias.Services.ICoordinacionService, tutorias.Services.CoordinacionService>();
 builder.Services.AddScoped<tutorias.Services.ITutorSolicitudService, tutorias.Services.TutorSolicitudService>();
+builder.Services.AddScoped<tutorias.Services.ITutorPerfilService, tutorias.Services.TutorPerfilService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {

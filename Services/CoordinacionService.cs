@@ -303,7 +303,6 @@ namespace tutorias.Services
                 {
                     UserId = user.Id,
                     Biografia = null,
-                    SalonAsignado = null,
                     EsPublico = false,
                     ReputacionPromedio = 0.0
                 };

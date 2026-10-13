@@ -151,7 +151,13 @@
                                 Completar perfil
                             </a>
                         }
-                        @if (!Model.Roles.Contains("Coordinador"))
+                        @if (Model.Roles.Contains("Tutor"))
+                        {
+                            <a asp-controller="TutorPerfil" asp-action="Index" class="btn btn-outline-success btn-sm fw-semibold">
+                                Panel de Tutor y Horarios
+                            </a>
+                        }
+                        else if (!Model.Roles.Contains("Coordinador"))
                         {
                             <a asp-controller="Tutorias" asp-action="Solicitud" class="btn btn-outline-primary btn-sm fw-semibold">
                                 Solicitud de Tutor

@@ -15,6 +15,8 @@ namespace tutorias.Data
         public DbSet<Materia> Materias => Set<Materia>();
         public DbSet<MateriaEquivalencia> MateriasEquivalencias => Set<MateriaEquivalencia>();
         public DbSet<TutorPerfil> TutoresPerfiles => Set<TutorPerfil>();
+        public DbSet<TutorMateria> TutoresMaterias => Set<TutorMateria>();
+        public DbSet<TutorHorario> TutoresHorarios => Set<TutorHorario>();
         public DbSet<SolicitudTutor> SolicitudesTutor => Set<SolicitudTutor>();
         public DbSet<SesionTutoria> SesionesTutoria => Set<SesionTutoria>();
         public DbSet<Asistencia> Asistencias => Set<Asistencia>();
@@ -75,6 +77,36 @@ namespace tutorias.Data
                 .HasOne(a => a.Alumno)
                 .WithMany()
                 .HasForeignKey(a => a.AlumnoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación TutorMateria (TutorPerfil N:M Materia)
+            builder.Entity<TutorMateria>()
+                .HasIndex(tm => new { tm.TutorPerfilId, tm.MateriaId })
+                .IsUnique();
+
+            builder.Entity<TutorMateria>()
+                .HasOne(tm => tm.TutorPerfil)
+                .WithMany(tp => tp.MateriasImpartidas)
+                .HasForeignKey(tm => tm.TutorPerfilId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<TutorMateria>()
+                .HasOne(tm => tm.Materia)
+                .WithMany()
+                .HasForeignKey(tm => tm.MateriaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación TutorHorario
+            builder.Entity<TutorHorario>()
+                .HasOne(th => th.TutorPerfil)
+                .WithMany(tp => tp.Horarios)
+                .HasForeignKey(th => th.TutorPerfilId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<TutorHorario>()
+                .HasOne(th => th.Materia)
+                .WithMany()
+                .HasForeignKey(th => th.MateriaId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

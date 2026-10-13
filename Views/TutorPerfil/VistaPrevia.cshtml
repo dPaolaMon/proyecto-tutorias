@@ -1,0 +1,149 @@
+@model tutorias.Models.ViewModels.TutorPerfilViewModel
+@using tutorias.Models
+@{
+    ViewData["Title"] = "Vista Previa del Perfil Público";
+    var diasSemana = new[]
+    {
+        DiaSemana.Lunes,
+        DiaSemana.Martes,
+        DiaSemana.Miercoles,
+        DiaSemana.Jueves,
+        DiaSemana.Viernes
+    };
+}
+
+<div class="row justify-content-center mb-5">
+    <div class="col-12 col-lg-10">
+
+        <!-- Barra de Estado de Vista Previa -->
+        <div class="alert alert-info border-0 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 rounded-3">
+            <div class="d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill text-info" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+                </svg>
+                <span class="small">
+                    Esta es una <strong>vista previa</strong> de cómo los alumnos verán tu perfil en el Catálogo de Tutorías de UPIICSA.
+                </span>
+            </div>
+            <a asp-action="Index" class="btn btn-sm btn-outline-dark fw-semibold">
+                &larr; Volver a Editar Perfil
+            </a>
+        </div>
+
+        <!-- Tarjeta de Perfil Público -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+            <div class="py-5 px-4 text-white text-center bg-ipn-guinda">
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                    {
+                        <img src="@Model.FotoUrl" alt="Foto de tutor" class="rounded-circle border border-white border-3 shadow-sm" style="width:96px;height:96px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center fw-bold text-ipn-guinda shadow-sm mx-auto" style="width:96px;height:96px;font-size:2.5rem;">
+                            @(string.IsNullOrWhiteSpace(Model.NombreCompleto) ? "?" : Model.NombreCompleto.Substring(0, 1).ToUpper())
+                        </div>
+                    }
+                </div>
+                <h2 class="h4 fw-bold mb-1">@Model.NombreCompleto</h2>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-2">
+                    <span class="badge rounded-pill bg-white text-ipn-guinda px-3 py-1 fw-semibold">
+                        @Model.ModalidadTitulo
+                    </span>
+                    <span class="badge rounded-pill bg-white-50 text-white px-3 py-1">
+                        @Model.ProgramaOAcademia
+                    </span>
+                </div>
+                <div class="text-warning small">
+                    <span class="fw-bold fs-6">★ @Model.ReputacionPromedio.ToString("0.0")</span>
+                    <span class="text-white-50 ms-1">(Reputación Académica)</span>
+                </div>
+            </div>
+
+            <div class="card-body p-4 bg-white">
+                <div class="row g-4">
+                    <!-- Semblanza -->
+                    <div class="col-12">
+                        <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">Semblanza Académica</h5>
+                        @if (string.IsNullOrWhiteSpace(Model.Biografia))
+                        {
+                            <p class="text-muted fst-italic small">El tutor aún no ha capturado una semblanza personal.</p>
+                        }
+                        else
+                        {
+                            <p class="text-dark small mb-0 lh-base">@Model.Biografia</p>
+                        }
+                    </div>
+
+                    <!-- Materias Impartidas -->
+                    <div class="col-12">
+                        <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">Unidades de Aprendizaje / Materias que Imparte</h5>
+                        @if (!Model.MateriasAsignadas.Any())
+                        {
+                            <p class="text-muted fst-italic small">No hay materias registradas actualmente.</p>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var m in Model.MateriasAsignadas)
+                                {
+                                    <span class="badge bg-light text-dark border p-2 fw-medium">
+                                        <span class="badge bg-ipn-guinda text-white me-1">@m.Clave</span>
+                                        @m.Nombre
+                                    </span>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Horarios y Salones Asignados -->
+                    <div class="col-12">
+                        <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">Horarios de Atención Presencial y Aulas Asignadas</h5>
+                        @if (!Model.Horarios.Any())
+                        {
+                            <p class="text-muted fst-italic small">No hay horarios ni salones publicados en este momento.</p>
+                        }
+                        else
+                        {
+                            <div class="row g-2">
+                                @foreach (var dia in diasSemana)
+                                {
+                                    var itemsDia = Model.Horarios.Where(h => h.DiaSemana == dia).OrderBy(h => h.HoraInicio).ToList();
+                                    if (itemsDia.Any())
+                                    {
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="card border rounded-3 p-3 bg-light h-100 shadow-none">
+                                                <h6 class="fw-bold text-ipn-guinda mb-2 border-bottom pb-1">@dia</h6>
+                                                <div class="d-flex flex-column gap-2">
+                                                    @foreach (var h in itemsDia)
+                                                    {
+                                                        <div class="bg-white p-2 rounded border small">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <span class="badge bg-ipn-guinda">@h.HorarioFormato</span>
+                                                                <span class="text-muted text-truncate ms-1" style="max-width:130px;" title="@h.MateriaNombre">@h.MateriaNombre</span>
+                                                            </div>
+                                                            <div class="text-dark">
+                                                                📍 Salón: <strong>@h.Lugar</strong>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light p-3 text-end">
+                <a asp-action="Index" class="btn btn-ipn-guinda btn-sm fw-semibold px-4">
+                    Editar Información
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
