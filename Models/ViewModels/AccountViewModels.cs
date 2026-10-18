@@ -19,10 +19,10 @@ namespace tutorias.Models.ViewModels
         [Display(Name = "Apellido Materno")]
         public string ApellidoMaterno { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La boleta es obligatoria.")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta solo debe contener dígitos numéricos.")]
-        [StringLength(20, ErrorMessage = "La boleta no puede exceder 20 dígitos.")]
-        [Display(Name = "Boleta")]
+        [Required(ErrorMessage = "La boleta o número de empleado es obligatorio.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta o número de empleado solo debe contener dígitos numéricos.")]
+        [StringLength(20, ErrorMessage = "La boleta o número de empleado no puede exceder 20 dígitos.")]
+        [Display(Name = "Boleta / Número de Empleado")]
         public string Boleta { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El correo institucional es obligatorio.")]
@@ -117,10 +117,10 @@ namespace tutorias.Models.ViewModels
         [Display(Name = "Apellido Materno")]
         public string ApellidoMaterno { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La boleta es obligatoria.")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta solo debe contener dígitos numéricos.")]
-        [StringLength(20, ErrorMessage = "La boleta no puede exceder 20 dígitos.")]
-        [Display(Name = "Boleta")]
+        [Required(ErrorMessage = "La boleta o número de empleado es obligatorio.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "La boleta o número de empleado solo debe contener dígitos numéricos.")]
+        [StringLength(20, ErrorMessage = "La boleta o número de empleado no puede exceder 20 dígitos.")]
+        [Display(Name = "Boleta / Número de Empleado")]
         public string Boleta { get; set; } = string.Empty;
 
         // Inmutable: solo lectura informativa

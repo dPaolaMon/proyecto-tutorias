@@ -1,0 +1,472 @@
+@model tutorias.Models.ViewModels.PanelTutorAsistenciaViewModel
+@{
+    ViewData["Title"] = "Pase de Lista y Asistencias";
+    var horario = Model.HorarioEnCurso;
+}
+
+<div class="container-fluid px-0 mb-5">
+
+    <!-- Encabezado / Banner Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h1 class="h3 fw-bold mb-1">Pase de Lista y Control de Asistencias</h1>
+                <p class="mb-0 text-white-50 small">
+                    Validación presencial y registro de asistencias conforme a tus horarios oficiales de atención.
+                </p>
+            </div>
+            <div class="text-md-end text-white-50 small">
+                <div><span class="text-white fw-bold">Fecha y Hora:</span> @Model.DiaActualNombre, @Model.HoraActualTexto hrs</div>
+                <div>
+                    @if (Model.HayHorarioEnCurso)
+                    {
+                        <span class="badge bg-success text-white px-2 py-1 mt-1">Horario en curso</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-light text-dark px-2 py-1 mt-1">Fuera de horario</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Exito:</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Error:</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Aviso:</strong> @TempData["WarningMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (Model.HayHorarioEnCurso && horario != null)
+    {
+        <!-- BLOQUE: TUTORÍA EN CURSO DETECTADA -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 border-start border-4 border-success">
+            <div class="card-body p-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-12 col-md-8">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle fw-bold">En Curso</span>
+                            <span class="text-muted small">@horario.DiaSemanaNombre de @horario.HorarioTexto</span>
+                        </div>
+                        <h4 class="h5 fw-bold text-dark mb-1">
+                            @(horario.MateriaNombre ?? "Materia a impartir en esta sesión")
+                        </h4>
+                        <div class="text-secondary small">
+                            <span><strong>Ubicacion asignada:</strong> @horario.Lugar</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 text-md-end">
+                        <div class="p-3 bg-light rounded-3 text-center d-inline-block">
+                            <div class="small text-muted mb-1">Alumnos registrados hoy</div>
+                            <span class="h4 fw-bold text-ipn-guinda mb-0">@Model.AsistenciasDeHoy.Count</span>
+                            <span class="small text-muted">/ 10 max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Columna Izquierda: Búsqueda y Solicitud de Asistencia -->
+            <div class="col-12 col-lg-7">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h5 class="fw-bold text-dark mb-1 fs-6">Buscar Alumno para Registrar Asistencia</h5>
+                        <p class="text-muted small mb-0">
+                            Ingresa el numero de boleta o nombre del alumno para localizarlo y enviar la solicitud de confirmacion.
+                        </p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-white border-end-0 text-muted">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="inputBuscarAlumno" class="form-control border-start-0"
+                                   placeholder="Ingresa boleta o nombre del alumno..." autocomplete="off">
+                            <button class="btn btn-ipn-guinda px-4" type="button" id="btnBuscarAlumno">
+                                Buscar
+                            </button>
+                        </div>
+
+                        <!-- Estado de carga / mensajes de búsqueda -->
+                        <div id="buscarSpinner" class="text-center py-3 d-none">
+                            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                            <span class="text-muted small ms-2">Buscando en la base de datos de UPIICSA...</span>
+                        </div>
+
+                        <div id="buscarVacio" class="text-center py-4 text-muted small d-none">
+                            No se encontraron alumnos que coincidan con la busqueda.
+                        </div>
+
+                        <!-- Lista de Resultados de Búsqueda -->
+                        <div id="resultadosContainer" class="d-none mt-3">
+                            <h6 class="small fw-bold text-secondary text-uppercase mb-2">Alumnos Encontrados</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th>Alumno</th>
+                                            <th>Boleta</th>
+                                            <th>Carrera</th>
+                                            <th class="text-end">Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaResultadosBody" class="small">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Asistencias Registradas en la Sesión de Hoy -->
+            <div class="col-12 col-lg-5">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0 fs-6">Asistencias de Hoy</h5>
+                            <span class="text-muted small">Alumnos atendidos en esta sesion</span>
+                        </div>
+                        <span class="badge bg-light text-secondary border">@Model.AsistenciasDeHoy.Count</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.AsistenciasDeHoy.Any())
+                        {
+                            <div class="text-center py-5 text-muted small px-3">
+                                <p class="mb-0">Aun no has solicitado asistencias en este horario de atencion.</p>
+                                <span class="text-muted">Utiliza el buscador de la izquierda para registrar alumnos.</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="list-group list-group-flush">
+                                @foreach (var a in Model.AsistenciasDeHoy)
+                                {
+                                    <div class="list-group-item p-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="fw-bold text-dark mb-0 fs-6">@a.AlumnoNombre</h6>
+                                            @if (a.Confirmada)
+                                            {
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle small">
+                                                    Confirmada
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle small">
+                                                    Por Confirmar
+                                                </span>
+                                            }
+                                        </div>
+                                        <div class="small text-muted mb-1">
+                                            <span>Boleta: <strong>@a.AlumnoBoleta</strong></span> &bull; 
+                                            <span>@a.AlumnoCarrera</span>
+                                        </div>
+                                        <div class="small text-muted d-flex justify-content-between">
+                                            <span>Hora de registro: @a.HoraRegistroTexto hrs</span>
+                                            @if (a.Confirmada && a.FechaHoraConfirmacion.HasValue)
+                                            {
+                                                <span class="text-success">Validada: @a.HoraConfirmacionTexto hrs</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE PANTALLA DE CONFIRMACIÓN DE ASISTENCIA -->
+        <div class="modal fade" id="modalConfirmarAsistencia" tabindex="-1" aria-labelledby="modalConfirmarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <form asp-action="RegistrarManual" method="post" id="formConfirmarAsistencia">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="AlumnoId" id="modalAlumnoId" />
+
+                        <div class="modal-header bg-ipn-guinda text-white">
+                            <h5 class="modal-title fs-6 fw-bold" id="modalConfirmarLabel">Confirmar Solicitud de Asistencia</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <!-- Datos del Alumno -->
+                            <div class="p-3 bg-light rounded-3 mb-3">
+                                <div class="text-muted small mb-1">Datos del Alumno Tutorado</div>
+                                <h6 class="fw-bold text-dark mb-1" id="modalAlumnoNombre">---</h6>
+                                <div class="small text-secondary">
+                                    <div>Boleta: <strong id="modalAlumnoBoleta">---</strong></div>
+                                    <div id="modalAlumnoCarrera">---</div>
+                                </div>
+                            </div>
+
+                            <!-- Datos de la Tutoría en Curso -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-secondary text-uppercase mb-1">Datos de la Tutoria en Curso</label>
+                                <div class="small">
+                                    <div><strong>Horario:</strong> @horario.DiaSemanaNombre de @horario.HorarioTexto</div>
+                                    <div><strong>Lugar / Salon:</strong> @horario.Lugar</div>
+                                </div>
+                            </div>
+
+                            <!-- Selección o Visualización de Materia -->
+                            @if (horario.RequiereSeleccionMateria)
+                            {
+                                <div class="mb-3">
+                                    <label for="modalSelectMateria" class="form-label fw-bold small text-dark">
+                                        Selecciona la Materia Impartida: <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select form-select-sm" id="modalSelectMateria" name="MateriaId" required>
+                                        <option value="">-- Seleccionar materia impartida --</option>
+                                        @foreach (var m in Model.MateriasImpartidas)
+                                        {
+                                            <option value="@m.Id">@m.Nombre (@m.Clave)</option>
+                                        }
+                                    </select>
+                                    <div class="form-text small">
+                                        Tu horario permite impartir cualquiera de tus materias registradas. Selecciona la correspondiente a esta sesion.
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-secondary text-uppercase mb-1">Materia Impartida</label>
+                                    <div class="small fw-semibold text-dark">@horario.MateriaNombre</div>
+                                    <input type="hidden" name="MateriaId" value="@horario.MateriaId" />
+                                </div>
+                            }
+
+                            <div class="alert alert-secondary small mb-0">
+                                <strong>Nota institucional:</strong> Al confirmar, se creara el registro y el alumno tutorado recibira una solicitud en su perfil para validar su asistencia presencial.
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-ipn-guinda btn-sm fw-bold px-3">
+                                Confirmar y Solicitar Asistencia
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- BLOQUE: FUERA DE HORARIO DE TUTORÍA -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body p-4 text-center py-5">
+                <div class="mb-3 text-secondary">
+                    <i class="bi bi-clock-history" style="font-size: 3rem;"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-2">Fuera del Horario de Tutoria</h4>
+                <p class="text-muted mx-auto mb-4" style="max-width: 600px;">
+                    Actualmente no tienes ningun horario de tutoria en curso.
+                </p>
+                <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-dark btn-sm fw-semibold">
+                    Ver mis horarios en mi perfil
+                </a>
+            </div>
+        </div>
+
+        <!-- Tabla Informativa de Horarios Registrados -->
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-header bg-white border-bottom p-3">
+                <h5 class="fw-bold text-dark mb-0 fs-6">Tus Horarios Oficiales de Tutoria Registrados</h5>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.HorariosRegistrados.Any())
+                {
+                    <div class="text-center py-4 text-muted small px-3">
+                        No tienes horarios de tutoria registrados actualmente. Registra tus horarios desde tu perfil academico.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Dia</th>
+                                    <th>Horario</th>
+                                    <th>Lugar / Salon</th>
+                                    <th>Materia</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var h in Model.HorariosRegistrados)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-dark">@h.DiaSemanaNombre</td>
+                                        <td>@h.HorarioFormato hrs</td>
+                                        <td>@h.Lugar</td>
+                                        <td>@h.MateriaNombre</td>
+                                        <td>
+                                            @if (h.Activo)
+                                            {
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle">Activo</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary-subtle text-secondary">Inactivo</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputBuscar = document.getElementById('inputBuscarAlumno');
+            const btnBuscar = document.getElementById('btnBuscarAlumno');
+            const spinner = document.getElementById('buscarSpinner');
+            const emptyMsg = document.getElementById('buscarVacio');
+            const container = document.getElementById('resultadosContainer');
+            const tableBody = document.getElementById('tablaResultadosBody');
+
+            // Elementos del Modal de Confirmación
+            const modalEl = document.getElementById('modalConfirmarAsistencia');
+            const modalInstance = modalEl ? new bootstrap.Modal(modalEl) : null;
+            const modalAlumnoId = document.getElementById('modalAlumnoId');
+            const modalAlumnoNombre = document.getElementById('modalAlumnoNombre');
+            const modalAlumnoBoleta = document.getElementById('modalAlumnoBoleta');
+            const modalAlumnoCarrera = document.getElementById('modalAlumnoCarrera');
+
+            if (!inputBuscar || !btnBuscar) return;
+
+            let debounceTimer = null;
+
+            function ejecutarBusqueda() {
+                const query = inputBuscar.value.trim();
+                if (query.length < 2) {
+                    container.classList.add('d-none');
+                    emptyMsg.classList.add('d-none');
+                    return;
+                }
+
+                spinner.classList.remove('d-none');
+                emptyMsg.classList.add('d-none');
+                container.classList.add('d-none');
+
+                fetch(`/Asistencia/BuscarAlumnos?q=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                        return response.json();
+                    })
+                    .then(data => {
+                        spinner.classList.add('d-none');
+                        tableBody.innerHTML = '';
+
+                        if (!data || data.length === 0) {
+                            emptyMsg.classList.remove('d-none');
+                            return;
+                        }
+
+                        data.forEach(alumno => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>
+                                    <div class="fw-bold text-dark">${escapeHtml(alumno.nombreCompleto)}</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">${escapeHtml(alumno.email)}</div>
+                                </td>
+                                <td><span class="badge bg-light text-dark border">${escapeHtml(alumno.boleta)}</span></td>
+                                <td class="text-secondary">${escapeHtml(alumno.carreraNombre)}</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-outline-ipn-guinda btn-sm fw-bold btn-solicitar-asistencia"
+                                            data-id="${escapeHtml(alumno.id)}"
+                                            data-nombre="${escapeHtml(alumno.nombreCompleto)}"
+                                            data-boleta="${escapeHtml(alumno.boleta)}"
+                                            data-carrera="${escapeHtml(alumno.carreraNombre)}">
+                                        Solicitar Asistencia
+                                    </button>
+                                </td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+
+                        container.classList.remove('d-none');
+
+                        // Asignar eventos a los botones de solicitar asistencia
+                        document.querySelectorAll('.btn-solicitar-asistencia').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                const id = this.getAttribute('data-id');
+                                const nombre = this.getAttribute('data-nombre');
+                                const boleta = this.getAttribute('data-boleta');
+                                const carrera = this.getAttribute('data-carrera');
+
+                                if (modalAlumnoId) modalAlumnoId.value = id;
+                                if (modalAlumnoNombre) modalAlumnoNombre.textContent = nombre;
+                                if (modalAlumnoBoleta) modalAlumnoBoleta.textContent = boleta;
+                                if (modalAlumnoCarrera) modalAlumnoCarrera.textContent = carrera;
+
+                                if (modalInstance) {
+                                    modalInstance.show();
+                                }
+                            });
+                        });
+                    })
+                    .catch(err => {
+                        spinner.classList.add('d-none');
+                        console.error('Error buscando alumnos:', err);
+                    });
+            }
+
+            btnBuscar.addEventListener('click', ejecutarBusqueda);
+
+            inputBuscar.addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(ejecutarBusqueda, 350);
+            });
+
+            inputBuscar.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    ejecutarBusqueda();
+                }
+            });
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+            }
+        });
+    </script>
+}

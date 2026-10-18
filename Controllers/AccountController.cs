@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tutorias.Models;
 using tutorias.Models.ViewModels;
 using tutorias.Services;
@@ -43,9 +44,17 @@ namespace tutorias.Controllers
                 return View(model);
             }
 
-            if (!model.Boleta.Trim().All(char.IsDigit))
+            var boletaTrimmed = model.Boleta.Trim();
+            if (!boletaTrimmed.All(char.IsDigit))
             {
-                ModelState.AddModelError("Boleta", "La boleta solo debe contener dígitos numéricos.");
+                ModelState.AddModelError("Boleta", "La boleta o número de empleado solo debe contener dígitos numéricos.");
+                return View(model);
+            }
+
+            var boletaExiste = await _userManager.Users.AnyAsync(u => u.Boleta == boletaTrimmed);
+            if (boletaExiste)
+            {
+                ModelState.AddModelError("Boleta", "La boleta o número de empleado ingresado ya se encuentra registrado en el sistema.");
                 return View(model);
             }
 

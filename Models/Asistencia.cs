@@ -17,6 +17,10 @@ namespace tutorias.Models
 
         public MetodoAsistencia Metodo { get; set; }
 
+        public bool Confirmada { get; set; } = false;
+
+        public DateTime? FechaHoraConfirmacion { get; set; }
+
         [Range(1, 5)]
         public int? CalificacionEncuesta { get; set; }
 

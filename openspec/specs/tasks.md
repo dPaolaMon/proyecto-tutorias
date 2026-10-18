@@ -91,10 +91,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 ## 📲 Fase 4: Control de Asistencias Presenciales (Manual y QR Dinámico) e Historial (RF-16 a RF-20)
 
 ### Tarea 4.1: Asistencia Manual y Confirmación del Alumno (RF-16, RF-17)
-- [ ] Implementar búsqueda por número de boleta o nombre en el panel del Tutor para registrar asistencia manual a la sesión (**RF-16**).
-- [ ] Enviar solicitud de confirmación de asistencia al alumno tutorado (**RF-16**).
-- [ ] Crear interfaz en el perfil del alumno tutorado para visualizar la asistencia registrada por el tutor y confirmar su validez dentro del sistema (**RF-17**).
-- [ ] Asentar la asistencia con estado confirmado al recibir la validación del alumno.
+- [x] Implementar búsqueda por número de boleta o nombre en el panel del Tutor para registrar asistencia manual a la sesión (**RF-16**).
+- [x] Enviar solicitud de confirmación de asistencia al alumno tutorado (**RF-16**).
+- [x] Crear interfaz en el perfil del alumno tutorado para visualizar la asistencia registrada por el tutor y confirmar su validez dentro del sistema (**RF-17**).
+- [x] Asentar la asistencia con estado confirmado al recibir la validación del alumno.
 
 ### Tarea 4.2: Asistencia por Código QR Dinámico (RF-18, RF-19)
 - [ ] Crear entidad `SesionQrToken` (`SesionId`, `TokenHash`, `FechaCreacion`, `FechaExpiracion`, `Activo`).

@@ -145,6 +145,9 @@
                         <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
                             Editar Perfil
                         </a>
+                        <a asp-controller="Asistencia" asp-action="MisAsistencias" class="btn btn-outline-primary btn-sm fw-semibold">
+                            Mis Asistencias
+                        </a>
                         @if (!Model.PerfilCompleto)
                         {
                             <a asp-action="CompleteProfile" class="btn btn-outline-warning btn-sm fw-semibold">

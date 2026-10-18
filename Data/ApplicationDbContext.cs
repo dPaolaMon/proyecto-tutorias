@@ -46,6 +46,10 @@ namespace tutorias.Data
                 .HasDefaultValue(true);
 
             builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.Boleta)
+                .IsUnique();
+
+            builder.Entity<ApplicationUser>()
                 .HasOne(u => u.Carrera)
                 .WithMany(c => c.Alumnos)
                 .HasForeignKey(u => u.CarreraId)
@@ -73,6 +77,10 @@ namespace tutorias.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relación Asistencia -> Alumno (ApplicationUser)
+            builder.Entity<Asistencia>()
+                .HasIndex(a => new { a.SesionId, a.AlumnoId })
+                .IsUnique();
+
             builder.Entity<Asistencia>()
                 .HasOne(a => a.Alumno)
                 .WithMany()

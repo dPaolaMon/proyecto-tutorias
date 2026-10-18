@@ -1,0 +1,177 @@
+@model tutorias.Models.ViewModels.MisAsistenciasViewModel
+@{
+    ViewData["Title"] = "Mis Asistencias a Tutorias";
+}
+
+<div class="container mb-5">
+
+    <!-- Encabezado / Banner Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 fw-bold mb-1">Mis Asistencias a Tutorias</h1>
+                <p class="mb-0 text-white-50 small">
+                    Consulta el registro de tus asistencias presenciales y confirma las solicitudes pendientes enviadas por tus tutores.
+                </p>
+            </div>
+            <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold d-none d-sm-inline-block">
+                Ver Catalogo de Tutorias
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Exito:</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Error:</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Aviso:</strong> @TempData["WarningMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    <!-- SECCION 1: ASISTENCIAS PENDIENTES DE CONFIRMAR (RF-17) -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h4 class="h5 fw-bold text-dark mb-0">Asistencias Pendientes de Confirmar</h4>
+            @if (Model.Pendientes.Any())
+            {
+                <span class="badge bg-warning text-dark px-2 py-1 fw-bold">@Model.Pendientes.Count pendiente(s)</span>
+            }
+        </div>
+
+        @if (!Model.Pendientes.Any())
+        {
+            <div class="card border-0 shadow-sm rounded-3 p-4 bg-light text-center text-muted small">
+                <span>No tienes asistencias pendientes por validar en este momento. Todas tus sesiones registradas estan al dia.</span>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning border-0 shadow-sm small mb-3">
+                <strong>Atencion:</strong> Tu tutor registro tu asistencia a las siguientes sesiones de tutoria. Por favor confirma tu presencia para validar la asistencia dentro del sistema institucional.
+            </div>
+
+            <div class="row g-3">
+                @foreach (var p in Model.Pendientes)
+                {
+                    <div class="col-12 col-md-6">
+                        <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-warning">
+                            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <span class="badge bg-ipn-guinda">@p.MateriaNombre</span>
+                                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                                            Por Confirmar
+                                        </span>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-1">@p.TituloSesion</h5>
+                                    <div class="small text-muted mb-2">
+                                        <div>Tutor: <strong class="text-dark">@p.TutorNombre</strong></div>
+                                        <div>Salon / Espacio: <strong class="text-dark">@p.Lugar</strong></div>
+                                        <div>Fecha y hora: <strong class="text-dark">@p.FechaHoraRegistroTexto hrs</strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="border-top pt-3 mt-3 d-flex gap-2">
+                                    <form asp-action="Confirmar" method="post" class="flex-grow-1">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="asistenciaId" value="@p.AsistenciaId" />
+                                        <button type="submit" class="btn btn-success btn-sm fw-bold w-100 py-2 shadow-sm">
+                                            Confirmar Asistencia
+                                        </button>
+                                    </form>
+
+                                    <form asp-action="Rechazar" method="post" onsubmit="return confirm('Confirmas que NO asististe a esta sesion? El registro sera descartado.');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="asistenciaId" value="@p.AsistenciaId" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm py-2 px-3" title="No asisti">
+                                            No asisti
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- SECCION 2: HISTORIAL DE ASISTENCIAS CONFIRMADAS -->
+    <div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="h5 fw-bold text-dark mb-0">Historial de Asistencias Confirmadas</h4>
+            <span class="small text-muted">@Model.Confirmadas.Count acreditada(s)</span>
+        </div>
+
+        @if (!Model.Confirmadas.Any())
+        {
+            <div class="card border-0 shadow-sm rounded-3 p-4 bg-white text-center text-muted small">
+                <span>Aun no cuentas con asistencias acreditadas en tu historial.</span>
+            </div>
+        }
+        else
+        {
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                            <tr>
+                                <th>Unidad de Aprendizaje</th>
+                                <th>Tutor</th>
+                                <th>Salon / Lugar</th>
+                                <th>Fecha de Tutoria</th>
+                                <th>Confirmacion</th>
+                                <th>Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small">
+                            @foreach (var c in Model.Confirmadas)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold text-dark d-block">@c.MateriaNombre</span>
+                                        <span class="text-muted" style="font-size:0.75rem;">@c.TituloSesion</span>
+                                    </td>
+                                    <td class="text-dark fw-medium">
+                                        @c.TutorNombre
+                                    </td>
+                                    <td class="text-muted">
+                                        @c.Lugar
+                                    </td>
+                                    <td class="text-muted">
+                                        @c.FechaHoraRegistroTexto hrs
+                                    </td>
+                                    <td class="text-muted">
+                                        @(c.FechaHoraConfirmacionTexto != null ? c.FechaHoraConfirmacionTexto + " hrs" : "Confirmada")
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                            Validada
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

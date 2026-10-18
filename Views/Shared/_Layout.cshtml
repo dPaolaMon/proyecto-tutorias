@@ -36,6 +36,14 @@
                                 </a>
                             </li>
                         }
+                        @if (User.IsInRole("Tutor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-semibold" asp-controller="Asistencia" asp-action="Index">
+                                    Pase de Lista
+                                </a>
+                            </li>
+                        }
                         @if (User.IsInRole("Coordinador"))
                         {
                             <li class="nav-item">
@@ -70,6 +78,11 @@
                                     <li>
                                         <a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile">
                                             Mi Perfil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="MisAsistencias">
+                                            Mis Asistencias
                                         </a>
                                     </li>
                                     @if (User.IsInRole("Tutor"))

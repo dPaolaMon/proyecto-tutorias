@@ -261,6 +261,9 @@ namespace tutorias.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Boleta")
+                        .IsUnique();
+
                     b.HasIndex("CarreraId");
 
                     b.HasIndex("NormalizedEmail")
@@ -293,6 +296,12 @@ namespace tutorias.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<bool>("Confirmada")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("FechaHoraConfirmacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("FechaHoraRegistro")
                         .HasColumnType("datetime2");
 
@@ -306,7 +315,8 @@ namespace tutorias.Migrations
 
                     b.HasIndex("AlumnoId");
 
-                    b.HasIndex("SesionId");
+                    b.HasIndex("SesionId", "AlumnoId")
+                        .IsUnique();
 
                     b.ToTable("Asistencias");
                 });

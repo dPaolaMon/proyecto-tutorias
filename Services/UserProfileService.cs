@@ -97,9 +97,16 @@ namespace tutorias.Services
                 return (false, "El usuario no fue encontrado.");
             }
 
-            if (!model.Boleta.Trim().All(char.IsDigit))
+            var boletaTrimmed = model.Boleta.Trim();
+            if (!boletaTrimmed.All(char.IsDigit))
             {
-                return (false, "La boleta solo debe contener dígitos numéricos.");
+                return (false, "La boleta o número de empleado solo debe contener dígitos numéricos.");
+            }
+
+            var boletaOcupada = await _context.Users.AnyAsync(u => u.Boleta == boletaTrimmed && u.Id != user.Id);
+            if (boletaOcupada)
+            {
+                return (false, "La boleta o número de empleado ingresado ya está registrado por otro usuario.");
             }
 
             // REGLA: El correo es estrictamente inmutable; no se altera Email ni UserName
