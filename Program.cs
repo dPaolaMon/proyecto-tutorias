@@ -71,6 +71,7 @@ builder.Services.AddScoped<tutorias.Services.IUserProfileService, tutorias.Servi
 builder.Services.AddScoped<tutorias.Services.ICoordinacionService, tutorias.Services.CoordinacionService>();
 builder.Services.AddScoped<tutorias.Services.ITutorSolicitudService, tutorias.Services.TutorSolicitudService>();
 builder.Services.AddScoped<tutorias.Services.ITutorPerfilService, tutorias.Services.TutorPerfilService>();
+builder.Services.AddScoped<tutorias.Services.ICatalogoService, tutorias.Services.CatalogoService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {

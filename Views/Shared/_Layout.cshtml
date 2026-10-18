@@ -28,6 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-white active" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Catalogo" asp-action="Index">
+                                    Catálogo de Tutorías
+                                </a>
+                            </li>
+                        }
                         @if (User.IsInRole("Coordinador"))
                         {
                             <li class="nav-item">

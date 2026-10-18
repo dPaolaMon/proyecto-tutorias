@@ -1,0 +1,153 @@
+@model tutorias.Models.ViewModels.TutorDetalleViewModel
+@using tutorias.Models
+@{
+    ViewData["Title"] = $"Tutor {Model.NombreCompleto}";
+    var diasSemana = new[]
+    {
+        DiaSemana.Lunes,
+        DiaSemana.Martes,
+        DiaSemana.Miercoles,
+        DiaSemana.Jueves,
+        DiaSemana.Viernes
+    };
+}
+
+<div class="row justify-content-center mb-5">
+    <div class="col-12 col-lg-10">
+
+        <!-- Botón de Retorno -->
+        <div class="mb-3">
+            <a asp-action="Index" class="btn btn-link text-decoration-none text-muted p-0 small">
+                &larr; Volver al Catálogo de Tutorías
+            </a>
+        </div>
+
+        <!-- Ficha de Identidad del Tutor -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+            <div class="py-5 px-4 text-white text-center bg-ipn-guinda">
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                    {
+                        <img src="@Model.FotoUrl" alt="Foto de @Model.NombreCompleto" class="rounded-circle border border-white border-3 shadow-sm" style="width:104px;height:104px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-white text-ipn-guinda d-inline-flex align-items-center justify-content-center fw-bold shadow-sm mx-auto" style="width:104px;height:104px;font-size:2.8rem;">
+                            @(string.IsNullOrWhiteSpace(Model.NombreCompleto) ? "?" : Model.NombreCompleto.Substring(0, 1).ToUpper())
+                        </div>
+                    }
+                </div>
+                <h1 class="h3 fw-bold mb-1">@Model.NombreCompleto</h1>
+                <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-2">
+                    <span class="badge rounded-pill bg-white text-ipn-guinda px-3 py-1 fw-semibold">
+                        @Model.ModalidadTitulo
+                    </span>
+                    <span class="badge rounded-pill bg-white-50 text-white px-3 py-1">
+                        @Model.CarreraOAcademia
+                    </span>
+                </div>
+                <div class="text-warning small">
+                    <span class="fw-bold fs-6">★ @Model.ReputacionPromedio.ToString("0.0")</span>
+                    <span class="text-white-50 ms-1">(Reputación General)</span>
+                </div>
+            </div>
+
+            <div class="card-body p-4 bg-white">
+                <div class="row g-4">
+                    <!-- Semblanza Académica -->
+                    <div class="col-12">
+                        <h4 class="h6 fw-bold text-dark border-bottom pb-2 mb-3">Semblanza Académica</h4>
+                        @if (string.IsNullOrWhiteSpace(Model.Biografia))
+                        {
+                            <p class="text-muted fst-italic small">El tutor no ha capturado una semblanza personal en su perfil.</p>
+                        }
+                        else
+                        {
+                            <p class="text-dark small mb-0 lh-base">@Model.Biografia</p>
+                        }
+                    </div>
+
+                    <!-- Materias que Imparte -->
+                    <div class="col-12">
+                        <h4 class="h6 fw-bold text-dark border-bottom pb-2 mb-3">Unidades de Aprendizaje / Materias que Imparte</h4>
+                        @if (!Model.Materias.Any())
+                        {
+                            <p class="text-muted fst-italic small">No hay materias registradas para este tutor.</p>
+                        }
+                        else
+                        {
+                            <div class="row g-2">
+                                @foreach (var m in Model.Materias)
+                                {
+                                    <div class="col-12 col-md-6">
+                                        <div class="p-2 border rounded-3 bg-light d-flex align-items-center gap-2">
+                                            <span class="badge bg-ipn-guinda">@m.Clave</span>
+                                            <div>
+                                                <div class="fw-bold text-dark small">@m.Nombre</div>
+                                                @if (m.Semestre.HasValue)
+                                                {
+                                                    <span class="text-muted" style="font-size:0.75rem;">Semestre @m.Semestre &bull; @m.CarreraNombre</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Horarios de Atención Presencial y Salones Asignados -->
+                    <div class="col-12">
+                        <h4 class="h6 fw-bold text-dark border-bottom pb-2 mb-3">
+                            📅 Horarios de Atención Presencial y Aulas Asignadas (Lunes a Viernes)
+                        </h4>
+                        @if (!Model.Horarios.Any())
+                        {
+                            <div class="alert alert-light border text-center p-4">
+                                <p class="text-muted small mb-0">El tutor aún no tiene horarios presenciales publicados en el sistema.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row g-3">
+                                @foreach (var dia in diasSemana)
+                                {
+                                    var itemsDia = Model.Horarios.Where(h => h.DiaSemana == dia).OrderBy(h => h.HoraInicio).ToList();
+                                    if (itemsDia.Any())
+                                    {
+                                        <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="card border rounded-3 p-3 bg-light h-100 shadow-none">
+                                                <h6 class="fw-bold text-ipn-guinda mb-2 border-bottom pb-1">@dia</h6>
+                                                <div class="d-flex flex-column gap-2">
+                                                    @foreach (var h in itemsDia)
+                                                    {
+                                                        <div class="bg-white p-2 rounded border small">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <span class="badge bg-ipn-guinda">@h.HorarioFormato</span>
+                                                                <span class="text-muted text-truncate ms-1" style="max-width:130px;" title="@h.MateriaNombre">@h.MateriaNombre</span>
+                                                            </div>
+                                                            <div class="text-dark">
+                                                                📍 Aula / Salón: <strong>@h.Lugar</strong>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light p-3 d-flex justify-content-between align-items-center">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
+                    &larr; Volver al Catálogo
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
