@@ -80,5 +80,27 @@ namespace tutorias.Helpers
 
             return TimeZoneInfo.ConvertTimeFromUtc(utc, MexicoCityTimeZone);
         }
+
+        public static (DateTime InicioUtc, DateTime FinUtc) GetRangoUtcDia(DateTime fechaLocalMexico)
+        {
+            var inicioLocal = fechaLocalMexico.Date;
+            var finLocal = inicioLocal.AddDays(1);
+
+            var inicioUtc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(inicioLocal, DateTimeKind.Unspecified), MexicoCityTimeZone);
+            var finUtc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(finLocal, DateTimeKind.Unspecified), MexicoCityTimeZone);
+
+            return (inicioUtc, finUtc);
+        }
+
+        public static (DateTime InicioUtc, DateTime FinUtc) GetRangoUtcMes(int anio, int mes)
+        {
+            var inicioLocal = new DateTime(anio, mes, 1);
+            var finLocal = inicioLocal.AddMonths(1);
+
+            var inicioUtc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(inicioLocal, DateTimeKind.Unspecified), MexicoCityTimeZone);
+            var finUtc = TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(finLocal, DateTimeKind.Unspecified), MexicoCityTimeZone);
+
+            return (inicioUtc, finUtc);
+        }
     }
 }

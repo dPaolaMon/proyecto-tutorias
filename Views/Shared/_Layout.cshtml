@@ -52,6 +52,14 @@
                                 </a>
                             </li>
                         }
+                        @if (User.IsInRole("Tutor") || User.IsInRole("Coordinador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-semibold" asp-controller="Reportes" asp-action="Diario">
+                                    Reportes
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if (SignInManager.IsSignedIn(User))
@@ -102,6 +110,11 @@
                                                 Mis Asistencias
                                             </a>
                                         </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Reportes" asp-action="Diario">
+                                                Reportes de Asistencia
+                                            </a>
+                                        </li>
                                     }
                                     else
                                     {
@@ -113,6 +126,14 @@
                                         <li>
                                             <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="Escanear">
                                                 Escanear Codigo QR
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (User.IsInRole("Coordinador"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Reportes" asp-action="Diario">
+                                                Reportes de Asistencia
                                             </a>
                                         </li>
                                     }

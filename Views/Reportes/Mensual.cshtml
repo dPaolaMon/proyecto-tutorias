@@ -1,0 +1,176 @@
+@model tutorias.Models.ViewModels.ReporteMensualViewModel
+@{
+    ViewData["Title"] = "Reporte Mensual de Asistencias";
+}
+
+<div class="container-fluid px-0 mb-5">
+
+    <!-- Encabezado Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <span class="badge bg-white text-ipn-guinda fw-bold mb-2">Seguimiento Institucional</span>
+                <h1 class="h3 fw-bold mb-1">Reportes de Asistencia a Tutorias</h1>
+                <p class="mb-0 text-white-50 small">
+                    Consulta diaria y mensual de alumnos atendidos en sesiones de tutoria presencial.
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                @if (Model.EsCoordinador)
+                {
+                    <a asp-controller="Coordinacion" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                        <i class="bi bi-shield-check me-1"></i> Panel Coordinacion
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Asistencia" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                        <i class="bi bi-card-checklist me-1"></i> Pase de Lista
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Pestañas de Navegación entre Reporte Diario y Reporte Mensual -->
+        <div class="bg-white border-bottom px-4 pt-2">
+            <ul class="nav nav-tabs border-bottom-0">
+                <li class="nav-item">
+                    <a class="nav-link text-secondary fw-semibold" asp-action="Diario">
+                        <i class="bi bi-calendar-day me-1"></i> Reporte Diario
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active fw-bold text-ipn-guinda border-bottom-0 border-top-0 border-start-0 border-end-0"
+                       style="border-bottom: 3px solid var(--ipn-guinda) !important;"
+                       asp-action="Mensual">
+                        <i class="bi bi-calendar-month me-1"></i> Reporte Mensual
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Barra de Filtros y Búsqueda -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4">
+        <div class="card-body p-4">
+            <form method="get" asp-action="Mensual" class="row g-3 align-items-end">
+                <div class="col-12 col-md-3">
+                    <label class="form-label small fw-bold text-secondary text-uppercase mb-1">
+                        <i class="bi bi-calendar-month me-1"></i> Mes y Año
+                    </label>
+                    <input type="month" name="mesInput" value="@Model.MesInput" class="form-control" />
+                </div>
+
+                @if (Model.EsCoordinador)
+                {
+                    <div class="col-12 col-md-4">
+                        <label class="form-label small fw-bold text-secondary text-uppercase mb-1">
+                            <i class="bi bi-person-badge me-1"></i> Filtrar por Tutor
+                        </label>
+                        <select name="tutorId" class="form-select" asp-items="Model.TutoresDisponibles" asp-for="TutorFiltroId">
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <label class="form-label small fw-bold text-secondary text-uppercase mb-1">
+                            <i class="bi bi-mortarboard me-1"></i> Filtrar por Carrera
+                        </label>
+                        <select name="carreraId" class="form-select" asp-items="Model.CarrerasDisponibles" asp-for="CarreraFiltroId">
+                        </select>
+                    </div>
+                }
+
+                <div class="col-12 @(Model.EsCoordinador ? "col-md-2" : "col-md-3") d-flex gap-2">
+                    <button type="submit" class="btn btn-ipn-guinda w-100 fw-bold">
+                        <i class="bi bi-funnel me-1"></i> Consultar
+                    </button>
+                    <a asp-action="Mensual" class="btn btn-outline-secondary" title="Restablecer">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta de Resumen y Resultados -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-header bg-white border-bottom p-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+            <div>
+                <h5 class="fw-bold text-dark mb-0 fs-6">
+                    <i class="bi bi-calendar-check text-ipn-guinda me-1"></i> Resumen Consolidado: @Model.MesNombre
+                </h5>
+                <span class="text-muted small">
+                    Alumnos unicos que recibieron tutoria presencial durante el mes.
+                </span>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge bg-light text-dark border px-3 py-2 fs-6">
+                    Alumnos Atendidos: <strong class="text-ipn-guinda">@Model.TotalAlumnosUnicos</strong>
+                </span>
+                <span class="badge bg-light text-dark border px-3 py-2 fs-6">
+                    Total Asistencias: <strong class="text-ipn-guinda">@Model.TotalAsistencias</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            @if (!Model.Items.Any())
+            {
+                <div class="text-center py-5 text-muted small px-3">
+                    <i class="bi bi-clipboard-x fs-1 text-secondary mb-2 d-block"></i>
+                    <h6 class="fw-bold text-dark">No se encontraron registros</h6>
+                    <p class="mb-0">No existen asistencias registradas en el mes de @Model.MesNombre para los filtros seleccionados.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                            <tr>
+                                <th class="ps-3 py-3" style="width: 50px;">#</th>
+                                <th>Nombre Completo del Alumno</th>
+                                <th>Boleta</th>
+                                <th>Programa Academico</th>
+                                <th class="text-center pe-3">Asistencias en el Mes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small">
+                            @{ var index = 1; }
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td class="ps-3 text-muted">@(index++)</td>
+                                    <td>
+                                        <div class="fw-bold text-dark">@item.AlumnoNombreCompleto</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border font-monospace">@item.AlumnoBoleta</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-secondary">@item.ProgramaAcademico</span>
+                                    </td>
+                                    <td class="text-center pe-3">
+                                        <span class="badge bg-ipn-guinda-subtle text-ipn-guinda border px-3 py-1 fs-6 fw-bold">
+                                            @item.TotalAsistencias
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer bg-light border-top p-3 text-muted small d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <div>
+                Consolidado mensual con conteo unico por alumno tutorado.
+            </div>
+            <div>
+                Periodo: @Model.MesNombre
+            </div>
+        </div>
+    </div>
+
+</div>

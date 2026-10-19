@@ -105,10 +105,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 - [x] Validar en servidor que el token escaneado sea válido, vigente y no haya sido registrado previamente por el mismo alumno.
 
 ### Tarea 4.3: Historial de Asistencias (RF-20)
-- [ ] Consolidar modelo `Asistencia` detallando fecha, hora, materia impartida, ubicación/salón y método de registro (`Manual` o `CodigoQR`).
-- [ ] Diseñar vista para que el Alumno consulte su historial personal de asistencias registradas y confirmadas (**RF-20**).
-- [ ] Diseñar vista para que el Tutor consulte el historial de asistencias de las tutorías que ha impartido (**RF-20**).
-- [ ] Habilitar vista de auditoría para que Coordinación consulte el historial global de asistencias institucionales.
+- [x] Consolidar modelo `Asistencia` detallando fecha, hora, materia impartida, ubicación/salón y método de registro (`Manual` o `CodigoQR`).
+- [x] Diseñar vista para que el Alumno consulte su historial personal de asistencias registradas y confirmadas (**RF-20**).
+- [x] Diseñar vista para que el Tutor consulte el reporte e historial de asistencias de las tutorías que ha impartido (**RF-20**).
+- [x] Habilitar vista de auditoría y reportes (diario y mensual) para que Coordinación consulte el historial global de asistencias institucionales.
 
 ---
 
