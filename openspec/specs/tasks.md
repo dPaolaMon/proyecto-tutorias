@@ -115,10 +115,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 ## ⭐ Fase 5: Encuestas de Satisfacción y Notificaciones (RF-21 a RF-24)
 
 ### Tarea 5.1: Registro de Encuestas y Consulta de Resultados (RF-21, RF-22)
-- [ ] Habilitar al alumno responder una encuesta de retroalimentación sobre la tutoría recibida una vez confirmada su asistencia (**RF-21**).
-- [ ] Diseñar componente de evaluación con calificación en estrellas (1 a 5) y campo opcional de comentarios sobre el desempeño del tutor.
-- [ ] Actualizar el promedio acumulado de reputación en estrellas en `TutorPerfil`.
-- [ ] Implementar panel en Coordinación para visualizar resultados, indicadores y áreas de oportunidad detectadas en las encuestas (**RF-22**).
+- [x] Habilitar al alumno responder una encuesta de retroalimentación sobre la tutoría recibida una vez confirmada su asistencia (**RF-21**).
+- [x] Diseñar componente de evaluación directa en 1 clic con calificación en estrellas (1 a 5).
+- [x] Actualizar el promedio acumulado de reputación en estrellas en `TutorPerfil`.
+- [x] Implementar panel en Coordinación para visualizar resultados, indicadores y áreas de oportunidad detectadas en las encuestas (**RF-22**).
 
 ### Tarea 5.2: Notificaciones Manuales y Bandeja de Notificaciones (RF-23, RF-24)
 - [ ] Crear módulo para que Coordinación y Tutores puedan redactar y enviar notificaciones a los alumnos tutorados (**RF-23**).

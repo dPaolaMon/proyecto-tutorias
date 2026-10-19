@@ -532,6 +532,52 @@ namespace tutorias.Services
             return (true, null);
         }
 
+        public async Task<(bool Success, string? ErrorMessage)> CalificarAsistenciaAsync(int asistenciaId, string alumnoId, int calificacion)
+        {
+            if (calificacion < 1 || calificacion > 5)
+            {
+                return (false, "La calificación debe ser un valor numérico entre 1 y 5 estrellas.");
+            }
+
+            var asistencia = await _context.Asistencias
+                .Include(a => a.Sesion)
+                .FirstOrDefaultAsync(a => a.Id == asistenciaId && a.AlumnoId == alumnoId);
+
+            if (asistencia == null)
+            {
+                return (false, "El registro de asistencia no fue encontrado o no corresponde a tu cuenta.");
+            }
+
+            if (!asistencia.Confirmada)
+            {
+                return (false, "Únicamente es posible calificar asistencias que hayan sido confirmadas.");
+            }
+
+            asistencia.CalificacionEncuesta = calificacion;
+            await _context.SaveChangesAsync();
+
+            if (asistencia.Sesion != null && !string.IsNullOrWhiteSpace(asistencia.Sesion.TutorId))
+            {
+                var tutorId = asistencia.Sesion.TutorId;
+                var perfil = await _context.TutoresPerfiles.FirstOrDefaultAsync(p => p.UserId == tutorId);
+                if (perfil != null)
+                {
+                    var calificaciones = await _context.Asistencias
+                        .Where(a => a.Sesion != null && a.Sesion.TutorId == tutorId && a.Confirmada && a.CalificacionEncuesta.HasValue)
+                        .Select(a => a.CalificacionEncuesta!.Value)
+                        .ToListAsync();
+
+                    perfil.ReputacionPromedio = calificaciones.Any()
+                        ? Math.Round(calificaciones.Average(), 2)
+                        : 0.0;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return (true, null);
+        }
+
         private async Task<(bool Success, SesionTutoria? Sesion, string? ErrorMessage)> ObtenerOCrearSesionEnCursoAsync(string tutorId, int? materiaId)
         {
             var now = TimeHelper.NowMexico;

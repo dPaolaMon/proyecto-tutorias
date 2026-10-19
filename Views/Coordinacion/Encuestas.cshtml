@@ -1,0 +1,416 @@
+@model tutorias.Models.ViewModels.PanelEncuestasViewModel
+@{
+    ViewData["Title"] = "Resultados de Encuestas e Indicadores";
+}
+
+<div class="container-fluid px-0 mb-5">
+
+    <!-- Encabezado Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <span class="badge bg-white text-ipn-guinda fw-bold mb-2">Coordinacion de Tutorias</span>
+                <h1 class="h3 fw-bold mb-1">Indicadores y Resultados de Encuestas</h1>
+                <p class="mb-0 text-white-50 small">
+                    Evaluacion de calidad del servicio de tutorias presenciales basada en calificaciones de 1 a 5 estrellas.
+                </p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                    <i class="bi bi-people me-1"></i> Gestion de Usuarios
+                </a>
+                <a asp-action="SolicitudesTutores" class="btn btn-outline-light btn-sm fw-semibold">
+                    <i class="bi bi-person-lines-fill me-1"></i> Solicitudes de Tutor
+                </a>
+                <a asp-controller="Reportes" asp-action="Diario" class="btn btn-outline-light btn-sm fw-semibold">
+                    <i class="bi bi-file-earmark-bar-graph me-1"></i> Reportes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 1: INDICADORES EJECUTIVOS (KPIS) -->
+    <div class="row g-3 mb-4">
+        <!-- Promedio General Institucional -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-ipn-guinda">
+                <div class="card-body p-3 p-md-4">
+                    <div class="text-secondary small fw-bold text-uppercase mb-1">Satisfaccion Promedio</div>
+                    <div class="d-flex align-items-baseline gap-2 mb-2">
+                        <span class="display-6 fw-bold text-ipn-guinda">@Model.PromedioGeneral.ToString("0.0")</span>
+                        <span class="text-muted small">/ 5.0</span>
+                    </div>
+                    <div class="text-warning small mb-1">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Round(Model.PromedioGeneral))
+                            {
+                                <i class="bi bi-star-fill text-warning"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star text-muted"></i>
+                            }
+                        }
+                    </div>
+                    <span class="text-muted small">Promedio global institucional</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de Asistencias Confirmadas -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-success">
+                <div class="card-body p-3 p-md-4">
+                    <div class="text-secondary small fw-bold text-uppercase mb-1">Asistencias Confirmadas</div>
+                    <div class="display-6 fw-bold text-success mb-2">@Model.TotalAsistenciasConfirmadas</div>
+                    <span class="text-muted small">Total de sesiones presenciales acreditadas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de Asistencias Evaluadas -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100 border-start border-4 border-primary">
+                <div class="card-body p-3 p-md-4">
+                    <div class="text-secondary small fw-bold text-uppercase mb-1">Evaluaciones Recibidas</div>
+                    <div class="display-6 fw-bold text-primary mb-2">@Model.TotalAsistenciasEvaluadas</div>
+                    <span class="text-muted small">Asistencias con calificacion de 1 a 5 estrellas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribución de Calificaciones -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-body p-3 p-md-4">
+                    <div class="text-secondary small fw-bold text-uppercase mb-2">Distribucion de Estrellas</div>
+                    
+                    <div class="small mb-1 d-flex justify-content-between align-items-center">
+                        <span>5 <i class="bi bi-star-fill text-warning"></i></span>
+                        <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: @Model.PorcentajeEstrellas5%;"></div>
+                        </div>
+                        <span class="text-muted font-monospace" style="font-size:0.75rem;">@Model.TotalEstrellas5</span>
+                    </div>
+
+                    <div class="small mb-1 d-flex justify-content-between align-items-center">
+                        <span>4 <i class="bi bi-star-fill text-warning"></i></span>
+                        <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                            <div class="progress-bar bg-info" style="width: @Model.PorcentajeEstrellas4%;"></div>
+                        </div>
+                        <span class="text-muted font-monospace" style="font-size:0.75rem;">@Model.TotalEstrellas4</span>
+                    </div>
+
+                    <div class="small mb-1 d-flex justify-content-between align-items-center">
+                        <span>3 <i class="bi bi-star-fill text-warning"></i></span>
+                        <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                            <div class="progress-bar bg-warning" style="width: @Model.PorcentajeEstrellas3%;"></div>
+                        </div>
+                        <span class="text-muted font-monospace" style="font-size:0.75rem;">@Model.TotalEstrellas3</span>
+                    </div>
+
+                    <div class="small mb-1 d-flex justify-content-between align-items-center">
+                        <span>2 <i class="bi bi-star-fill text-warning"></i></span>
+                        <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                            <div class="progress-bar bg-secondary" style="width: @Model.PorcentajeEstrellas2%;"></div>
+                        </div>
+                        <span class="text-muted font-monospace" style="font-size:0.75rem;">@Model.TotalEstrellas2</span>
+                    </div>
+
+                    <div class="small d-flex justify-content-between align-items-center">
+                        <span>1 <i class="bi bi-star-fill text-warning"></i></span>
+                        <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                            <div class="progress-bar bg-danger" style="width: @Model.PorcentajeEstrellas1%;"></div>
+                        </div>
+                        <span class="text-muted font-monospace" style="font-size:0.75rem;">@Model.TotalEstrellas1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 2: DETECCION DE AREAS DE OPORTUNIDAD (ALERTAS Y FOCOS ROJOS) -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h4 class="h5 fw-bold text-dark mb-0">
+                <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i> Areas de Oportunidad Detectadas
+            </h4>
+            <span class="badge bg-danger-subtle text-danger border border-danger-subtle small">Focos de Atencion</span>
+        </div>
+
+        <div class="row g-4">
+            <!-- Tutores con Atención Prioritaria -->
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">
+                            <i class="bi bi-person-x text-danger me-1"></i> Tutores con Atencion Prioritaria
+                        </h6>
+                        <span class="text-muted small">Tutores con promedio inferior a 3.5 estrellas o múltiples evaluaciones bajas.</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.TutoresAtencionPrioritaria.Any())
+                        {
+                            <div class="text-center py-4 text-muted small px-3">
+                                <i class="bi bi-check-circle-fill text-success fs-3 mb-2 d-block"></i>
+                                <span class="fw-semibold text-dark">Todos los tutores presentan rendimiento satisfactorio.</span>
+                                <p class="mb-0 text-muted">Ningun tutor evaluado se encuentra por debajo del umbral de alerta.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th class="ps-3">Tutor</th>
+                                            <th>Tipo</th>
+                                            <th class="text-center">Promedio</th>
+                                            <th class="text-center">Bajas (1-2)</th>
+                                            <th class="pe-3">Motivo de Alerta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        @foreach (var t in Model.TutoresAtencionPrioritaria)
+                                        {
+                                            <tr>
+                                                <td class="ps-3 fw-bold text-dark">@t.TutorNombre</td>
+                                                <td><span class="badge bg-light text-secondary border">@t.TipoTutorTexto</span></td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle fw-bold">
+                                                        @t.PromedioCalificacion.ToString("0.0") / 5.0
+                                                    </span>
+                                                </td>
+                                                <td class="text-center fw-bold text-danger">@t.TotalEvaluacionesBajas</td>
+                                                <td class="pe-3 text-secondary" style="font-size:0.75rem;">@t.MotivoAlerta</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materias con Menor Nivel de Satisfacción -->
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">
+                            <i class="bi bi-book-half text-warning me-1"></i> Materias con Menor Nivel de Satisfaccion
+                        </h6>
+                        <span class="text-muted small">Asignaturas donde el promedio de tutoria es inferior a 4.0 estrellas.</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.MateriasMenorSatisfaccion.Any())
+                        {
+                            <div class="text-center py-4 text-muted small px-3">
+                                <i class="bi bi-check-circle-fill text-success fs-3 mb-2 d-block"></i>
+                                <span class="fw-semibold text-dark">Nivel optimo en todas las materias.</span>
+                                <p class="mb-0 text-muted">Todas las asignaturas evaluadas superan el promedio de 4.0 estrellas.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th class="ps-3">Clave</th>
+                                            <th>Materia</th>
+                                            <th class="text-center">Evaluaciones</th>
+                                            <th class="text-center pe-3">Promedio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        @foreach (var m in Model.MateriasMenorSatisfaccion)
+                                        {
+                                            <tr>
+                                                <td class="ps-3 font-monospace text-muted">@m.Clave</td>
+                                                <td class="fw-bold text-dark">@m.MateriaNombre</td>
+                                                <td class="text-center">@m.TotalEvaluaciones</td>
+                                                <td class="text-center pe-3">
+                                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fw-bold">
+                                                        @m.PromedioCalificacion.ToString("0.0") / 5.0
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sesiones Críticas Recientes (1 o 2 estrellas) -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="fw-bold text-dark mb-1 fs-6">
+                            <i class="bi bi-clock-history text-danger me-1"></i> Sesiones Criticas Recientes (1 y 2 Estrellas)
+                        </h6>
+                        <span class="text-muted small">Registro detallado de tutorias recientes con inconformidad para seguimiento preventivo.</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.SesionesCriticasRecientes.Any())
+                        {
+                            <div class="text-center py-4 text-muted small px-3">
+                                <i class="bi bi-shield-check text-success fs-3 mb-2 d-block"></i>
+                                <span class="fw-semibold text-dark">Sin registros criticos.</span>
+                                <p class="mb-0 text-muted">No se han registrado calificaciones de 1 o 2 estrellas recientemente.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th class="ps-3">Fecha y Hora</th>
+                                            <th class="text-center">Calificacion</th>
+                                            <th>Materia</th>
+                                            <th>Tutor</th>
+                                            <th>Alumno Tutorado</th>
+                                            <th class="pe-3">Programa Academico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        @foreach (var s in Model.SesionesCriticasRecientes)
+                                        {
+                                            <tr>
+                                                <td class="ps-3 text-muted">@s.FechaHoraTexto hrs</td>
+                                                <td class="text-center">
+                                                    <span class="badge @(s.Calificacion == 1 ? "bg-danger" : "bg-warning text-dark") fw-bold px-2 py-1">
+                                                        @s.Calificacion <i class="bi bi-star-fill"></i>
+                                                    </span>
+                                                </td>
+                                                <td class="fw-bold text-dark">@s.MateriaNombre</td>
+                                                <td>@s.TutorNombre</td>
+                                                <td>@s.AlumnoNombre</td>
+                                                <td class="pe-3 text-secondary">@s.AlumnoCarrera</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 3: DESEMPEÑO POR PROGRAMA ACADEMICO Y POR MATERIA -->
+    <div>
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h4 class="h5 fw-bold text-dark mb-0">
+                <i class="bi bi-bar-chart-line-fill text-ipn-guinda me-1"></i> Desempeno por Carrera y Materia
+            </h4>
+            <span class="badge bg-light text-secondary border small">Resultados Detallados</span>
+        </div>
+
+        <div class="row g-4">
+            <!-- Desempeño por Carrera / Programa Académico -->
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="fw-bold text-dark mb-0 fs-6">Desempeno por Programa Academico (Carrera)</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.DesempenoPorCarrera.Any())
+                        {
+                            <div class="text-center py-4 text-muted small">No hay asistencias registradas por programa academico.</div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th class="ps-3">Programa Academico</th>
+                                            <th class="text-center">Asistencias</th>
+                                            <th class="text-center">Evaluaciones</th>
+                                            <th class="text-center pe-3">Satisfaccion Promedio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        @foreach (var c in Model.DesempenoPorCarrera)
+                                        {
+                                            <tr>
+                                                <td class="ps-3 fw-bold text-dark">@c.CarreraNombre</td>
+                                                <td class="text-center text-muted">@c.TotalAsistenciasConfirmadas</td>
+                                                <td class="text-center text-muted">@c.TotalEvaluaciones</td>
+                                                <td class="text-center pe-3">
+                                                    @if (c.TotalEvaluaciones > 0)
+                                                    {
+                                                        <span class="badge bg-ipn-guinda-subtle text-ipn-guinda border px-2 py-1 fw-bold">
+                                                            @c.PromedioCalificacion.ToString("0.0") <i class="bi bi-star-fill text-warning ms-1"></i>
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted" style="font-size:0.75rem;">Sin evaluaciones</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desempeño por Materia / Unidad de Aprendizaje -->
+            <div class="col-12 col-lg-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="fw-bold text-dark mb-0 fs-6">Desempeno por Unidad de Aprendizaje (Materia)</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (!Model.DesempenoPorMateria.Any())
+                        {
+                            <div class="text-center py-4 text-muted small">No hay materias evaluadas aun.</div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light small">
+                                        <tr>
+                                            <th class="ps-3">Clave</th>
+                                            <th>Materia</th>
+                                            <th class="text-center">Evaluaciones</th>
+                                            <th class="text-center pe-3">Satisfaccion Promedio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        @foreach (var m in Model.DesempenoPorMateria)
+                                        {
+                                            <tr>
+                                                <td class="ps-3 font-monospace text-muted">@m.Clave</td>
+                                                <td class="fw-bold text-dark">@m.MateriaNombre</td>
+                                                <td class="text-center text-muted">@m.TotalEvaluaciones</td>
+                                                <td class="text-center pe-3">
+                                                    <span class="badge bg-ipn-guinda-subtle text-ipn-guinda border px-2 py-1 fw-bold">
+                                                        @m.PromedioCalificacion.ToString("0.0") <i class="bi bi-star-fill text-warning ms-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

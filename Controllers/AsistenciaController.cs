@@ -139,5 +139,27 @@ namespace tutorias.Controllers
 
             return RedirectToAction(nameof(MisAsistencias));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Calificar(int asistenciaId, int calificacion)
+        {
+            if (asistenciaId <= 0 || calificacion < 1 || calificacion > 5)
+            {
+                return BadRequest("Parámetros de calificación inválidos.");
+            }
+
+            var (success, error) = await _asistenciaService.CalificarAsistenciaAsync(asistenciaId, GetCurrentUserId(), calificacion);
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success, error });
+            }
+
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = success
+                ? "Calificación registrada exitosamente. Gracias por tu evaluación."
+                : (error ?? "Error al registrar la calificación.");
+
+            return RedirectToAction(nameof(MisAsistencias));
+        }
     }
 }

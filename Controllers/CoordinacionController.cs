@@ -154,5 +154,12 @@ namespace tutorias.Controllers
 
             return RedirectToAction(nameof(SolicitudesTutores));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Encuestas([FromServices] IEncuestasService encuestasService)
+        {
+            var vm = await encuestasService.ObtenerPanelEncuestasAsync();
+            return View(vm);
+        }
     }
 }

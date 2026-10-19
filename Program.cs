@@ -75,6 +75,7 @@ builder.Services.AddScoped<tutorias.Services.ICatalogoService, tutorias.Services
 builder.Services.AddScoped<tutorias.Services.IAsistenciaService, tutorias.Services.AsistenciaService>();
 builder.Services.AddScoped<tutorias.Services.IQrCodeService, tutorias.Services.QrCodeService>();
 builder.Services.AddScoped<tutorias.Services.IReportesService, tutorias.Services.ReportesService>();
+builder.Services.AddScoped<tutorias.Services.IEncuestasService, tutorias.Services.EncuestasService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {

@@ -15,5 +15,6 @@ namespace tutorias.Services
         Task<(bool Success, SesionQrDetalleViewModel? Detalle, string? ErrorMessage)> ObtenerOGenerarTokenQrAsync(string tutorId, int? materiaId, string baseUrl);
         Task<(bool Success, SesionQrDetalleViewModel? Detalle, string? ErrorMessage)> RegenerarTokenQrAsync(string tutorId, int? materiaId, string baseUrl);
         Task<(bool Success, AsistenciaQrResultadoViewModel? Resultado, string? ErrorMessage)> RegistrarAsistenciaPorQrAsync(string alumnoId, string token);
+        Task<(bool Success, string? ErrorMessage)> CalificarAsistenciaAsync(int asistenciaId, string alumnoId, int calificacion);
     }
 }
