@@ -80,16 +80,39 @@
                                             Mi Perfil
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="MisAsistencias">
-                                            Mis Asistencias
-                                        </a>
-                                    </li>
                                     @if (User.IsInRole("Tutor"))
                                     {
                                         <li>
-                                            <a class="dropdown-item py-2 fw-semibold text-ipn-guinda" asp-controller="TutorPerfil" asp-action="Index">
+                                            <a class="dropdown-item py-2 fw-semibold text-ipn-guinda" asp-controller="Asistencia" asp-action="GenerarQr">
+                                                Proyectar Codigo QR
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="Index">
+                                                Pase de Lista
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="TutorPerfil" asp-action="Index">
                                                 Panel de Tutor y Horarios
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="MisAsistencias">
+                                                Mis Asistencias
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="MisAsistencias">
+                                                Mis Asistencias
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Asistencia" asp-action="Escanear">
+                                                Escanear Codigo QR
                                             </a>
                                         </li>
                                     }

@@ -1,0 +1,79 @@
+@model tutorias.Models.ViewModels.AsistenciaQrResultadoViewModel
+@{
+    ViewData["Title"] = "Asistencia Validada Exitosamente";
+}
+
+<div class="container py-4 mb-5" style="max-width: 680px;">
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="bg-ipn-guinda p-4 text-white text-center">
+            <div class="mb-2">
+                <i class="bi bi-patch-check-fill text-white" style="font-size: 3.5rem;"></i>
+            </div>
+            <h1 class="h3 fw-bold mb-1">Asistencia Validada Exitosamente</h1>
+            <p class="mb-0 text-white-50 small">
+                Tu presencia en la sesion de tutoria ha quedado registrada y confirmada de forma automatica.
+            </p>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+
+            <div class="alert alert-success border-0 shadow-sm small text-center mb-4">
+                <strong>Registro Valido:</strong> Has acreditado tu asistencia presencial mediante el codigo QR oficial del tutor. No se requiere ninguna confirmacion adicional.
+            </div>
+
+            <!-- Resumen de Datos de la Tutoría -->
+            <div class="p-3 bg-light rounded-3 mb-4">
+                <h6 class="fw-bold text-dark text-uppercase small mb-3 border-bottom pb-2">Detalles de la Tutoria Acreditada</h6>
+                <div class="row g-3 small">
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Materia / Unidad:</span>
+                        <strong class="text-dark fs-6">@Model.MateriaNombre</strong>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Tutor a cargo:</span>
+                        <strong class="text-dark">@Model.TutorNombre</strong>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Salon / Espacio Asignado:</span>
+                        <span class="text-dark">@Model.Lugar</span>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Fecha y Hora de Registro:</span>
+                        <span class="text-dark fw-semibold">@Model.FechaHoraRegistroTexto hrs</span>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Alumno Tutorado:</span>
+                        <span class="text-dark">@Model.AlumnoNombre</span>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Numero de Boleta:</span>
+                        <span class="badge bg-light text-dark border">@Model.AlumnoBoleta</span>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Metodo de Validacion:</span>
+                        <span class="badge bg-secondary-subtle text-secondary">Codigo QR Dinamico</span>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block">Estatus Institucional:</span>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">
+                            Confirmada
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                <a asp-action="MisAsistencias" class="btn btn-ipn-guinda px-4 fw-bold">
+                    Ver Mis Asistencias
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary px-4 fw-semibold">
+                    Ir al Inicio
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>

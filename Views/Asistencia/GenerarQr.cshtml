@@ -1,0 +1,263 @@
+@model tutorias.Models.ViewModels.SesionQrDetalleViewModel
+@{
+    ViewData["Title"] = "Codigo QR para Asistencia Presencial";
+}
+
+<div class="container-fluid px-0 mb-5">
+
+    <!-- Encabezado / Banner Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <span class="badge bg-white text-ipn-guinda fw-bold mb-2">Validacion Presencial Dinamica</span>
+                <h1 class="h3 fw-bold mb-1">Codigo QR de Asistencia</h1>
+                <p class="mb-0 text-white-50 small">
+                    Proyecta este codigo en pantalla para que los alumnos tutorados registren su asistencia directamente.
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                <a asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                    &larr; Volver al Pase de Lista
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Exito:</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <strong>Error:</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    <div class="row g-4 align-items-stretch">
+
+        <!-- Columna Izquierda: Proyección del Código QR y Temporizador -->
+        <div class="col-12 col-lg-7">
+            <div class="card border-0 shadow-sm rounded-3 text-center p-4 h-100 bg-white">
+                <div class="card-body d-flex flex-column justify-content-between align-items-center">
+
+                    <!-- Información de la Sesión -->
+                    <div class="mb-3">
+                        <span class="badge bg-ipn-guinda px-3 py-2 fs-6 mb-2">@Model.MateriaNombre</span>
+                        <h4 class="fw-bold text-dark mb-1">@Model.Titulo</h4>
+                        <div class="text-secondary small">
+                            <span>Lugar: <strong>@Model.Lugar</strong></span> &bull; 
+                            <span>Tutor: <strong>@Model.TutorNombre</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor del Código QR -->
+                    <div class="p-3 bg-light rounded-4 shadow-sm border my-2 position-relative" style="max-width: 380px; width: 100%;">
+                        <img id="qrImage" src="data:image/png;base64,@Model.QrBase64"
+                             alt="Codigo QR de Asistencia" class="img-fluid rounded-3" style="width: 100%; height: auto;" />
+                    </div>
+
+                    <!-- Temporizador de 20 minutos con Cuenta Regresiva -->
+                    <div class="w-100 my-3" style="max-width: 420px;">
+                        <div class="d-flex justify-content-between align-items-center mb-1 small">
+                            <span class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Vigencia del Codigo</span>
+                            <span id="countdownTexto" class="fw-bold text-dark fs-5">20:00</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div id="countdownBar" class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="text-muted small mt-2">
+                            Al expirar la cuenta regresiva, el codigo se renovara automaticamente para evitar asistencias extemporaneas.
+                        </div>
+                    </div>
+
+                    <!-- Acciones manuales y enlace directo -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
+                        <form asp-action="RegenerarQr" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-secondary btn-sm fw-semibold">
+                                Renovar Codigo Ahora
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-outline-dark btn-sm fw-semibold" id="btnCopiarEnlace" data-url="@Model.UrlValidacion">
+                            Copiar Enlace de Registro
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Lista en Vivo de Alumnos Asistentes -->
+        <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-3 h-100">
+                <div class="card-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0 fs-6">Alumnos Registrados en Vivo</h5>
+                        <span class="text-muted small">Actualizacion automatica al escanear</span>
+                    </div>
+                    <span id="contadorAsistencias" class="badge bg-ipn-guinda px-2 py-1 fs-6">@Model.Asistencias.Count</span>
+                </div>
+                <div class="card-body p-0" style="max-height: 520px; overflow-y: auto;">
+                    <div id="listaAsistenciasContainer">
+                        @if (!Model.Asistencias.Any())
+                        {
+                            <div id="asistenciasVacio" class="text-center py-5 text-muted small px-3">
+                                <p class="mb-1 fw-bold">Esperando escaneos...</p>
+                                <span>Los alumnos que escaneen el codigo QR apareceran aqui inmediatamente con su asistencia confirmada.</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="list-group list-group-flush" id="listaAsistencias">
+                                @foreach (var a in Model.Asistencias)
+                                {
+                                    <div class="list-group-item p-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="fw-bold text-dark mb-0 fs-6">@a.AlumnoNombre</h6>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle small">
+                                                Confirmada
+                                            </span>
+                                        </div>
+                                        <div class="small text-muted mb-1">
+                                            <span>Boleta: <strong>@a.AlumnoBoleta</strong></span> &bull;
+                                            <span>@a.AlumnoCarrera</span>
+                                        </div>
+                                        <div class="small text-muted d-flex justify-content-between">
+                                            <span>Metodo: Codigo QR</span>
+                                            <span class="text-success fw-semibold">Hora: @a.HoraRegistroTexto hrs</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-top p-3 text-center text-muted small">
+                    Asistencias presenciales registradas y acreditadas directamente sin doble validacion.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let segundosRestantes = @Model.SegundosRestantes;
+            const duracionTotal = 1200; // 20 minutos = 1200 segundos
+            const countdownTexto = document.getElementById('countdownTexto');
+            const countdownBar = document.getElementById('countdownBar');
+            const qrImage = document.getElementById('qrImage');
+            const btnCopiar = document.getElementById('btnCopiarEnlace');
+            const contadorAsistencias = document.getElementById('contadorAsistencias');
+            const listaContainer = document.getElementById('listaAsistenciasContainer');
+
+            function formatearTiempo(segundos) {
+                const mins = Math.floor(segundos / 60);
+                const secs = segundos % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            function actualizarCuentaRegresiva() {
+                if (segundosRestantes > 0) {
+                    segundosRestantes--;
+                    if (countdownTexto) countdownTexto.textContent = formatearTiempo(segundosRestantes);
+
+                    const porcentaje = Math.max(0, Math.min(100, (segundosRestantes / duracionTotal) * 100));
+                    if (countdownBar) {
+                        countdownBar.style.width = `${porcentaje}%`;
+                        if (porcentaje < 20) {
+                            countdownBar.className = 'progress-bar bg-danger';
+                        } else if (porcentaje < 40) {
+                            countdownBar.className = 'progress-bar bg-warning';
+                        } else {
+                            countdownBar.className = 'progress-bar bg-success';
+                        }
+                    }
+                } else {
+                    // Tiempo expirado: consultar servidor para regenerar el token automáticamente
+                    sincronizarEstadoQr();
+                }
+            }
+
+            // Temporizador cada segundo
+            setInterval(actualizarCuentaRegresiva, 1000);
+
+            // Sondeo periódico cada 5 segundos para actualizar lista de asistentes y vigencia
+            function sincronizarEstadoQr() {
+                fetch('/Asistencia/ObtenerEstadoQr')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data || !data.success) return;
+
+                        if (data.qrBase64 && qrImage) {
+                            qrImage.src = `data:image/png;base64,${data.qrBase64}`;
+                        }
+
+                        if (typeof data.segundosRestantes === 'number') {
+                            segundosRestantes = data.segundosRestantes;
+                        }
+
+                        if (contadorAsistencias) {
+                            contadorAsistencias.textContent = data.totalAsistencias;
+                        }
+
+                        if (data.asistencias && data.asistencias.length > 0) {
+                            let html = '<div class="list-group list-group-flush">';
+                            data.asistencias.forEach(a => {
+                                html += `
+                                    <div class="list-group-item p-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="fw-bold text-dark mb-0 fs-6">${escapeHtml(a.alumnoNombre)}</h6>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle small">
+                                                Confirmada
+                                            </span>
+                                        </div>
+                                        <div class="small text-muted mb-1">
+                                            <span>Boleta: <strong>${escapeHtml(a.alumnoBoleta)}</strong></span> &bull;
+                                            <span>${escapeHtml(a.alumnoCarrera)}</span>
+                                        </div>
+                                        <div class="small text-muted d-flex justify-content-between">
+                                            <span>Metodo: Codigo QR</span>
+                                            <span class="text-success fw-semibold">Hora: ${escapeHtml(a.horaRegistroTexto)} hrs</span>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            html += '</div>';
+                            listaContainer.innerHTML = html;
+                        }
+                    })
+                    .catch(err => console.error('Error sincronizando estado de QR:', err));
+            }
+
+            setInterval(sincronizarEstadoQr, 5000);
+
+            if (btnCopiar) {
+                btnCopiar.addEventListener('click', function () {
+                    const url = this.getAttribute('data-url');
+                    if (!url) return;
+                    navigator.clipboard.writeText(url).then(() => {
+                        const originalText = btnCopiar.textContent;
+                        btnCopiar.textContent = 'Enlace Copiado';
+                        setTimeout(() => { btnCopiar.textContent = originalText; }, 2500);
+                    });
+                });
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+        });
+    </script>
+}

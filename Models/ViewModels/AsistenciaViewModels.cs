@@ -47,6 +47,7 @@ namespace tutorias.Models.ViewModels
         public List<TutorHorarioItemViewModel> HorariosRegistrados { get; set; } = new();
         public string DiaActualNombre { get; set; } = string.Empty;
         public string HoraActualTexto { get; set; } = string.Empty;
+        public bool EsDocente { get; set; }
     }
 
     public class AsistenciaItemViewModel
@@ -110,5 +111,31 @@ namespace tutorias.Models.ViewModels
     {
         public List<AsistenciaPendienteAlumnoViewModel> Pendientes { get; set; } = new();
         public List<AsistenciaItemViewModel> Confirmadas { get; set; } = new();
+    }
+
+    public class SesionQrDetalleViewModel
+    {
+        public int SesionId { get; set; }
+        public string Titulo { get; set; } = string.Empty;
+        public string MateriaNombre { get; set; } = string.Empty;
+        public string TutorNombre { get; set; } = string.Empty;
+        public string Lugar { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
+        public string QrBase64 { get; set; } = string.Empty;
+        public string UrlValidacion { get; set; } = string.Empty;
+        public int SegundosRestantes { get; set; }
+        public DateTime FechaExpiracion { get; set; }
+        public List<AsistenciaItemViewModel> Asistencias { get; set; } = new();
+    }
+
+    public class AsistenciaQrResultadoViewModel
+    {
+        public int AsistenciaId { get; set; }
+        public string MateriaNombre { get; set; } = string.Empty;
+        public string TutorNombre { get; set; } = string.Empty;
+        public string Lugar { get; set; } = string.Empty;
+        public string FechaHoraRegistroTexto { get; set; } = string.Empty;
+        public string AlumnoNombre { get; set; } = string.Empty;
+        public string AlumnoBoleta { get; set; } = string.Empty;
     }
 }

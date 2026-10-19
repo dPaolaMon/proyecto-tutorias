@@ -36,11 +36,13 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <a asp-action="VistaPrevia" class="btn btn-light text-ipn-guinda btn-sm fw-semibold shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye me-1" viewBox="0 0 16 16">
-                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                        </svg>
+                    <a asp-controller="Asistencia" asp-action="GenerarQr" class="btn btn-light text-ipn-guinda btn-sm fw-bold shadow-sm">
+                        <i class="bi bi-qr-code me-1"></i> Proyectar Codigo QR
+                    </a>
+                    <a asp-controller="Asistencia" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                        Pase de Lista
+                    </a>
+                    <a asp-action="VistaPrevia" class="btn btn-outline-light btn-sm fw-semibold">
                         Vista Previa
                     </a>
                 </div>
@@ -76,7 +78,7 @@
     <ul class="nav nav-tabs mb-4 border-bottom-0 gap-2" id="tutorTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active fw-semibold text-dark shadow-sm rounded-top border" id="horarios-tab" data-bs-toggle="tab" data-bs-target="#horariosPane" type="button" role="tab" aria-controls="horariosPane" aria-selected="true">
-                📅 Calendario y Salones Asignados
+                <i class="bi bi-calendar3 me-1"></i> Calendario y Salones Asignados
                 <span class="badge bg-ipn-guinda text-white ms-1">@Model.Horarios.Count</span>
             </button>
         </li>
@@ -167,7 +169,7 @@
                                                                 @h.MateriaNombre
                                                             </div>
                                                             <div class="text-muted small text-truncate" title="@h.Lugar" style="font-size:0.75rem;">
-                                                                📍 <strong>@h.Lugar</strong>
+                                                                <i class="bi bi-geo-alt me-1"></i><strong>@h.Lugar</strong>
                                                             </div>
                                                         </div>
                                                     }
@@ -228,7 +230,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="fw-bold text-dark mt-1">@h.MateriaNombre</div>
-                                                        <div class="small text-muted mt-1">📍 Aula / Salón: <strong>@h.Lugar</strong></div>
+                                                        <div class="small text-muted mt-1"><i class="bi bi-geo-alt me-1"></i>Aula / Salón: <strong>@h.Lugar</strong></div>
                                                     </div>
                                                 }
                                             </div>
@@ -275,7 +277,7 @@
                                 </p>
 
                                 <div class="mb-3">
-                                    <input type="text" id="buscadorMaterias" class="form-control form-control-sm" placeholder="🔍 Filtrar materias por nombre o clave..." />
+                                    <input type="text" id="buscadorMaterias" class="form-control form-control-sm" placeholder="Filtrar materias por nombre o clave..." />
                                 </div>
 
                                 <div class="border rounded-3 p-3 bg-light" style="max-height: 320px; overflow-y: auto;">

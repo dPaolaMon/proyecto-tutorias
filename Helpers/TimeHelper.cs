@@ -40,9 +40,37 @@ namespace tutorias.Helpers
             );
         }
 
-        public static DateTime NowMexico => TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, MexicoCityTimeZone);
+        public static DateTime NowMexico
+        {
+            get
+            {
+                var simuladaStr = Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV");
+                if (!string.IsNullOrWhiteSpace(simuladaStr) && DateTime.TryParse(simuladaStr, out var fechaSimulada))
+                {
+                    return fechaSimulada;
+                }
+
+                return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, MexicoCityTimeZone);
+            }
+        }
+
+        public static DateTime UtcNow
+        {
+            get
+            {
+                var simuladaStr = Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV");
+                if (!string.IsNullOrWhiteSpace(simuladaStr) && DateTime.TryParse(simuladaStr, out var fechaSimulada))
+                {
+                    return TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(fechaSimulada, DateTimeKind.Unspecified), MexicoCityTimeZone);
+                }
+
+                return DateTime.UtcNow;
+            }
+        }
 
         public static DateTime TodayMexico => NowMexico.Date;
+
+        public static bool EstaSimulandoHora => !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV"));
 
         public static DateTime ConvertToMexico(DateTime utcDateTime)
         {

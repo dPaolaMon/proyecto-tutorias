@@ -14,9 +14,14 @@
                     Consulta el registro de tus asistencias presenciales y confirma las solicitudes pendientes enviadas por tus tutores.
                 </p>
             </div>
-            <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold d-none d-sm-inline-block">
-                Ver Catalogo de Tutorias
-            </a>
+            <div class="d-flex gap-2">
+                <a asp-action="Escanear" class="btn btn-light text-ipn-guinda btn-sm fw-bold shadow-sm">
+                    <i class="bi bi-qr-code-scan me-1"></i> Escanear Codigo QR
+                </a>
+                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold d-none d-sm-inline-block">
+                    Ver Catalogo
+                </a>
+            </div>
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-# 📋 tasks.md — Plan de Tareas Incrementales de Desarrollo
+# 📋Plan de Tareas Incrementales de Desarrollo
 
 Este documento desglosa la implementación integral del **Sistema de Tutorías Académicas** en fases incrementales y verificables, basado en los 25 requerimientos funcionales oficiales (`RF.txt`), la arquitectura (`ARCHITECTURE.md`) y el modelo de datos (`data-model.md`).
 
@@ -97,12 +97,12 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 - [x] Asentar la asistencia con estado confirmado al recibir la validación del alumno.
 
 ### Tarea 4.2: Asistencia por Código QR Dinámico (RF-18, RF-19)
-- [ ] Crear entidad `SesionQrToken` (`SesionId`, `TokenHash`, `FechaCreacion`, `FechaExpiracion`, `Activo`).
-- [ ] Implementar `QrCodeService` usando `QRCoder` para generar código QR dinámico por sesión para la validación presencial (**RF-18**).
-- [ ] Implementar expiración y refresco periódico del código QR para garantizar asistencia presencial estricta.
-- [ ] Diseñar pantalla del Tutor para proyectar el código QR con cuenta regresiva visual.
-- [ ] Integrar lector de cámara en la vista móvil del Alumno para escanear el código QR y confirmar su asistencia automáticamente (**RF-19**).
-- [ ] Validar en servidor que el token escaneado sea válido, vigente y no haya sido registrado previamente por el mismo alumno.
+- [x] Crear entidad `SesionQrToken` (`SesionId`, `Token`, `FechaCreacion`, `FechaExpiracion`, `Activo`).
+- [x] Implementar `QrCodeService` usando `QRCoder` para generar código QR dinámico por sesión para la validación presencial (**RF-18**).
+- [x] Implementar expiración y refresco periódico del código QR para garantizar asistencia presencial estricta.
+- [x] Diseñar pantalla del Tutor para proyectar el código QR con cuenta regresiva visual.
+- [x] Integrar lector de cámara en la vista móvil del Alumno para escanear el código QR y confirmar su asistencia automáticamente (**RF-19**).
+- [x] Validar en servidor que el token escaneado sea válido, vigente y no haya sido registrado previamente por el mismo alumno.
 
 ### Tarea 4.3: Historial de Asistencias (RF-20)
 - [ ] Consolidar modelo `Asistencia` detallando fecha, hora, materia impartida, ubicación/salón y método de registro (`Manual` o `CodigoQR`).

@@ -16,7 +16,13 @@
                 </p>
             </div>
             <div class="text-md-end text-white-50 small">
-                <div><span class="text-white fw-bold">Fecha y Hora:</span> @Model.DiaActualNombre, @Model.HoraActualTexto hrs</div>
+                <div>
+                    <span class="text-white fw-bold">Fecha y Hora:</span> @Model.DiaActualNombre, @Model.HoraActualTexto hrs
+                    @if (tutorias.Helpers.TimeHelper.EstaSimulandoHora)
+                    {
+                        <span class="badge bg-warning text-dark ms-1">Simulacion Activa</span>
+                    }
+                </div>
                 <div>
                     @if (Model.HayHorarioEnCurso)
                     {
@@ -73,11 +79,28 @@
                             <span><strong>Ubicacion asignada:</strong> @horario.Lugar</span>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4 text-md-end">
-                        <div class="p-3 bg-light rounded-3 text-center d-inline-block">
-                            <div class="small text-muted mb-1">Alumnos registrados hoy</div>
-                            <span class="h4 fw-bold text-ipn-guinda mb-0">@Model.AsistenciasDeHoy.Count</span>
-                            <span class="small text-muted">/ 10 max</span>
+                    <div class="col-12 col-md-4 text-md-end d-flex flex-column align-items-md-end gap-2">
+                        <div class="p-2 px-3 bg-light rounded-3 text-center d-inline-block">
+                            <span class="small text-muted me-2">Alumnos registrados hoy:</span>
+                            <span class="fw-bold text-ipn-guinda">@Model.AsistenciasDeHoy.Count</span>
+                            @if (Model.EsDocente)
+                            {
+                                <span class="small text-muted">/ 10 max</span>
+                            }
+                        </div>
+                        <div>
+                            @if (horario.RequiereSeleccionMateria && Model.MateriasImpartidas.Count > 1)
+                            {
+                                <button type="button" class="btn btn-ipn-guinda btn-sm fw-bold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalElegirMateriaQr">
+                                    <i class="bi bi-qr-code me-1"></i> Proyectar Codigo QR
+                                </button>
+                            }
+                            else
+                            {
+                                <a asp-action="GenerarQr" asp-route-materiaId="@horario.MateriaId" class="btn btn-ipn-guinda btn-sm fw-bold px-3 py-2 shadow-sm">
+                                    <i class="bi bi-qr-code me-1"></i> Proyectar Codigo QR
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -271,6 +294,42 @@
                 </div>
             </div>
         </div>
+
+        @if (horario.RequiereSeleccionMateria && Model.MateriasImpartidas.Count > 1)
+        {
+            <div class="modal fade" id="modalElegirMateriaQr" tabindex="-1" aria-labelledby="modalQrLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+                        <form asp-action="GenerarQr" method="get">
+                            <div class="modal-header bg-ipn-guinda text-white">
+                                <h5 class="modal-title fs-6 fw-bold" id="modalQrLabel">Seleccionar Materia para el Codigo QR</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <p class="text-muted small mb-3">
+                                    Tu horario de tutoria permite impartir varias materias. Selecciona la materia para la cual deseas proyectar el codigo QR de asistencia:
+                                </p>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-dark">Materia Impartida:</label>
+                                    <select class="form-select form-select-sm" name="materiaId" required>
+                                        @foreach (var m in Model.MateriasImpartidas)
+                                        {
+                                            <option value="@m.Id">@m.Nombre (@m.Clave)</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-light">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-ipn-guinda btn-sm fw-bold px-3">
+                                    Proyectar Codigo QR
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
     }
     else
     {

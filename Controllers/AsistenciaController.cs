@@ -12,34 +12,19 @@ namespace tutorias.Controllers
     {
         private readonly IAsistenciaService _asistenciaService;
 
-        public AsistenciaController(IAsistenciaService asistenciaService)
-        {
-            _asistenciaService = asistenciaService;
-        }
+        public AsistenciaController(IAsistenciaService asistenciaService) => _asistenciaService = asistenciaService;
 
         private string GetCurrentUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        private string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
 
         [Authorize(Roles = "Tutor")]
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var tutorId = GetCurrentUserId();
-            var vm = await _asistenciaService.GetPanelTutorAsync(tutorId);
-            return View(vm);
-        }
+        public async Task<IActionResult> Index() => View(await _asistenciaService.GetPanelTutorAsync(GetCurrentUserId()));
 
         [Authorize(Roles = "Tutor")]
         [HttpGet]
-        public async Task<IActionResult> BuscarAlumnos(string? q)
-        {
-            if (string.IsNullOrWhiteSpace(q))
-            {
-                return Json(new System.Collections.Generic.List<BuscarAlumnoResultViewModel>());
-            }
-
-            var resultados = await _asistenciaService.BuscarAlumnosAsync(q);
-            return Json(resultados);
-        }
+        public async Task<IActionResult> BuscarAlumnos(string? q) =>
+            Json(string.IsNullOrWhiteSpace(q) ? new System.Collections.Generic.List<BuscarAlumnoResultViewModel>() : await _asistenciaService.BuscarAlumnosAsync(q));
 
         [Authorize(Roles = "Tutor")]
         [HttpPost]
@@ -52,50 +37,92 @@ namespace tutorias.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var tutorId = GetCurrentUserId();
-            var (success, error) = await _asistenciaService.RegistrarAsistenciaAutomaticaAsync(tutorId, model.AlumnoId, model.MateriaId);
-
-            if (!success)
-            {
-                TempData["ErrorMessage"] = error ?? "No fue posible registrar la asistencia.";
-            }
-            else
-            {
-                TempData["SuccessMessage"] = "Solicitud de asistencia enviada al alumno. Aparecerá en su perfil para su validación.";
-            }
+            var (success, error) = await _asistenciaService.RegistrarAsistenciaAutomaticaAsync(GetCurrentUserId(), model.AlumnoId, model.MateriaId);
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = success
+                ? "Solicitud de asistencia enviada al alumno. Aparecerá en su perfil para su validación."
+                : (error ?? "No fue posible registrar la asistencia.");
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Tutor")]
         [HttpGet]
-        public async Task<IActionResult> MisAsistencias()
+        public async Task<IActionResult> GenerarQr(int? materiaId = null)
         {
-            var userId = GetCurrentUserId();
-            var vm = await _asistenciaService.GetMisAsistenciasAsync(userId);
-            return View(vm);
+            var (success, detalle, error) = await _asistenciaService.ObtenerOGenerarTokenQrAsync(GetCurrentUserId(), materiaId, GetBaseUrl());
+            if (!success || detalle == null)
+            {
+                TempData["ErrorMessage"] = error ?? "No fue posible generar el código QR para esta sesión.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(detalle);
         }
+
+        [Authorize(Roles = "Tutor")]
+        [HttpGet]
+        public async Task<IActionResult> ObtenerEstadoQr(int? materiaId = null)
+        {
+            var (success, detalle, error) = await _asistenciaService.ObtenerOGenerarTokenQrAsync(GetCurrentUserId(), materiaId, GetBaseUrl());
+            if (!success || detalle == null) return Json(new { success = false, message = error });
+
+            return Json(new
+            {
+                success = true,
+                token = detalle.Token,
+                qrBase64 = detalle.QrBase64,
+                segundosRestantes = detalle.SegundosRestantes,
+                totalAsistencias = detalle.Asistencias.Count,
+                asistencias = detalle.Asistencias
+            });
+        }
+
+        [Authorize(Roles = "Tutor")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegenerarQr(int? materiaId = null)
+        {
+            var (success, _, error) = await _asistenciaService.RegenerarTokenQrAsync(GetCurrentUserId(), materiaId, GetBaseUrl());
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = success
+                ? "Código QR renovado exitosamente con 20 minutos de vigencia."
+                : (error ?? "No fue posible regenerar el código QR.");
+
+            return RedirectToAction(nameof(GenerarQr), new { materiaId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ValidarQr(string? token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                TempData["ErrorMessage"] = "El código QR o enlace proporcionado no es válido.";
+                return RedirectToAction(nameof(MisAsistencias));
+            }
+
+            var (success, resultado, error) = await _asistenciaService.RegistrarAsistenciaPorQrAsync(GetCurrentUserId(), token);
+            if (!success || resultado == null)
+            {
+                TempData["ErrorMessage"] = error ?? "No fue posible validar tu asistencia.";
+                return RedirectToAction(nameof(MisAsistencias));
+            }
+
+            return View("RegistroQrExitoso", resultado);
+        }
+
+        [HttpGet]
+        public IActionResult Escanear() => View();
+
+        [HttpGet]
+        public async Task<IActionResult> MisAsistencias() => View(await _asistenciaService.GetMisAsistenciasAsync(GetCurrentUserId()));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirmar(int asistenciaId)
         {
-            if (asistenciaId <= 0)
-            {
-                TempData["ErrorMessage"] = "Identificador de asistencia no válido.";
-                return RedirectToAction(nameof(MisAsistencias));
-            }
-
-            var userId = GetCurrentUserId();
-            var (success, error) = await _asistenciaService.ConfirmarAsistenciaAsync(asistenciaId, userId);
-
-            if (!success)
-            {
-                TempData["ErrorMessage"] = error ?? "Error al confirmar la asistencia.";
-            }
-            else
-            {
-                TempData["SuccessMessage"] = "Asistencia confirmada exitosamente. Tu registro ha sido validado.";
-            }
+            if (asistenciaId <= 0) return BadRequest();
+            var (success, error) = await _asistenciaService.ConfirmarAsistenciaAsync(asistenciaId, GetCurrentUserId());
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = success
+                ? "Asistencia confirmada exitosamente. Tu registro ha sido validado."
+                : (error ?? "Error al confirmar la asistencia.");
 
             return RedirectToAction(nameof(MisAsistencias));
         }
@@ -104,23 +131,11 @@ namespace tutorias.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Rechazar(int asistenciaId)
         {
-            if (asistenciaId <= 0)
-            {
-                TempData["ErrorMessage"] = "Identificador de asistencia no válido.";
-                return RedirectToAction(nameof(MisAsistencias));
-            }
-
-            var userId = GetCurrentUserId();
-            var (success, error) = await _asistenciaService.RechazarAsistenciaAsync(asistenciaId, userId);
-
-            if (!success)
-            {
-                TempData["ErrorMessage"] = error ?? "Error al procesar el rechazo de asistencia.";
-            }
-            else
-            {
-                TempData["WarningMessage"] = "Has indicado que no asististe a esta sesión. El registro pendiente fue descartado.";
-            }
+            if (asistenciaId <= 0) return BadRequest();
+            var (success, error) = await _asistenciaService.RechazarAsistenciaAsync(asistenciaId, GetCurrentUserId());
+            TempData[success ? "WarningMessage" : "ErrorMessage"] = success
+                ? "Has indicado que no asististe a esta sesión. El registro pendiente fue descartado."
+                : (error ?? "Error al procesar el rechazo de asistencia.");
 
             return RedirectToAction(nameof(MisAsistencias));
         }

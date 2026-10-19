@@ -22,6 +22,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=tutorias_db,1433;Database=TutoriasDb;User Id=sa;Password=TutoriaDb#1;TrustServerCertificate=True;MultipleActiveResultSets=true

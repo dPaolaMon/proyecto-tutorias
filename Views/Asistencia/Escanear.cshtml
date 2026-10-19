@@ -1,0 +1,150 @@
+@{
+    ViewData["Title"] = "Escanear Codigo QR de Asistencia";
+}
+
+<div class="container py-4 mb-5" style="max-width: 600px;">
+
+    <!-- Encabezado / Banner Institucional -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h4 fw-bold mb-1">Escanear Codigo QR</h1>
+                <p class="mb-0 text-white-50 small">
+                    Registra tu asistencia presencial apuntando la camara al codigo QR del tutor.
+                </p>
+            </div>
+            <a asp-action="MisAsistencias" class="btn btn-outline-light btn-sm fw-semibold">
+                Mis Asistencias
+            </a>
+        </div>
+    </div>
+
+    <!-- Visor de Cámara y Escáner -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+        <div class="card-body p-4 text-center">
+
+            <div id="lectorQrContainer" class="rounded-3 overflow-hidden mx-auto mb-3 bg-light" style="max-width: 440px; min-height: 280px; position: relative;">
+                <div id="reader" style="width: 100%;"></div>
+                <div id="cargandoCamara" class="py-5 text-muted small">
+                    <div class="spinner-border spinner-border-sm text-secondary mb-2" role="status"></div>
+                    <div>Iniciando lector de camara...</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">Asegurate de conceder permisos de acceso a la camara.</div>
+                </div>
+            </div>
+
+            <div id="mensajeEstado" class="small text-muted mb-3">
+                Apunta la camara hacia el codigo QR proyectado por el tutor en el salon.
+            </div>
+
+            <div class="d-flex justify-content-center gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnCambiarCamara">
+                    Cambiar Camara
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Opción Alternativa: Ingresar Token Manualmente -->
+    <div class="card border-0 shadow-sm rounded-4 bg-light">
+        <div class="card-body p-4">
+            <h6 class="fw-bold text-dark mb-2 fs-6">O ingresa el codigo del token directamente</h6>
+            <p class="text-muted small mb-3">
+                Si tu dispositivo no cuenta con camara o presenta problemas para enfocar, puedes ingresar el token del codigo QR proyectado.
+            </p>
+            <form asp-action="ValidarQr" method="get">
+                <div class="input-group">
+                    <input type="text" name="token" class="form-control" placeholder="Ingresa o pega el token..." required />
+                    <button class="btn btn-ipn-guinda px-3 fw-bold" type="submit">
+                        Validar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <!-- html5-qrcode library desde CDN -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cargandoEl = document.getElementById('cargandoCamara');
+            const estadoEl = document.getElementById('mensajeEstado');
+            const btnCambiar = document.getElementById('btnCambiarCamara');
+
+            if (typeof Html5Qrcode === 'undefined') {
+                if (cargandoEl) cargandoEl.innerHTML = '<span class="text-danger small">No fue posible cargar el modulo de camara. Utiliza la opcion de token manual inferior.</span>';
+                return;
+            }
+
+            const html5QrCode = new Html5Qrcode("reader");
+            let cameraIdActual = null;
+            let camarasDisponibles = [];
+            let camaraIndex = 0;
+
+            function onScanSuccess(decodedText, decodedResult) {
+                // Si el QR contiene una URL completa o solo el token
+                let targetUrl = decodedText;
+                if (!targetUrl.startsWith('http')) {
+                    targetUrl = `/Asistencia/ValidarQr?token=${encodeURIComponent(decodedText)}`;
+                }
+
+                if (estadoEl) {
+                    estadoEl.innerHTML = '<span class="text-success fw-bold">Codigo detectado. Redirigiendo...</span>';
+                }
+
+                html5QrCode.stop().then(() => {
+                    window.location.href = targetUrl;
+                }).catch(() => {
+                    window.location.href = targetUrl;
+                });
+            }
+
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    camarasDisponibles = devices;
+                    // Preferir cámara trasera ('back' o 'environment')
+                    let camaraTrasera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('trasera') || d.label.toLowerCase().includes('environment'));
+                    camaraIndex = camaraTrasera ? devices.indexOf(camaraTrasera) : 0;
+                    iniciarCamara(devices[camaraIndex].id);
+                } else {
+                    if (cargandoEl) cargandoEl.innerHTML = '<span class="text-muted small">No se detectaron camaras en este dispositivo. Puedes ingresar el codigo manualmente abajo.</span>';
+                }
+            }).catch(err => {
+                if (cargandoEl) cargandoEl.innerHTML = '<span class="text-muted small">No se pudo acceder a la camara. Verifica los permisos del navegador o ingresa el token manualmente.</span>';
+            });
+
+            function iniciarCamara(cameraId) {
+                if (cargandoEl) cargandoEl.classList.remove('d-none');
+                html5QrCode.start(
+                    cameraId,
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 }
+                    },
+                    onScanSuccess,
+                    (errorMessage) => {
+                        // Errores continuos de frame ignorados intencionalmente
+                    }
+                ).then(() => {
+                    if (cargandoEl) cargandoEl.classList.add('d-none');
+                }).catch(err => {
+                    if (cargandoEl) cargandoEl.innerHTML = '<span class="text-danger small">Error iniciando la camara. Verifica los permisos de tu navegador.</span>';
+                });
+            }
+
+            if (btnCambiar) {
+                btnCambiar.addEventListener('click', function () {
+                    if (camarasDisponibles.length > 1) {
+                        html5QrCode.stop().then(() => {
+                            camaraIndex = (camaraIndex + 1) % camarasDisponibles.length;
+                            iniciarCamara(camarasDisponibles[camaraIndex].id);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}

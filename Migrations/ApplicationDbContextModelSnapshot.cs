@@ -407,6 +407,41 @@ namespace tutorias.Migrations
                     b.ToTable("MateriasEquivalencias");
                 });
 
+            modelBuilder.Entity("tutorias.Models.SesionQrToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaExpiracion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SesionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SesionId");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("SesionesQrTokens");
+                });
+
             modelBuilder.Entity("tutorias.Models.SesionTutoria", b =>
                 {
                     b.Property<int>("Id")
@@ -699,6 +734,17 @@ namespace tutorias.Migrations
                     b.Navigation("MateriaEquivalente");
 
                     b.Navigation("MateriaOrigen");
+                });
+
+            modelBuilder.Entity("tutorias.Models.SesionQrToken", b =>
+                {
+                    b.HasOne("tutorias.Models.SesionTutoria", "Sesion")
+                        .WithMany()
+                        .HasForeignKey("SesionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sesion");
                 });
 
             modelBuilder.Entity("tutorias.Models.SesionTutoria", b =>
