@@ -63,22 +63,20 @@ namespace tutorias.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coordinador")]
         public async Task<IActionResult> Metricas(ReporteMetricasFiltroViewModel filtro)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
-            var esCoordinador = User.IsInRole("Coordinador");
-
-            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, esCoordinador, filtro);
+            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, true, filtro);
             return View(vm);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coordinador")]
         public async Task<IActionResult> ExportarMetricasPdf(ReporteMetricasFiltroViewModel filtro)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
-            var esCoordinador = User.IsInRole("Coordinador");
-
-            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, esCoordinador, filtro);
+            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, true, filtro);
             var pdfBytes = _pdfService.GenerarReporteMetricasPdf(vm);
 
             var fechaStr = TimeHelper.NowMexico.ToString("yyyyMMdd_HHmm");

@@ -297,5 +297,28 @@ namespace tutorias.Services
             await _context.SaveChangesAsync();
             return (true, null);
         }
+
+        public async Task<(bool Success, string? ErrorMessage)> EliminarPerfilAcademicoAsync(string userId)
+        {
+            var perfil = await _context.TutoresPerfiles
+                .Include(p => p.MateriasImpartidas)
+                .FirstOrDefaultAsync(p => p.UserId == userId);
+
+            if (perfil == null)
+            {
+                return (false, "Perfil de tutor no encontrado.");
+            }
+
+            if (perfil.MateriasImpartidas.Any())
+            {
+                _context.TutoresMaterias.RemoveRange(perfil.MateriasImpartidas);
+            }
+
+            perfil.Biografia = null;
+            perfil.EsPublico = false;
+
+            await _context.SaveChangesAsync();
+            return (true, null);
+        }
     }
 }

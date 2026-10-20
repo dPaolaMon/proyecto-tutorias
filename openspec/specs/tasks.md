@@ -63,7 +63,7 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
   - [x] Selección múltiple de materias que imparte según su carrera o academia con buscador interactivo.
   - [x] Bandera `EsPublico` para activar/desactivar su visibilidad en el catálogo general.
 - [x] Implementar vista previa del perfil público del tutor.
-- [ ] Implementar acción de eliminación del perfil académico (**RF-11**), permitiendo al tutor eliminar la información de su perfil público del sistema.
+- [x] Implementar acción de eliminación del perfil académico (**RF-11**), permitiendo al tutor eliminar la información de su perfil público del sistema.
 
 ---
 

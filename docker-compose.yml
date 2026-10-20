@@ -22,6 +22,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    volumes:
+      - ./wwwroot/uploads:/app/wwwroot/uploads
     env_file:
       - .env
     environment:

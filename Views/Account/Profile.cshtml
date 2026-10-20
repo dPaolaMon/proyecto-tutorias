@@ -44,7 +44,14 @@
                     {
                         <img src="@Model.FotoUrl" alt="Foto de perfil"
                              class="rounded-circle border border-white border-3 shadow-sm"
-                             style="width:96px;height:96px;object-fit:cover;" />
+                             style="width:96px;height:96px;object-fit:cover;"
+                             onerror="this.onerror=null; this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');" />
+                        <div class="rounded-circle bg-white d-inline-flex align-items-center justify-content-center border border-white border-3 shadow-sm d-none"
+                             style="width:96px;height:96px;">
+                            <span class="fw-bold text-ipn-guinda" style="font-size:2.4rem;">
+                                @(string.IsNullOrWhiteSpace(Model.NombreCompleto) ? "?" : Model.NombreCompleto.Substring(0,1).ToUpper())
+                            </span>
+                        </div>
                     }
                     else
                     {
@@ -137,51 +144,21 @@
                 </dl>
             </div>
 
-            <!-- Acciones CRUD del Perfil -->
+            <!-- Acciones Directas de la Cuenta -->
             <div class="card-footer bg-white border-top-0 px-4 pb-4 pt-0 d-flex gap-2 flex-wrap justify-content-between align-items-center">
                 @if (Model.Activo)
                 {
-                    <div class="d-flex gap-2 flex-wrap">
+                    <div class="d-flex gap-2">
                         <a asp-action="EditProfile" class="btn btn-ipn-guinda btn-sm fw-semibold">
-                            Editar Perfil
+                            <i class="bi bi-pencil-square me-1"></i> Editar Perfil
                         </a>
-                        @if (Model.Roles.Contains("Tutor"))
-                        {
-                            <a asp-controller="Asistencia" asp-action="GenerarQr" class="btn btn-ipn-guinda btn-sm fw-semibold">
-                                Proyectar Codigo QR
-                            </a>
-                            <a asp-controller="Asistencia" asp-action="Index" class="btn btn-outline-primary btn-sm fw-semibold">
-                                Pase de Lista
-                            </a>
-                            <a asp-controller="TutorPerfil" asp-action="Index" class="btn btn-outline-success btn-sm fw-semibold">
-                                Panel de Tutor y Horarios
-                            </a>
-                            <a asp-controller="Asistencia" asp-action="MisAsistencias" class="btn btn-outline-secondary btn-sm fw-semibold">
-                                Mis Asistencias
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-controller="Asistencia" asp-action="Escanear" class="btn btn-ipn-guinda btn-sm fw-semibold">
-                                Escanear Codigo QR
-                            </a>
-                            <a asp-controller="Asistencia" asp-action="MisAsistencias" class="btn btn-outline-primary btn-sm fw-semibold">
-                                Mis Asistencias
-                            </a>
-                            @if (!Model.Roles.Contains("Coordinador"))
-                            {
-                                <a asp-controller="Tutorias" asp-action="Solicitud" class="btn btn-outline-primary btn-sm fw-semibold">
-                                    Solicitud de Tutor
-                                </a>
-                            }
-                        }
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
-                            Volver
+                        <a asp-controller="Catalogo" asp-action="Index" class="btn btn-outline-secondary btn-sm fw-semibold">
+                            <i class="bi bi-arrow-left me-1"></i> Volver
                         </a>
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-danger btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#modalBajaCuenta" title="Dar de baja mi cuenta">
-                            Baja de Cuenta
+                            <i class="bi bi-person-x me-1"></i> Dar de Baja mi Cuenta
                         </button>
                     </div>
                 }
@@ -190,12 +167,12 @@
                     <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                         <form asp-action="ReactivateProfile" method="post" class="d-inline">
                             <button type="submit" class="btn btn-success btn-sm fw-semibold">
-                                Reactivar mi cuenta
+                                <i class="bi bi-arrow-repeat me-1"></i> Reactivar mi cuenta
                             </button>
                         </form>
                         <form asp-action="Logout" method="post" class="d-inline">
                             <button type="submit" class="btn btn-outline-secondary btn-sm fw-semibold">
-                                Cerrar Sesión
+                                <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
                             </button>
                         </form>
                     </div>

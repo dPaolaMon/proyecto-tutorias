@@ -23,8 +23,8 @@ namespace tutorias.Services
 
         public Task SendConfirmationEmailAsync(string toEmail, string confirmationLink, string nombreUsuario)
         {
-            _logger.LogWarning("📧 [DEV CONFIRMACIÓN DE CORREO] Para: {ToEmail} ({Nombre})", toEmail, nombreUsuario);
-            _logger.LogWarning("👉 Enlace de Confirmación: {Link}", confirmationLink);
+            _logger.LogWarning("[DEV CONFIRMACION DE CORREO] Para: {ToEmail} ({Nombre})", toEmail, nombreUsuario);
+            _logger.LogWarning("[DEV ENLACE DE CONFIRMACION]: {Link}", confirmationLink);
 
             var html = $@"
                 <h2>Confirmación de Cuenta Institucional - Sistema de Tutorías IPN</h2>
@@ -39,8 +39,8 @@ namespace tutorias.Services
 
         public Task SendPasswordResetEmailAsync(string toEmail, string resetLink, string nombreUsuario)
         {
-            _logger.LogWarning("🔑 [DEV RECUPERACIÓN DE CONTRASEÑA] Para: {ToEmail} ({Nombre})", toEmail, nombreUsuario);
-            _logger.LogWarning("👉 Enlace de Restablecimiento: {Link}", resetLink);
+            _logger.LogWarning("[DEV RECUPERACION DE CONTRASENA] Para: {ToEmail} ({Nombre})", toEmail, nombreUsuario);
+            _logger.LogWarning("[DEV ENLACE DE RESTABLECIMIENTO]: {Link}", resetLink);
 
             var html = $@"
                 <h2>Recuperación de Contraseña - Sistema de Tutorías IPN</h2>

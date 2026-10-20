@@ -124,7 +124,11 @@
                                         <div class="d-flex align-items-center gap-2">
                                             @if (!string.IsNullOrEmpty(user.FotoUrl))
                                             {
-                                                <img src="@user.FotoUrl" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Avatar" />
+                                                <img src="@user.FotoUrl" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Avatar"
+                                                     onerror="this.onerror=null; this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');" />
+                                                <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center text-ipn-guinda fw-bold border d-none" style="width: 36px; height: 36px; font-size: 0.85rem;">
+                                                    @(!string.IsNullOrWhiteSpace(user.Nombre) ? user.Nombre.Substring(0, 1).ToUpper() : (!string.IsNullOrWhiteSpace(user.NombreCompleto) ? user.NombreCompleto.Substring(0, 1).ToUpper() : "?"))
+                                                </span>
                                             }
                                             else
                                             {
@@ -482,6 +486,10 @@
                     // Avatar
                     var elAvatarText = document.getElementById('fichaAvatarText');
                     var elAvatarImg = document.getElementById('fichaAvatarImg');
+                    elAvatarImg.onerror = function () {
+                        this.classList.add('d-none');
+                        elAvatarText.classList.remove('d-none');
+                    };
                     if (fotoUrl && fotoUrl.trim() !== '') {
                         elAvatarImg.src = fotoUrl;
                         elAvatarImg.classList.remove('d-none');

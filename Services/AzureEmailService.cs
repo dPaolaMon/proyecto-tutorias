@@ -24,7 +24,7 @@ namespace tutorias.Services
         {
             if (string.IsNullOrWhiteSpace(_connectionString) || string.IsNullOrWhiteSpace(_senderAddress))
             {
-                _logger.LogWarning("⚠️ Azure Communication Services no está configurado (falta connection string o remitente). No se envió el correo a {ToEmail}.", toEmail);
+                _logger.LogWarning("[ADVERTENCIA] Azure Communication Services no está configurado (falta connection string o remitente). No se envió el correo a {ToEmail}.", toEmail);
                 return;
             }
 
@@ -37,11 +37,11 @@ namespace tutorias.Services
                     content: new EmailContent(subject) { Html = htmlContent });
 
                 var emailSendOperation = await emailClient.SendAsync(WaitUntil.Started, emailMessage);
-                _logger.LogInformation("✅ Correo enviado vía Azure Communication Services a {ToEmail}. OperationId: {OpId}", toEmail, emailSendOperation.Id);
+                _logger.LogInformation("[INFO] Correo enviado vía Azure Communication Services a {ToEmail}. OperationId: {OpId}", toEmail, emailSendOperation.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Error al enviar correo vía Azure Communication Services a {ToEmail}", toEmail);
+                _logger.LogError(ex, "[ERROR] Error al enviar correo vía Azure Communication Services a {ToEmail}", toEmail);
                 throw;
             }
         }

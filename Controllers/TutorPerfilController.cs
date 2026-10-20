@@ -140,5 +140,25 @@ namespace tutorias.Controllers
             var vm = await _tutorPerfilService.GetPerfilAsync(userId);
             return View(vm);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarPerfil()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId)) return Challenge();
+
+            var (success, error) = await _tutorPerfilService.EliminarPerfilAcademicoAsync(userId);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Tu perfil académico público ha sido eliminado y despublicado del catálogo.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = error ?? "Error al eliminar el perfil académico.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

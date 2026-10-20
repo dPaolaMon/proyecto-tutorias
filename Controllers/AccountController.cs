@@ -118,7 +118,7 @@ namespace tutorias.Controllers
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 TempData["SuccessMessage"] = "Tu correo institucional ya ha sido verificado.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Catalogo");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
@@ -126,7 +126,7 @@ namespace tutorias.Controllers
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 TempData["SuccessMessage"] = "¡Tu correo institucional ha sido verificado con éxito!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Catalogo");
             }
 
             ViewBag.ErrorMessage = "El enlace de confirmación ha expirado o no es válido.";
@@ -196,7 +196,7 @@ namespace tutorias.Controllers
             if (!result.Succeeded) { ModelState.AddModelError(string.Empty, "Intento de inicio de sesión no válido."); return View(model); }
 
             if (user != null && !user.PerfilCompleto) return RedirectToAction(nameof(CompleteProfile));
-            return (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
+            return (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) ? Redirect(returnUrl) : RedirectToAction("Index", "Catalogo");
         }
 
         [Authorize, HttpGet]
@@ -252,7 +252,7 @@ namespace tutorias.Controllers
                 return View(model);
             }
             TempData["SuccessMessage"] = "¡Perfil completado exitosamente!";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
         [Authorize, HttpGet]

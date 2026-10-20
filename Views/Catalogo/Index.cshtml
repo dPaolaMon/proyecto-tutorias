@@ -110,10 +110,14 @@
                     <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden d-flex flex-column justify-content-between">
                         <!-- Parte Superior: Avatar y Datos Principales -->
                         <div class="card-body p-4 text-center pb-2">
-                            <div class="mb-3">
+                            <div class="mb-3 d-flex justify-content-center">
                                 @if (!string.IsNullOrEmpty(tutor.FotoUrl))
                                 {
-                                    <img src="@tutor.FotoUrl" alt="Foto de @tutor.NombreCompleto" class="rounded-circle border border-2 shadow-sm" style="width:84px;height:84px;object-fit:cover;" />
+                                    <img src="@tutor.FotoUrl" alt="Foto de @tutor.NombreCompleto" class="rounded-circle border border-2 shadow-sm" style="width:84px;height:84px;object-fit:cover;"
+                                         onerror="this.onerror=null; this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');" />
+                                    <div class="rounded-circle bg-ipn-guinda text-white d-inline-flex align-items-center justify-content-center fw-bold shadow-sm d-none" style="width:84px;height:84px;font-size:2.2rem;">
+                                        @(string.IsNullOrWhiteSpace(tutor.NombreCompleto) ? "?" : tutor.NombreCompleto.Substring(0, 1).ToUpper())
+                                    </div>
                                 }
                                 else
                                 {
@@ -139,7 +143,7 @@
 
                             <!-- Reputación -->
                             <div class="small mb-3">
-                                <span class="text-warning fw-bold">★ @tutor.ReputacionPromedio.ToString("0.0")</span>
+                                <span class="text-warning fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>@tutor.ReputacionPromedio.ToString("0.0")</span>
                                 <span class="text-muted" style="font-size:0.75rem;">(Reputación)</span>
                             </div>
 

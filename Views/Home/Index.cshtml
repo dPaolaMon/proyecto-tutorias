@@ -1,8 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Sistema de Tutorías";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row justify-content-center align-items-center py-2 py-lg-3">
+    <div class="col-12 col-xl-11 text-center">
+        <!-- Distintivo Institucional -->
+        <div class="mb-3">
+            <span class="badge bg-white text-ipn-guinda border border-ipn-guinda shadow-sm px-3 py-2 rounded-pill small fw-semibold text-uppercase tracking-wide">
+                <i class="bi bi-building me-1"></i> Instituto Politécnico Nacional &bull; UPIICSA
+            </span>
+        </div>
+
+        <!-- Título y Semblanza Principal -->
+        <h1 class="display-6 fw-bold text-ipn-guinda mb-2">
+            Sistema Institucional de Tutorías Académicas
+        </h1>
+        <p class="lead text-secondary mx-auto mb-4" style="max-width: 780px; font-size: 1.05rem;">
+            Plataforma oficial de acompañamiento escolar, asesoría personalizada y seguimiento presencial para consolidar la trayectoria y éxito académico de la comunidad de UPIICSA.
+        </p>
+
+        <!-- Tres Pilares del Sistema de Tutorías -->
+        <div class="row g-3 mb-4 text-start">
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-3 bg-white border-top border-3 border-ipn-guinda">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-ipn-gris-claro text-ipn-guinda mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-people-fill fs-4"></i>
+                        </div>
+                        <h2 class="h6 fw-bold text-dark mb-2">Tutoría entre Pares</h2>
+                        <p class="small text-muted mb-0 lh-sm">
+                            Asesoría colaborativa impartida por alumnos tutores para comprender unidades de aprendizaje complejas y reforzar conocimientos en equipo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-3 bg-white border-top border-3 border-ipn-guinda">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-ipn-gris-claro text-ipn-guinda mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-mortarboard-fill fs-4"></i>
+                        </div>
+                        <h2 class="h6 fw-bold text-dark mb-2">Tutoría Individual</h2>
+                        <p class="small text-muted mb-0 lh-sm">
+                            Orientación académica integral conducida por docentes tutores para canalizar inquietudes vocacionales y optimizar tu progreso curricular.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-3 bg-white border-top border-3 border-ipn-guinda">
+                    <div class="card-body p-3 p-xl-4">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-ipn-gris-claro text-ipn-guinda mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-qr-code-scan fs-4"></i>
+                        </div>
+                        <h2 class="h6 fw-bold text-dark mb-2">Asistencia Presencial QR</h2>
+                        <p class="small text-muted mb-0 lh-sm">
+                            Pase de lista inmediato en salones asignados mediante códigos QR dinámicos de vigencia corta y encuestas directas de satisfacción.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aviso Institucional de Acceso -->
+        <div class="text-muted small mt-2">
+            <i class="bi bi-shield-lock me-1 text-ipn-guinda"></i>
+            Acceso exclusivo para la comunidad politécnica mediante credenciales oficiales (<span class="font-monospace text-dark">@@alumno.ipn.mx</span> o <span class="font-monospace text-dark">@@ipn.mx</span>).
+        </div>
+    </div>
 </div>
