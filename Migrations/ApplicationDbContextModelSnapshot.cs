@@ -407,6 +407,49 @@ namespace tutorias.Migrations
                     b.ToTable("MateriasEquivalencias");
                 });
 
+            modelBuilder.Entity("tutorias.Models.Notificacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmisorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("FechaEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaLectura")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Leida")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmisorId");
+
+                    b.HasIndex("UserId", "Leida", "FechaEnvio");
+
+                    b.ToTable("Notificaciones");
+                });
+
             modelBuilder.Entity("tutorias.Models.SesionQrToken", b =>
                 {
                     b.Property<int>("Id")
@@ -734,6 +777,24 @@ namespace tutorias.Migrations
                     b.Navigation("MateriaEquivalente");
 
                     b.Navigation("MateriaOrigen");
+                });
+
+            modelBuilder.Entity("tutorias.Models.Notificacion", b =>
+                {
+                    b.HasOne("tutorias.Models.ApplicationUser", "Emisor")
+                        .WithMany()
+                        .HasForeignKey("EmisorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("tutorias.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Emisor");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("tutorias.Models.SesionQrToken", b =>

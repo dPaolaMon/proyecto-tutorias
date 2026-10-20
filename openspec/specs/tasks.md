@@ -121,10 +121,10 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 - [x] Implementar panel en Coordinación para visualizar resultados, indicadores y áreas de oportunidad detectadas en las encuestas (**RF-22**).
 
 ### Tarea 5.2: Notificaciones Manuales y Bandeja de Notificaciones (RF-23, RF-24)
-- [ ] Crear módulo para que Coordinación y Tutores puedan redactar y enviar notificaciones a los alumnos tutorados (**RF-23**).
-- [ ] Crear entidad y servicio de `Notificacion` (`UserId`, `Titulo`, `Mensaje`, `FechaEnvio`, `Leida`).
-- [ ] Implementar bandeja de entrada accesible para todos los usuarios donde visualicen sus notificaciones recibidas (**RF-24**).
-- [ ] Integrar indicador de notificaciones pendientes/no leídas en la barra de navegación del sistema.
+- [x] Crear módulo para que Coordinación y Tutores puedan redactar y enviar notificaciones a los alumnos tutorados (**RF-23**).
+- [x] Crear entidad y servicio de `Notificacion` (`UserId`, `Titulo`, `Mensaje`, `FechaEnvio`, `Leida`).
+- [x] Implementar bandeja de entrada accesible para todos los usuarios donde visualicen sus notificaciones recibidas (**RF-24**).
+- [x] Integrar indicador de notificaciones pendientes/no leídas en la barra de navegación del sistema.
 
 ---
 

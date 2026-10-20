@@ -21,6 +21,7 @@ namespace tutorias.Data
         public DbSet<SesionTutoria> SesionesTutoria => Set<SesionTutoria>();
         public DbSet<Asistencia> Asistencias => Set<Asistencia>();
         public DbSet<SesionQrToken> SesionesQrTokens => Set<SesionQrToken>();
+        public DbSet<Notificacion> Notificaciones => Set<Notificacion>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -128,6 +129,22 @@ namespace tutorias.Data
                 .WithMany()
                 .HasForeignKey(t => t.SesionId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación Notificacion
+            builder.Entity<Notificacion>()
+                .HasIndex(n => new { n.UserId, n.Leida, n.FechaEnvio });
+
+            builder.Entity<Notificacion>()
+                .HasOne(n => n.User)
+                .WithMany()
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Notificacion>()
+                .HasOne(n => n.Emisor)
+                .WithMany()
+                .HasForeignKey(n => n.EmisorId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,0 +1,284 @@
+@model tutorias.Models.ViewModels.CrearNotificacionViewModel
+@{
+    ViewData["Title"] = "Enviar Notificación";
+}
+
+<div class="container py-4 mb-5" style="max-width: 900px;">
+
+    <!-- Encabezado Institucional -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+        <div class="py-4 px-4 text-white bg-ipn-guinda d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <span class="badge bg-white text-ipn-guinda fw-bold mb-2">Canal de Comunicacion</span>
+                <h1 class="h3 fw-bold mb-1">Redactar Notificacion</h1>
+                <p class="mb-0 text-white-50 small">
+                    @(Model.EsCoordinador
+                        ? "Emision de avisos y notificaciones oficiales para la comunidad de tutorias de UPIICSA."
+                        : "Emision de avisos dirigidos exclusivamente a los alumnos que han asistido a tus tutorias.")
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                @if (Model.EsCoordinador)
+                {
+                    <a asp-controller="Coordinacion" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                        <i class="bi bi-shield-check me-1"></i> Panel Coordinacion
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Asistencia" asp-action="Index" class="btn btn-outline-light btn-sm fw-semibold">
+                        <i class="bi bi-card-checklist me-1"></i> Pase de Lista
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>Exito:</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>Error:</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
+
+    <!-- Filtros de búsqueda de destinatarios para Coordinación -->
+    @if (Model.EsCoordinador)
+    {
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body p-3 p-md-4">
+                <form method="get" asp-action="Enviar" class="row g-3 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label small fw-bold text-secondary text-uppercase mb-1">
+                            <i class="bi bi-people me-1"></i> Filtrar por Rol
+                        </label>
+                        <select name="filtroRol" class="form-select" asp-for="FiltroRol">
+                            <option value="">-- Todos los roles --</option>
+                            <option value="Alumnos">Solo Alumnos Tutorados</option>
+                            <option value="Tutores">Todos los Tutores (Docentes y Pares)</option>
+                            <option value="Docentes">Solo Docentes Tutores</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-5">
+                        <label class="form-label small fw-bold text-secondary text-uppercase mb-1">
+                            <i class="bi bi-mortarboard me-1"></i> Filtrar por Carrera
+                        </label>
+                        <select name="carreraId" class="form-select" asp-items="Model.CarrerasDisponibles" asp-for="FiltroCarreraId">
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-ipn-guinda w-100 fw-bold">
+                            <i class="bi bi-funnel me-1"></i> Aplicar Filtro
+                        </button>
+                        <a asp-action="Enviar" class="btn btn-outline-secondary" title="Restablecer">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+    <!-- Formulario de Creación de Notificación -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Enviar" method="post" id="formEnviarNotificacion">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="EsCoordinador" />
+                <input type="hidden" asp-for="FiltroRol" />
+                <input type="hidden" asp-for="FiltroCarreraId" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 small mb-4" role="alert"></div>
+
+                <!-- Título -->
+                <div class="mb-4">
+                    <label asp-for="Titulo" class="form-label fw-bold small text-secondary text-uppercase">
+                        Titulo de la Notificacion <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Titulo" class="form-control" placeholder="Ej. Aviso de sesion extraordinaria o reprogramacion de horario" maxlength="150" />
+                    <span asp-validation-for="Titulo" class="text-danger small"></span>
+                </div>
+
+                <!-- Mensaje -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label asp-for="Mensaje" class="form-label fw-bold small text-secondary text-uppercase mb-0">
+                            Mensaje Oficial <span class="text-danger">*</span>
+                        </label>
+                        <span id="contadorCaracteres" class="text-muted small">0 / 1000</span>
+                    </div>
+                    <textarea asp-for="Mensaje" id="txtMensaje" class="form-control" rows="5"
+                              placeholder="Escribe el cuerpo del mensaje que se notificara a los destinatarios..." maxlength="1000"></textarea>
+                    <span asp-validation-for="Mensaje" class="text-danger small"></span>
+                </div>
+
+                <!-- Selección de Destinatarios -->
+                <div class="mb-4">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                        <div>
+                            <label class="form-label fw-bold small text-secondary text-uppercase mb-0">
+                                Destinatarios <span class="text-danger">*</span>
+                            </label>
+                            <span class="badge bg-light text-secondary border ms-2">
+                                @Model.DestinatariosDisponibles.Count disponible(s)
+                            </span>
+                        </div>
+                        @if (Model.DestinatariosDisponibles.Any())
+                        {
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnSeleccionarTodos">
+                                    Seleccionar todos
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnDeseleccionarTodos">
+                                    Limpiar
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                    @if (!Model.DestinatariosDisponibles.Any())
+                    {
+                        <div class="alert alert-warning border-0 small mb-0">
+                            <i class="bi bi-info-circle me-1"></i>
+                            @(Model.EsCoordinador
+                                ? "No se encontraron usuarios que coincidan con los filtros seleccionados."
+                                : "Aun no tienes alumnos registrados con asistencias en tus tutorias. Las notificaciones unicamente pueden enviarse a alumnos que hayan asistido a tus sesiones.")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group mb-2">
+                            <span class="input-group-text bg-white text-muted border-end-0">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="buscadorDestinatarios" class="form-control border-start-0"
+                                   placeholder="Filtrar por nombre o boleta..." autocomplete="off">
+                        </div>
+
+                        <div class="border rounded-3 p-2 bg-light" style="max-height: 260px; overflow-y: auto;" id="listaDestinatariosContenedor">
+                            @foreach (var dest in Model.DestinatariosDisponibles)
+                            {
+                                <div class="form-check p-2 rounded item-destinatario border-bottom border-white">
+                                    <input class="form-check-input chk-destinatario ms-1 me-2" type="checkbox"
+                                           name="DestinatariosIds" value="@dest.Value" id="chk_@dest.Value"
+                                           @(Model.DestinatariosIds.Contains(dest.Value) ? "checked" : "") />
+                                    <label class="form-check-label small text-dark w-100" for="chk_@dest.Value">
+                                        @dest.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        <span asp-validation-for="DestinatariosIds" class="text-danger small"></span>
+                        <div class="form-text small mt-1">
+                            Seleccionados: <strong id="contadorSeleccionados" class="text-ipn-guinda">@Model.DestinatariosIds.Count</strong> destinatario(s).
+                        </div>
+                    }
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                    @if (Model.EsCoordinador)
+                    {
+                        <a asp-controller="Coordinacion" asp-action="Index" class="btn btn-outline-secondary px-4 fw-semibold">
+                            Cancelar
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Asistencia" asp-action="Index" class="btn btn-outline-secondary px-4 fw-semibold">
+                            Cancelar
+                        </a>
+                    }
+                    <button type="submit" class="btn btn-ipn-guinda px-4 fw-bold" id="btnEnviar" @(!Model.DestinatariosDisponibles.Any() ? "disabled" : "")>
+                        <i class="bi bi-send-fill me-1"></i> Enviar Notificacion
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const txtMensaje = document.getElementById("txtMensaje");
+            const contadorCaracteres = document.getElementById("contadorCaracteres");
+            const checkboxes = document.querySelectorAll(".chk-destinatario");
+            const contadorSeleccionados = document.getElementById("contadorSeleccionados");
+            const btnTodos = document.getElementById("btnSeleccionarTodos");
+            const btnLimpiar = document.getElementById("btnDeseleccionarTodos");
+            const buscador = document.getElementById("buscadorDestinatarios");
+
+            function actualizarContador() {
+                if (txtMensaje && contadorCaracteres) {
+                    contadorCaracteres.textContent = `${txtMensaje.value.length} / 1000`;
+                }
+            }
+
+            function actualizarSeleccionados() {
+                const total = document.querySelectorAll(".chk-destinatario:checked").length;
+                if (contadorSeleccionados) {
+                    contadorSeleccionados.textContent = total;
+                }
+            }
+
+            if (txtMensaje) {
+                txtMensaje.addEventListener("input", actualizarContador);
+                actualizarContador();
+            }
+
+            checkboxes.forEach(chk => {
+                chk.addEventListener("change", actualizarSeleccionados);
+            });
+            actualizarSeleccionados();
+
+            if (btnTodos) {
+                btnTodos.addEventListener("click", () => {
+                    document.querySelectorAll(".item-destinatario").forEach(item => {
+                        if (item.style.display !== "none") {
+                            const chk = item.querySelector(".chk-destinatario");
+                            if (chk) chk.checked = true;
+                        }
+                    });
+                    actualizarSeleccionados();
+                });
+            }
+
+            if (btnLimpiar) {
+                btnLimpiar.addEventListener("click", () => {
+                    checkboxes.forEach(chk => chk.checked = false);
+                    actualizarSeleccionados();
+                });
+            }
+
+            if (buscador) {
+                buscador.addEventListener("input", function () {
+                    const termino = this.value.toLowerCase().trim();
+                    document.querySelectorAll(".item-destinatario").forEach(item => {
+                        const texto = item.textContent.toLowerCase();
+                        if (texto.includes(termino)) {
+                            item.style.display = "";
+                        } else {
+                            item.style.display = "none";
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+}
