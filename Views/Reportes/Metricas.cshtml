@@ -1,0 +1,362 @@
+@model tutorias.Models.ViewModels.ReporteMetricasViewModel
+@{
+    ViewData["Title"] = "Métricas Exportables";
+    var fechaInicioVal = Model.Filtro.FechaInicio.HasValue ? Model.Filtro.FechaInicio.Value.ToString("yyyy-MM-dd") : "";
+    var fechaFinVal = Model.Filtro.FechaFin.HasValue ? Model.Filtro.FechaFin.Value.ToString("yyyy-MM-dd") : "";
+}
+
+<div class="container-fluid py-4">
+    <!-- Encabezado de la Página -->
+    <div class="row align-items-center mb-4">
+        <div class="col-lg-8">
+            <h1 class="h3 fw-bold text-ipn-guinda mb-1">
+                <i class="bi bi-bar-chart-line-fill me-2"></i> Tablero de Indicadores y Métricas
+            </h1>
+            <p class="text-muted mb-0">
+                Consolidado estadístico oficial de asistencias presenciales, índice de atención y demanda de materias en UPIICSA.
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <a asp-action="ExportarMetricasPdf"
+               asp-route-FechaInicio="@fechaInicioVal"
+               asp-route-FechaFin="@fechaFinVal"
+               asp-route-CarreraId="@Model.Filtro.CarreraId"
+               asp-route-TipoTutor="@Model.Filtro.TipoTutor"
+               asp-route-MateriaId="@Model.Filtro.MateriaId"
+               asp-route-TutorId="@Model.Filtro.TutorId"
+               class="btn btn-ipn-guinda shadow-sm">
+                <i class="bi bi-file-earmark-pdf-fill me-1"></i> Exportar Reporte Oficial PDF
+            </a>
+        </div>
+    </div>
+
+    <!-- Barra de Filtros -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="card-title mb-0 fw-semibold text-secondary">
+                <i class="bi bi-funnel-fill text-ipn-guinda me-2"></i> Criterios de Consulta y Filtrado
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="Metricas" class="row g-3">
+                <div class="col-12 col-md-3">
+                    <label class="form-label small fw-semibold text-muted">Fecha Inicio</label>
+                    <input type="date" name="FechaInicio" class="form-control" value="@fechaInicioVal" />
+                </div>
+                <div class="col-12 col-md-3">
+                    <label class="form-label small fw-semibold text-muted">Fecha Fin</label>
+                    <input type="date" name="FechaFin" class="form-control" value="@fechaFinVal" />
+                </div>
+                <div class="col-12 col-md-3">
+                    <label class="form-label small fw-semibold text-muted">Programa Académico</label>
+                    <select name="CarreraId" class="form-select" asp-items="Model.CarrerasDisponibles" asp-for="Filtro.CarreraId">
+                    </select>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label class="form-label small fw-semibold text-muted">Modalidad de Tutoría</label>
+                    <select name="TipoTutor" class="form-select" asp-items="Model.TiposTutorDisponibles" asp-for="Filtro.TipoTutor">
+                    </select>
+                </div>
+
+                @if (Model.EsCoordinador)
+                {
+                    <div class="col-12 col-md-4">
+                        <label class="form-label small fw-semibold text-muted">Tutor</label>
+                        <select name="TutorId" class="form-select" asp-items="Model.TutoresDisponibles" asp-for="Filtro.TutorId">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label class="form-label small fw-semibold text-muted">Materia / Unidad de Aprendizaje</label>
+                        <select name="MateriaId" class="form-select" asp-items="Model.MateriasDisponibles" asp-for="Filtro.MateriaId">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-ipn-guinda flex-grow-1">
+                            <i class="bi bi-search me-1"></i> Filtrar
+                        </button>
+                        <a asp-action="Metricas" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-md-8">
+                        <label class="form-label small fw-semibold text-muted">Materia / Unidad de Aprendizaje</label>
+                        <select name="MateriaId" class="form-select" asp-items="Model.MateriasDisponibles" asp-for="Filtro.MateriaId">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-ipn-guinda flex-grow-1">
+                            <i class="bi bi-search me-1"></i> Filtrar
+                        </button>
+                        <a asp-action="Metricas" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    <!-- Indicador de Periodo Seleccionado -->
+    <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+        <span class="badge bg-ipn-guinda text-white px-3 py-2 rounded-pill fs-6 fw-normal">
+            <i class="bi bi-calendar3 me-1"></i> Periodo analizado: @Model.PeriodoTexto
+        </span>
+        <small class="text-muted">
+            <i class="bi bi-clock me-1"></i> Actualizado al momento de la consulta
+        </small>
+    </div>
+
+    <!-- Tarjetas de Métricas Principales (KPIs) -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100 border-start border-4 border-ipn-guinda">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Asistencias Confirmadas</span>
+                            <h2 class="fw-bold text-ipn-guinda mt-2 mb-0">@Model.TotalAsistenciasConfirmadas</h2>
+                            <small class="text-muted">Sesiones presenciales validadas</small>
+                        </div>
+                        <div class="p-3 bg-light rounded-circle text-ipn-guinda">
+                            <i class="bi bi-patch-check-fill fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100 border-start border-4 border-primary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Alumnos Atendidos</span>
+                            <h2 class="fw-bold text-primary mt-2 mb-0">@Model.TotalAlumnosBeneficiados</h2>
+                            <small class="text-muted">Estudiantes únicos beneficiados</small>
+                        </div>
+                        <div class="p-3 bg-light rounded-circle text-primary">
+                            <i class="bi bi-people-fill fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100 border-start border-4 border-warning">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Satisfacción Promedio</span>
+                            <h2 class="fw-bold text-warning mt-2 mb-0">
+                                @Model.PromedioSatisfaccion.ToString("0.0") <span class="fs-6 text-muted">/ 5.0</span>
+                            </h2>
+                            <small class="text-muted">@Model.TotalEvaluaciones encuestas registradas</small>
+                        </div>
+                        <div class="p-3 bg-light rounded-circle text-warning">
+                            <i class="bi bi-star-fill fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card shadow-sm border-0 h-100 border-start border-4 border-success">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Tutores Participantes</span>
+                            <h2 class="fw-bold text-success mt-2 mb-0">@Model.TotalTutoresActivos</h2>
+                            <small class="text-muted">Con sesiones registradas</small>
+                        </div>
+                        <div class="p-3 bg-light rounded-circle text-success">
+                            <i class="bi bi-person-video3 fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Comparativa: Modalidad y Método de Validación -->
+    <div class="row g-4 mb-4">
+        <!-- Índice de Atención por Modalidad (RF-29) -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="card-title mb-0 fw-semibold text-secondary">
+                        <i class="bi bi-diagram-3-fill text-ipn-guinda me-2"></i> Índice de Atención por Modalidad
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-semibold">Docente Tutor (Tutoría Individual)</span>
+                            <span class="badge bg-ipn-guinda">@Model.AsistenciasDocenteTutor (@Model.PorcentajeDocenteTutor%)</span>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-ipn-guinda" role="progressbar" style="width: @Model.PorcentajeDocenteTutor%;" aria-valuenow="@Model.PorcentajeDocenteTutor" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-semibold">Alumno Tutor (Tutoría entre Pares)</span>
+                            <span class="badge bg-secondary">@Model.AsistenciasAlumnoTutor (@Model.PorcentajeAlumnoTutor%)</span>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: @Model.PorcentajeAlumnoTutor%;" aria-valuenow="@Model.PorcentajeAlumnoTutor" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded small text-muted">
+                        <i class="bi bi-info-circle me-1 text-ipn-guinda"></i>
+                        Distribución de atención comparativa entre profesores tutores y alumnos tutores en el periodo seleccionado.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Método de Asistencia Registrado -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="card-title mb-0 fw-semibold text-secondary">
+                        <i class="bi bi-qr-code-scan text-ipn-guinda me-2"></i> Método de Asistencia Validado
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-semibold">Código QR Dinámico</span>
+                            <span class="badge bg-success">@Model.AsistenciasQr (@Model.PorcentajeQr%)</span>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @Model.PorcentajeQr%;" aria-valuenow="@Model.PorcentajeQr" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-semibold">Registro Manual / Solicitud</span>
+                            <span class="badge bg-info text-dark">@Model.AsistenciasManual (@Model.PorcentajeManual%)</span>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: @Model.PorcentajeManual%;" aria-valuenow="@Model.PorcentajeManual" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded small text-muted">
+                        <i class="bi bi-shield-check me-1 text-success"></i>
+                        El escaneo por código QR dinámico garantiza la presencia en el aula de tutorías mediante tokens de vigencia corta.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranking de Materias con Mayor Demanda (RF-29) -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+            <h5 class="card-title mb-0 fw-semibold text-secondary">
+                <i class="bi bi-award-fill text-ipn-guinda me-2"></i> Ranking de Materias con Mayor Demanda en UPIICSA
+            </h5>
+            <span class="badge bg-light text-dark border">Top 10 Unidades de Aprendizaje</span>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.RankingMaterias.Count == 0)
+            {
+                <div class="p-4 text-center text-muted">
+                    <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                    No se encontraron asistencias registradas con los criterios seleccionados.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th class="text-center" style="width: 60px;">#</th>
+                                <th style="width: 100px;">Clave</th>
+                                <th>Materia</th>
+                                <th>Carrera</th>
+                                <th class="text-center" style="width: 130px;">Asistencias</th>
+                                <th class="text-center" style="width: 120px;">Alumnos</th>
+                                <th style="width: 180px;">% Demanda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.RankingMaterias.Count; i++)
+                            {
+                                var mat = Model.RankingMaterias[i];
+                                <tr>
+                                    <td class="text-center fw-bold text-muted">@(i + 1)</td>
+                                    <td><span class="badge bg-secondary font-monospace">@mat.MateriaClave</span></td>
+                                    <td class="fw-semibold text-dark">@mat.MateriaNombre</td>
+                                    <td><small class="text-muted">@mat.CarreraNombre</small></td>
+                                    <td class="text-center fw-bold text-ipn-guinda">@mat.TotalAsistencias</td>
+                                    <td class="text-center">@mat.TotalAlumnosDistintos</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 8px;">
+                                                <div class="progress-bar bg-ipn-guinda" role="progressbar" style="width: @mat.PorcentajeTotal%;" aria-valuenow="@mat.PorcentajeTotal" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <small class="fw-semibold text-muted" style="min-width: 45px;">@mat.PorcentajeTotal%</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Distribución por Programa Académico -->
+    @if (Model.DistribucionCarreras.Count > 0)
+    {
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="card-title mb-0 fw-semibold text-secondary">
+                    <i class="bi bi-mortarboard-fill text-ipn-guinda me-2"></i> Distribución de Asistencias por Programa Académico
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th>Programa Académico / Carrera</th>
+                                <th class="text-center" style="width: 150px;">Total Asistencias</th>
+                                <th style="width: 250px;">Proporción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model.DistribucionCarreras)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@car.CarreraNombre</td>
+                                    <td class="text-center fw-bold text-ipn-guinda">@car.TotalAsistencias</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: @car.Porcentaje%;" aria-valuenow="@car.Porcentaje" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <small class="fw-semibold text-muted" style="min-width: 45px;">@car.Porcentaje%</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

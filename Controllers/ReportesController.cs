@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using tutorias.Helpers;
+using tutorias.Models.ViewModels;
 using tutorias.Services;
 
 namespace tutorias.Controllers
@@ -11,10 +13,17 @@ namespace tutorias.Controllers
     public class ReportesController : Controller
     {
         private readonly IReportesService _reportesService;
+        private readonly IReportesMetricasService _metricasService;
+        private readonly IQuestPdfService _pdfService;
 
-        public ReportesController(IReportesService reportesService)
+        public ReportesController(
+            IReportesService reportesService,
+            IReportesMetricasService metricasService,
+            IQuestPdfService pdfService)
         {
             _reportesService = reportesService;
+            _metricasService = metricasService;
+            _pdfService = pdfService;
         }
 
         [HttpGet]
@@ -51,6 +60,31 @@ namespace tutorias.Controllers
 
             var vm = await _reportesService.ObtenerReporteMensualAsync(userId, esCoordinador, anio, mes, tutorId, carreraId);
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Metricas(ReporteMetricasFiltroViewModel filtro)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            var esCoordinador = User.IsInRole("Coordinador");
+
+            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, esCoordinador, filtro);
+            return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportarMetricasPdf(ReporteMetricasFiltroViewModel filtro)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            var esCoordinador = User.IsInRole("Coordinador");
+
+            var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, esCoordinador, filtro);
+            var pdfBytes = _pdfService.GenerarReporteMetricasPdf(vm);
+
+            var fechaStr = TimeHelper.NowMexico.ToString("yyyyMMdd_HHmm");
+            var nombreArchivo = $"Reporte_Metricas_Tutorias_UPIICSA_{fechaStr}.pdf";
+
+            return File(pdfBytes, "application/pdf", nombreArchivo);
         }
     }
 }

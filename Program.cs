@@ -20,6 +20,8 @@ if (File.Exists(".env"))
     }
 }
 
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de DbContext con SQL Server
@@ -75,6 +77,8 @@ builder.Services.AddScoped<tutorias.Services.ICatalogoService, tutorias.Services
 builder.Services.AddScoped<tutorias.Services.IAsistenciaService, tutorias.Services.AsistenciaService>();
 builder.Services.AddScoped<tutorias.Services.IQrCodeService, tutorias.Services.QrCodeService>();
 builder.Services.AddScoped<tutorias.Services.IReportesService, tutorias.Services.ReportesService>();
+builder.Services.AddScoped<tutorias.Services.IReportesMetricasService, tutorias.Services.ReportesMetricasService>();
+builder.Services.AddScoped<tutorias.Services.IQuestPdfService, tutorias.Services.QuestPdfService>();
 builder.Services.AddScoped<tutorias.Services.IEncuestasService, tutorias.Services.EncuestasService>();
 builder.Services.AddScoped<tutorias.Services.INotificacionService, tutorias.Services.NotificacionService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();

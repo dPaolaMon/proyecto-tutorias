@@ -131,12 +131,12 @@ Este documento desglosa la implementación integral del **Sistema de Tutorías A
 ## 📊 Fase 6: Métricas, Estadísticas y Generación de Reportes PDF con QuestPDF (RF-25)
 
 ### Tarea 6.1: Tablero de Indicadores y Exportación de Reportes en PDF (RF-25)
-- [ ] Crear servicio `ReportesMetricasService` con consultas optimizadas de agregación en EF Core:
-  - [ ] Total de asistencias presenciales confirmadas en el periodo.
-  - [ ] Índice de atención desglosado por maestro tutor vs. alumno tutor.
-  - [ ] Ranking de materias con mayor demanda en UPIICSA.
-  - [ ] Promedio general de satisfacción institucional derivado de encuestas.
-- [ ] Diseñar tablero de indicadores estadísticos en el portal de Coordinación (**RF-25**).
-- [ ] Configurar motor `QuestPDF` con paleta institucional del IPN (Guinda `#750946` y Guinda oscuro `#4d0630`).
-- [ ] Diseñar plantilla oficial `ReporteTutoriasPdfDocument` con encabezado institucional, tablas detalladas y pie de página.
-- [ ] Implementar endpoint de exportación y descarga de reportes estadísticos en formato PDF (**RF-25**).
+- [x] Crear servicio `ReportesMetricasService` con consultas optimizadas de agregación en EF Core:
+  - [x] Total de asistencias presenciales confirmadas en el periodo.
+  - [x] Índice de atención desglosado por maestro tutor vs. alumno tutor.
+  - [x] Ranking de materias con mayor demanda en UPIICSA.
+  - [x] Promedio general de satisfacción institucional derivado de encuestas.
+- [x] Diseñar tablero de indicadores estadísticos en el portal de Coordinación y Reportes (**RF-25**, **RF-29**).
+- [x] Configurar motor `QuestPDF` con paleta institucional del IPN (Guinda `#750946` y Guinda oscuro `#4d0630`).
+- [x] Diseñar plantilla oficial `QuestPdfService` con encabezado institucional, tablas detalladas y pie de página.
+- [x] Implementar endpoint de exportación y descarga de reportes estadísticos en formato PDF (**RF-25**, **RF-30**).
