@@ -29,3 +29,9 @@ Thumbs.db
 ## Docker & temporary DB data
 *.db
 *.sqlite
+
+## JMeter test execution artifacts
+tests/jmeter/results/*
+!tests/jmeter/results/.gitkeep
+*.jtl
+

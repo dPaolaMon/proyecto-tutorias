@@ -15,6 +15,7 @@ namespace tutorias.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(
             string? busqueda,
             int? materiaId,
@@ -28,6 +29,7 @@ namespace tutorias.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Detalle(int id)
         {
             if (id <= 0)

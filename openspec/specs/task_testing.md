@@ -78,7 +78,7 @@ Este documento centraliza el seguimiento con casillas de verificación (`- [ ]`)
 - [ ] **RF-22 (Consultar Resultados de Encuesta):** Acceder a bandeja de resultados con rol Coordinador y validar métricas consolidadas.
 - [ ] **RF-23 (Enviar Notificaciones Manuales):** Crear notificación dirigida y corroborar inserción en base de datos.
 - [ ] **RF-24 (Consultar Notificaciones):** Invocar endpoint de bandeja de notificaciones y comprobar marcado de leída.
-- [ ] **RF-25 (Generar Métricas en PDF):** Realizar petición autenticada a `GET /Coordinacion/ExportarReportePdf` y verificar `Content-Type: application/pdf` con stream generado por QuestPDF.
+- [ ] **RF-25 (Generar Métricas en PDF):** Realizar petición autenticada a `GET /Reportes/ExportarMetricasPdf` y verificar `Content-Type: application/pdf` con stream generado por QuestPDF.
 
 ---
 
@@ -105,20 +105,25 @@ Este documento centraliza el seguimiento con casillas de verificación (`- [ ]`)
 
 ---
 
-## ⚡ 4. Pruebas de Carga y Rendimiento (Apache JMeter)
+## ⚡ 4. Pruebas de Carga y Rendimiento (Apache JMeter — Calibrado para Azure for Students)
 
-### Escenario A: Escaneo Masivo y Concurrente de Asistencia QR (RF-19)
-- [ ] **JMX-01:** Plan de prueba con 50 hilos concurrentes consumiendo `/Asistencia/RegistrarQr`.
-- [ ] **JMX-01-METRIC:** Tiempo de respuesta $p_{95} < 500$ ms, tasa de error $< 0.1\%$.
+> **Contexto de Infraestructura (Azure for Students / Free-Basic Tier):**
+> - App Service: Nivel F1 (Free - cuota de 60 min CPU/día, 1 GB RAM) o B1 (1 vCPU, 1.75 GB RAM dedicada).
+> - Base de Datos: Azure SQL Free Tier / Basic (5 DTUs).
+> - Enfoque de Valor: Pruebas representativas del flujo real en UPIICSA (salones de 10 a 25 alumnos, consultas escalonadas con tiempo de lectura del estudiante y descargas controladas) para evitar saturación artificial de DTUs o agotamiento de cuotas de cómputo diario.
+
+### Escenario A: Escaneo Masivo y Concurrente de Asistencia QR en Salón (RF-19)
+- [ ] **JMX-01:** Plan de prueba con 15 hilos concurrentes simulando a los alumnos de un grupo escaneando el código QR en una ventana de 15 segundos (`GET /Asistencia/ValidarQr?token=${token}`).
+- [ ] **JMX-01-METRIC:** Tiempo de respuesta $p_{95} < 800$ ms, tasa de éxito del 100% (dentro del límite de cupo docente o par) sin excepciones de concurrencia en la base de datos.
 
 ### Escenario B: Consultas Concurrentes al Catálogo de Tutorías (RF-13)
-- [ ] **JMX-02:** Plan de prueba con 100 hilos concurrentes aplicando filtros en `/Catalogo/Index`.
-- [ ] **JMX-02-METRIC:** Throughput sostenido $> 50$ req/s, $p_{95} < 300$ ms.
+- [ ] **JMX-02:** Plan de prueba con 25 hilos concurrentes aplicando filtros dinámicos (materia, carrera, búsqueda de texto) en `/Catalogo/Index` con *Ramp-up* de 30 segundos y *Think Time* de 1 a 2 segundos (tiempo de lectura real del estudiante).
+- [ ] **JMX-02-METRIC:** Throughput sostenido $> 15$ req/s, tiempo de respuesta $p_{95} < 700$ ms, 0% de errores HTTP 5xx o 429.
 
 ### Escenario C: Autenticación Concurrente Masiva (RF-02)
-- [ ] **JMX-03:** Plan de prueba con 50 logins simultáneos (`POST /Account/Login`).
-- [ ] **JMX-03-METRIC:** Sin errores 500 ni saturación en conexiones SQL Server.
+- [ ] **JMX-03:** Plan de prueba con 12 hilos concurrentes autenticándose simultáneamente (`GET /Account/Login` para extraer token antifalsificación seguido de `POST /Account/Login`).
+- [ ] **JMX-03-METRIC:** Tiempo de respuesta $p_{95} < 1200$ ms (contemplando el costo computacional de hashing criptográfico PBKDF2 en CPU compartida) sin errores 500 ni bloqueos en el pool de conexiones SQL Server.
 
-### Escenario D: Descarga Concurrente de Reportes PDF (RF-25)
-- [ ] **JMX-04:** Plan de prueba con peticiones concurrentes a exportación PDF.
-- [ ] **JMX-04-METRIC:** Generación exitosa de documentos con uso estable de memoria en el servidor.
+### Escenario D: Descarga Concurrente de Reportes PDF de Métricas (RF-25)
+- [ ] **JMX-04:** Plan de prueba con 3 coordinadores solicitando simultáneamente la exportación ejecutiva en PDF (`GET /Reportes/ExportarMetricasPdf`) con sesión autenticada.
+- [ ] **JMX-04-METRIC:** Generación y entrega del archivo PDF en $< 3.5$ segundos con uso de memoria RAM estable en App Service ($< 70\%$ del gigabyte asignado, sin `OutOfMemoryException`).
