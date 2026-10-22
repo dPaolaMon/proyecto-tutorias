@@ -33,5 +33,7 @@ Thumbs.db
 ## JMeter test execution artifacts
 tests/jmeter/results/*
 !tests/jmeter/results/.gitkeep
+tests/jmeter/apache-jmeter-*/
+jmeter.log
 *.jtl
 
