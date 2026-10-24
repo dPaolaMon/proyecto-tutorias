@@ -23,7 +23,7 @@ Para ejecutar cualquiera de los planes apuntando a tu instancia en Azure:
 ```bash
 ./tests/jmeter/apache-jmeter-5.6.3/bin/jmeter -n \
   -t "tests/jmeter/plans/Test Azure/JMX-02_Catalogo_Tutorias_Azure.jmx" \
-  -Jhost=tu-app-tutorias.azurewebsites.net \
+  -Jhost=app-tutorias-upiicsa-hcbccyhgbmccckdr.mexicocentral-01.azurewebsites.net \
   -Jport=443 \
   -Jprotocol=https \
   -Jthreads=25 \
@@ -36,7 +36,7 @@ Para ejecutar cualquiera de los planes apuntando a tu instancia en Azure:
 ```bash
 ./tests/jmeter/apache-jmeter-5.6.3/bin/jmeter -n \
   -t "tests/jmeter/plans/Test Azure/JMX-03_Autenticacion_Login_Azure.jmx" \
-  -Jhost=tu-app-tutorias.azurewebsites.net \
+  -Jhost=app-tutorias-upiicsa-hcbccyhgbmccckdr.mexicocentral-01.azurewebsites.net \
   -Jport=443 \
   -Jprotocol=https \
   -Jthreads=12 \
@@ -49,7 +49,7 @@ Para ejecutar cualquiera de los planes apuntando a tu instancia en Azure:
 ```bash
 ./tests/jmeter/apache-jmeter-5.6.3/bin/jmeter -n \
   -t "tests/jmeter/plans/Test Azure/JMX-04_Descarga_Reporte_PDF_Azure.jmx" \
-  -Jhost=tu-app-tutorias.azurewebsites.net \
+  -Jhost=app-tutorias-upiicsa-hcbccyhgbmccckdr.mexicocentral-01.azurewebsites.net \
   -Jport=443 \
   -Jprotocol=https \
   -Jthreads=3 \
@@ -61,7 +61,7 @@ Para ejecutar cualquiera de los planes apuntando a tu instancia en Azure:
 ```bash
 ./tests/jmeter/apache-jmeter-5.6.3/bin/jmeter -n \
   -t "tests/jmeter/plans/Test Azure/JMX-01_Escaneo_QR_Azure.jmx" \
-  -Jhost=tu-app-tutorias.azurewebsites.net \
+  -Jhost=app-tutorias-upiicsa-hcbccyhgbmccckdr.mexicocentral-01.azurewebsites.net \
   -Jport=443 \
   -Jprotocol=https \
   -Jthreads=15 \

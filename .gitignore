@@ -37,3 +37,7 @@ tests/jmeter/apache-jmeter-*/
 jmeter.log
 *.jtl
 
+## Temporary deployment bundles
+despliegue.zip
+publish/
+

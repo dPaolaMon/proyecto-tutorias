@@ -10,8 +10,8 @@ namespace tutorias.Tests.Selenium.Drivers
     public class TestSettingsModel
     {
         public string BaseUrl { get; set; } = "http://localhost:5178";
-        public string AzureUrl { get; set; } = "https://tu-app-tutorias.azurewebsites.net";
-        public bool UseAzure { get; set; } = false;
+        public string AzureUrl { get; set; } = "https://app-tutorias-upiicsa-hcbccyhgbmccckdr.mexicocentral-01.azurewebsites.net";
+        public bool UseAzure { get; set; } = true;
         public string Browser { get; set; } = "Firefox";
         public bool Headless { get; set; } = false;
         public int DefaultTimeoutSeconds { get; set; } = 10;
@@ -51,6 +51,12 @@ namespace tutorias.Tests.Selenium.Drivers
             // Sobrescritura opcional por variables de entorno
             string? envBaseUrl = Environment.GetEnvironmentVariable("SELENIUM_BASE_URL");
             if (!string.IsNullOrWhiteSpace(envBaseUrl)) Settings.BaseUrl = envBaseUrl;
+
+            string? envUseAzure = Environment.GetEnvironmentVariable("SELENIUM_USE_AZURE");
+            if (!string.IsNullOrWhiteSpace(envUseAzure) && bool.TryParse(envUseAzure, out bool useAz)) Settings.UseAzure = useAz;
+
+            string? envHeadless = Environment.GetEnvironmentVariable("SELENIUM_HEADLESS");
+            if (!string.IsNullOrWhiteSpace(envHeadless) && bool.TryParse(envHeadless, out bool headless)) Settings.Headless = headless;
 
             string? envBrowser = Environment.GetEnvironmentVariable("SELENIUM_BROWSER");
             if (!string.IsNullOrWhiteSpace(envBrowser)) Settings.Browser = envBrowser;
