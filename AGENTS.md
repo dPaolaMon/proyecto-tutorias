@@ -27,7 +27,7 @@
 - Asegúrate de haber ejecutado `dotnet ef database update` para verificar la integridad de las migraciones sin romper el esquema de la base de datos.
 
 ## PR instructions
-- Formato del título del PR: `[Tutorias] <Descripción breve del cambio>`
+- Formato del título del PR: `<Descripción breve del cambio>`
 - Asegúrate de haber ejecutado `dotnet build` localmente y de que no existan errores de compilación ni advertencias de tipos.
 - Revisa que las migraciones de EF Core se hayan generado automáticamente mediante comandos CLI (`dotnet ef migrations add`), evitando editar manualmente los archivos dentro de `Migrations/`.
 - Confirma que no se incluyan archivos de secretos ni credenciales en el commit (`.env` debe mantenerse dentro de `.gitignore`).

@@ -28,16 +28,35 @@ namespace tutorias.Services
                 return new List<BuscarAlumnoResultViewModel>();
             }
 
-            var t = termino.Trim().ToLower();
+            var t = termino.Trim();
+            var esNumerico = t.All(char.IsDigit);
 
-            var alumnos = await _context.Users
+            // Si se busca por boleta (solo dígitos), exigir coincidencia exacta de 10 dígitos
+            if (esNumerico && t.Length != 10)
+            {
+                return new List<BuscarAlumnoResultViewModel>();
+            }
+
+            var tLower = t.ToLower();
+
+            var query = _context.Users
                 .Include(u => u.Carrera)
-                .Where(u => u.Activo && (
-                    u.Boleta.ToLower().Contains(t) ||
-                    u.Nombre.ToLower().Contains(t) ||
-                    u.ApellidoPaterno.ToLower().Contains(t) ||
-                    u.ApellidoMaterno.ToLower().Contains(t) ||
-                    (u.Email != null && u.Email.ToLower().Contains(t))))
+                .Where(u => u.Activo);
+
+            if (esNumerico)
+            {
+                query = query.Where(u => u.Boleta == t);
+            }
+            else
+            {
+                query = query.Where(u =>
+                    u.Nombre.ToLower().Contains(tLower) ||
+                    u.ApellidoPaterno.ToLower().Contains(tLower) ||
+                    u.ApellidoMaterno.ToLower().Contains(tLower) ||
+                    (u.Email != null && u.Email.ToLower().Contains(tLower)));
+            }
+
+            var alumnos = await query
                 .OrderBy(u => u.Nombre)
                 .ThenBy(u => u.ApellidoPaterno)
                 .Take(10)
@@ -534,9 +553,9 @@ namespace tutorias.Services
 
         public async Task<(bool Success, string? ErrorMessage)> CalificarAsistenciaAsync(int asistenciaId, string alumnoId, int calificacion)
         {
-            if (calificacion < 1 || calificacion > 5)
+            if (calificacion < 0 || calificacion > 5)
             {
-                return (false, "La calificación debe ser un valor numérico entre 1 y 5 estrellas.");
+                return (false, "La calificación debe ser un valor numérico entre 0 y 5 estrellas.");
             }
 
             var asistencia = await _context.Asistencias

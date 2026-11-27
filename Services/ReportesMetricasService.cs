@@ -86,8 +86,8 @@ namespace tutorias.Services
             var alumnosBeneficiados = asistencias.Select(a => a.AlumnoId).Distinct().Count();
             var tutoresActivos = asistencias.Where(a => a.Sesion?.TutorId != null).Select(a => a.Sesion!.TutorId).Distinct().Count();
 
-            // Evaluaciones de satisfacción
-            var evaluaciones = asistencias.Where(a => a.CalificacionEncuesta.HasValue && a.CalificacionEncuesta.Value > 0).ToList();
+            // Evaluaciones de satisfacción (incluye calificación de 0 estrellas)
+            var evaluaciones = asistencias.Where(a => a.CalificacionEncuesta.HasValue).ToList();
             var totalEvaluaciones = evaluaciones.Count;
             var promedioSatisfaccion = totalEvaluaciones > 0
                 ? Math.Round(evaluaciones.Average(a => a.CalificacionEncuesta!.Value), 2)

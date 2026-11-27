@@ -132,12 +132,16 @@ namespace tutorias.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> SuspenderTutor(string id)
+        public async Task<IActionResult> SuspenderTutor(string id, string? origen = null)
         {
+            var redirectAction = string.Equals(origen, "Index", StringComparison.OrdinalIgnoreCase)
+                ? nameof(Index)
+                : nameof(SolicitudesTutores);
+
             if (string.IsNullOrWhiteSpace(id))
             {
                 TempData["ErrorMessage"] = "Identificador de tutor inválido.";
-                return RedirectToAction(nameof(SolicitudesTutores));
+                return RedirectToAction(redirectAction);
             }
 
             var currentUserId = _userManager.GetUserId(User) ?? string.Empty;
@@ -145,14 +149,14 @@ namespace tutorias.Controllers
 
             if (success)
             {
-                TempData["SuccessMessage"] = "Estatus de tutor suspendido y perfil despublicado exitosamente.";
+                TempData["SuccessMessage"] = "Estatus de tutor revocado y perfil despublicado exitosamente.";
             }
             else
             {
-                TempData["ErrorMessage"] = error ?? "Error al suspender el estatus de tutor.";
+                TempData["ErrorMessage"] = error ?? "Error al revocar el estatus de tutor.";
             }
 
-            return RedirectToAction(nameof(SolicitudesTutores));
+            return RedirectToAction(redirectAction);
         }
 
         [HttpGet]

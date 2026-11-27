@@ -77,6 +77,13 @@ namespace tutorias.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
             var vm = await _metricasService.ObtenerReporteMetricasAsync(userId, true, filtro);
+
+            if (vm.TotalAsistenciasConfirmadas == 0)
+            {
+                TempData["ErrorMessage"] = "No hay información suficiente en el periodo seleccionado para generar el reporte en PDF.";
+                return RedirectToAction(nameof(Metricas), filtro);
+            }
+
             var pdfBytes = _pdfService.GenerarReporteMetricasPdf(vm);
 
             var fechaStr = TimeHelper.NowMexico.ToString("yyyyMMdd_HHmm");

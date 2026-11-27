@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tutorias.Data;
+using tutorias.Helpers;
 using tutorias.Models;
 
 // Cargar variables de entorno locales desde .env si existe
@@ -24,6 +25,11 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Reloj simulado para pruebas de horarios (solo Development)
+var resultadoSimulacion = TimeHelper.ConfigurarSimulacion(
+    builder.Configuration["FECHA_SIMULADA_DEV"],
+    builder.Environment.IsDevelopment());
+
 // Configuración de DbContext con SQL Server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("La cadena de conexión 'DefaultConnection' no fue encontrada.");
@@ -38,13 +44,19 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+// Validación inmediata de SecurityStamp para revocación de roles en sesiones activas
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
 
 // Configuración de cookies de autenticación
 builder.Services.ConfigureApplicationCookie(options =>
@@ -88,6 +100,19 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 var app = builder.Build();
+
+switch (resultadoSimulacion)
+{
+    case ResultadoSimulacionHora.Activa:
+        app.Logger.LogWarning("Hora simulada ACTIVA. Hora actual de la aplicación (México): {HoraSimulada:yyyy-MM-dd HH:mm:ss}", TimeHelper.NowMexico);
+        break;
+    case ResultadoSimulacionHora.IgnoradaFueraDeDesarrollo:
+        app.Logger.LogWarning("FECHA_SIMULADA_DEV se ignoró porque el entorno no es Development. Se usa la hora real.");
+        break;
+    case ResultadoSimulacionHora.FormatoInvalido:
+        app.Logger.LogWarning("FECHA_SIMULADA_DEV no tiene el formato yyyy-MM-ddTHH:mm:ss. Se usa la hora real.");
+        break;
+}
 
 // Ejecutar Seeding de la Base de Datos
 using (var scope = app.Services.CreateScope())

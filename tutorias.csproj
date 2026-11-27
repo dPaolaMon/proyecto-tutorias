@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>tutorias-app-secrets</UserSecretsId>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests/**;publish/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>

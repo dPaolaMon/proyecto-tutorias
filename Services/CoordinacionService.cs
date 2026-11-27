@@ -369,6 +369,7 @@ namespace tutorias.Services
             }
 
             await _context.SaveChangesAsync();
+            await _userManager.UpdateSecurityStampAsync(user);
             return (true, null);
         }
     }
