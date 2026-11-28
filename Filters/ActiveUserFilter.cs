@@ -30,6 +30,9 @@ namespace tutorias.Filters
                 bool isAllowed = controller == "account" &&
                     (action == "profile" || action == "reactivateprofile" || action == "logout" || action == "accessdenied");
 
+                // Las páginas de error siempre se pueden mostrar
+                isAllowed = isAllowed || (controller == "home" && (action == "error" || action == "estado"));
+
                 if (!isAllowed)
                 {
                     var user = await _userManager.GetUserAsync(context.HttpContext.User);

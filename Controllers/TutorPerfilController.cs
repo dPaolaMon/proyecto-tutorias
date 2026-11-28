@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using tutorias.Helpers;
 using tutorias.Models;
 using tutorias.Models.ViewModels;
 using tutorias.Services;
@@ -37,7 +38,7 @@ namespace tutorias.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Por favor verifica los campos ingresados.";
+                TempData["ErrorMessage"] = ModelState.ResumenErrores();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -63,7 +64,7 @@ namespace tutorias.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Por favor verifica los datos del horario y salón asignado.";
+                TempData["ErrorMessage"] = ModelState.ResumenErrores();
                 return RedirectToAction(nameof(Index));
             }
 

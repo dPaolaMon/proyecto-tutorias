@@ -50,6 +50,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
+.AddErrorDescriber<IdentityErrorDescriberEs>()
 .AddDefaultTokenProviders();
 
 // Validación inmediata de SecurityStamp para revocación de roles en sesiones activas
@@ -117,6 +118,7 @@ builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<tutorias.Filters.ActiveUserFilter>();
+    options.UsarMensajesEnEspanol();
 });
 
 var app = builder.Build();
@@ -155,6 +157,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+// Páginas propias para los errores sin contenido (400, 404, etc.)
+app.UseStatusCodePagesWithReExecute("/Home/Estado/{0}");
 
 app.UseStaticFiles();
 

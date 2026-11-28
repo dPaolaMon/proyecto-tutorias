@@ -1,6 +1,6 @@
 # Correcciones pendientes — pruebas de caja negra
 
-Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **sección 1 en commit `cf40e41`; sección 2 hecha, sin commit**
+Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **secciones 1 y 2 en commit (`cf40e41`, `1944d78`); sección 3 hecha, sin commit**
 
 ## Contexto
 - Fuentes: `openspec/changes/Pruebas.md`, `openspec/changes/Pruebas2_0.md` y el plan `plan_correccion_errores_pruebas.md` (HAL-001 a HAL-009).
@@ -38,34 +38,38 @@ Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **sección 1 e
 
 ## 3. Mensajes de error
 
+**Hecho.** Mensajes provocados en la app, salvo los de cambio simultáneo, roles y genérico (solo revisados en código). La página de error 500 se vio entrando a `/Home/Error`, no con un fallo real. En CP-02 también 7 y 21 caracteres muestran "Correo o contraseña incorrectos".
+
+Incluido además: validaciones nativas del navegador y de jQuery en español, mensajes de datos no válidos, `aria-label` en inglés y validación de `ModelState` en la baja. Pendiente: textos sin acentos y entorno Development en Docker.
+
 ### 3.1 ASP.NET Identity en inglés
 No hay `IdentityErrorDescriber`. Solución: una clase con los mensajes en español, registrada en `Program.cs`.
 
-- [ ] Correo ya registrado: `Username 'x' is already taken.` / `Email 'x' is already taken.`
-- [ ] Contraseña sin número: `Passwords must have at least one digit ('0'-'9').`
-- [ ] Contraseña sin minúscula: `Passwords must have at least one lowercase ('a'-'z').`
-- [ ] Enlace de restablecimiento vencido o inválido: `Invalid token.`
-- [ ] Cambio simultáneo: `Optimistic concurrency failure, object has been modified.`
-- [ ] Roles: `User already in role 'x'.` / `User is not in role 'x'.`
-- [ ] Genérico: `An unknown failure has occurred.`
+- [x] Correo ya registrado: `Username 'x' is already taken.` / `Email 'x' is already taken.`
+- [x] Contraseña sin número: `Passwords must have at least one digit ('0'-'9').`
+- [x] Contraseña sin minúscula: `Passwords must have at least one lowercase ('a'-'z').`
+- [x] Enlace de restablecimiento vencido o inválido: `Invalid token.`
+- [x] Cambio simultáneo: `Optimistic concurrency failure, object has been modified.`
+- [x] Roles: `User already in role 'x'.` / `User is not in role 'x'.`
+- [x] Genérico: `An unknown failure has occurred.`
 
 ### 3.2 Validaciones de formulario
-- [ ] Registro, confirmar contraseña vacío: `The Confirmar contraseña field is required.`
-- [ ] Restablecer, confirmar contraseña vacío: `The Confirmar nueva contraseña field is required.`
-- [ ] `Views/Account/DeleteProfile.cshtml:40`, casilla sin marcar: `This field is required.`
-- [ ] `Views/Account/Profile.cshtml:214`, casilla sin marcar: mensaje nativo en el idioma del navegador.
-- [ ] `ResetPasswordViewModel.Token`: `[Required]` sin mensaje (campo oculto, probablemente no se ve).
+- [x] Registro, confirmar contraseña vacío: `The Confirmar contraseña field is required.`
+- [x] Restablecer, confirmar contraseña vacío: `The Confirmar nueva contraseña field is required.`
+- [x] `Views/Account/DeleteProfile.cshtml:40`, casilla sin marcar: `This field is required.`
+- [x] `Views/Account/Profile.cshtml:214`, casilla sin marcar: mensaje nativo en el idioma del navegador.
+- [x] `ResetPasswordViewModel.Token`: `[Required]` sin mensaje (campo oculto, probablemente no se ve).
 
 ### 3.3 Páginas de error
-- [ ] `Views/Shared/Error.cshtml`: plantilla en inglés.
-- [ ] `AccountController.ResetPassword` (GET) sin token: abre `View("Error")` sin modelo; probablemente lanza excepción.
-- [ ] No hay página propia para 404 ni 400.
+- [x] `Views/Shared/Error.cshtml`: plantilla en inglés.
+- [x] `AccountController.ResetPassword` (GET) sin token: abre `View("Error")` sin modelo; probablemente lanza excepción.
+- [x] No hay página propia para 404 ni 400.
 
 ### 3.4 En español pero sin decir qué falló
-- [ ] Guardar perfil de tutor: "Por favor verifica los campos ingresados."
-- [ ] Guardar horario: "Por favor verifica los datos del horario y salón asignado."
-- [ ] Inicio de sesión: "Intento de inicio de sesión no válido."
-- [ ] Inicio de sesión: "Contraseña incorrecta." revela que el correo existe. Propuesta: "Correo o contraseña incorrectos" (lo que espera CP-02).
+- [x] Guardar perfil de tutor: "Por favor verifica los campos ingresados."
+- [x] Guardar horario: "Por favor verifica los datos del horario y salón asignado."
+- [x] Inicio de sesión: "Intento de inicio de sesión no válido."
+- [x] Inicio de sesión: "Contraseña incorrecta." revela que el correo existe. Propuesta: "Correo o contraseña incorrectos" (lo que espera CP-02).
 
 ## 4. Decidido sin cambios de código
 

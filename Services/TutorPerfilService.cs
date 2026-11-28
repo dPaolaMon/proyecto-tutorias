@@ -201,14 +201,19 @@ namespace tutorias.Services
                 return (false, "Perfil de tutor no encontrado.");
             }
 
+            if (model.DiaSemana is not { } dia || model.HoraInicio is not { } inicio || model.HoraFin is not { } fin)
+            {
+                return (false, "Completa el día y las horas del horario.");
+            }
+
             // Validaciones de día y rango
-            if (model.DiaSemana < DiaSemana.Lunes || model.DiaSemana > DiaSemana.Viernes)
+            if (dia < DiaSemana.Lunes || dia > DiaSemana.Viernes)
             {
                 return (false, "Las tutorías solo pueden programarse de Lunes a Viernes.");
             }
 
-            var horaInicio = new TimeSpan(model.HoraInicio.Hours, model.HoraInicio.Minutes, 0);
-            var horaFin = new TimeSpan(model.HoraFin.Hours, model.HoraFin.Minutes, 0);
+            var horaInicio = new TimeSpan(inicio.Hours, inicio.Minutes, 0);
+            var horaFin = new TimeSpan(fin.Hours, fin.Minutes, 0);
 
             var horaMin = TimeSpan.FromHours(7);
             var horaMax = TimeSpan.FromHours(22);
@@ -234,7 +239,7 @@ namespace tutorias.Services
                 .Where(h =>
                     h.TutorPerfilId == perfil.Id &&
                     h.Activo &&
-                    h.DiaSemana == model.DiaSemana &&
+                    h.DiaSemana == dia &&
                     h.Id != (model.Id ?? 0))
                 .ToListAsync();
 
@@ -247,7 +252,7 @@ namespace tutorias.Services
 
             if (solapado)
             {
-                return (false, $"El horario seleccionado se cruza con otro existente el día {model.DiaSemana}.");
+                return (false, $"El horario seleccionado se cruza con otro existente el día {dia}.");
             }
 
             if (model.Id.HasValue && model.Id.Value > 0)
@@ -258,7 +263,7 @@ namespace tutorias.Services
                     return (false, "El bloque de horario no fue encontrado.");
                 }
 
-                horarioExistente.DiaSemana = model.DiaSemana;
+                horarioExistente.DiaSemana = dia;
                 horarioExistente.HoraInicio = horaInicio;
                 horarioExistente.HoraFin = horaFin;
                 horarioExistente.Lugar = model.Lugar.Trim();
@@ -269,7 +274,7 @@ namespace tutorias.Services
                 var nuevoHorario = new TutorHorario
                 {
                     TutorPerfilId = perfil.Id,
-                    DiaSemana = model.DiaSemana,
+                    DiaSemana = dia,
                     HoraInicio = horaInicio,
                     HoraFin = horaFin,
                     Lugar = model.Lugar.Trim(),

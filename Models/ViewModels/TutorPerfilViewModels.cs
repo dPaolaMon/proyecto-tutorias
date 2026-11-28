@@ -82,16 +82,20 @@ namespace tutorias.Models.ViewModels
         public int? Id { get; set; }
 
         [Required(ErrorMessage = "El día de la semana es obligatorio.")]
-        public DiaSemana DiaSemana { get; set; }
+        [Display(Name = "Día")]
+        public DiaSemana? DiaSemana { get; set; }
 
         [Required(ErrorMessage = "La hora de inicio es obligatoria.")]
-        public TimeSpan HoraInicio { get; set; }
+        [Display(Name = "Hora de inicio")]
+        public TimeSpan? HoraInicio { get; set; }
 
         [Required(ErrorMessage = "La hora de fin es obligatoria.")]
-        public TimeSpan HoraFin { get; set; }
+        [Display(Name = "Hora de fin")]
+        public TimeSpan? HoraFin { get; set; }
 
         [Required(ErrorMessage = "El salón o lugar es obligatorio.")]
         [StringLength(100, ErrorMessage = "El salón o lugar no puede exceder los 100 caracteres.")]
+        [Display(Name = "Salón o lugar")]
         public string Lugar { get; set; } = string.Empty;
 
         public int? MateriaId { get; set; }

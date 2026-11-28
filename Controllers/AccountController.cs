@@ -74,7 +74,7 @@ namespace tutorias.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                foreach (var err in result.Errors) ModelState.AddModelError(string.Empty, err.Description);
+                foreach (var descripcion in result.Errors.Select(e => e.Description).Distinct()) ModelState.AddModelError(string.Empty, descripcion);
                 return View(model);
             }
 
@@ -172,7 +172,7 @@ namespace tutorias.Controllers
             {
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Contraseña incorrecta.");
+                    ModelState.AddModelError(string.Empty, "Correo o contraseña incorrectos.");
                     return View(model);
                 }
 
@@ -193,7 +193,7 @@ namespace tutorias.Controllers
             }
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if (!result.Succeeded) { ModelState.AddModelError(string.Empty, "Intento de inicio de sesión no válido."); return View(model); }
+            if (!result.Succeeded) { ModelState.AddModelError(string.Empty, "Correo o contraseña incorrectos."); return View(model); }
 
             if (user != null && !user.PerfilCompleto) return RedirectToAction(nameof(CompleteProfile));
             return (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) ? Redirect(returnUrl) : RedirectToAction("Index", "Catalogo");
@@ -333,6 +333,7 @@ namespace tutorias.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return RedirectToAction(nameof(Login));
             if (!model.ConfirmarBaja) { ModelState.AddModelError("ConfirmarBaja", "Debes confirmar que deseas dar de baja tu cuenta."); return View(model); }
+            if (!ModelState.IsValid) return View(model);
 
             var (ok, error) = await _profileService.LogicalDeleteUserAsync(user, model.MotivoBaja);
             if (!ok) { ModelState.AddModelError(string.Empty, error ?? "Error al procesar la baja."); return View(model); }
@@ -401,16 +402,16 @@ namespace tutorias.Controllers
         [HttpGet]
         public IActionResult ResetPassword(string? token = null, string? email = null)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
             {
-                ViewBag.ErrorMessage = "El enlace de restablecimiento es inválido o no contiene un token.";
-                return View("Error");
+                TempData["ErrorMessage"] = "El enlace de restablecimiento está incompleto o no es válido. Solicita uno nuevo.";
+                return RedirectToAction(nameof(ForgotPassword));
             }
 
             var model = new ResetPasswordViewModel
             {
                 Token = token,
-                Email = email ?? string.Empty
+                Email = email
             };
             return View(model);
         }
