@@ -11,10 +11,14 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private readonly INotificacionAutomaticaService _avisos;
+
         public TutorPerfilService(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _userManager = userManager;
         }
@@ -255,12 +259,31 @@ namespace tutorias.Services
                 return (false, $"El horario seleccionado se cruza con otro existente el día {dia}.");
             }
 
+            TutorHorario? anterior = null;
+            TutorHorario? modificado = null;
+
             if (model.Id.HasValue && model.Id.Value > 0)
             {
                 var horarioExistente = perfil.Horarios.FirstOrDefault(h => h.Id == model.Id.Value);
                 if (horarioExistente == null)
                 {
                     return (false, "El bloque de horario no fue encontrado.");
+                }
+
+                var cambio = horarioExistente.DiaSemana != dia
+                    || horarioExistente.HoraInicio != horaInicio
+                    || horarioExistente.HoraFin != horaFin
+                    || horarioExistente.Lugar != model.Lugar.Trim();
+                if (cambio)
+                {
+                    anterior = new TutorHorario
+                    {
+                        DiaSemana = horarioExistente.DiaSemana,
+                        HoraInicio = horarioExistente.HoraInicio,
+                        HoraFin = horarioExistente.HoraFin,
+                        Lugar = horarioExistente.Lugar
+                    };
+                    modificado = horarioExistente;
                 }
 
                 horarioExistente.DiaSemana = dia;
@@ -285,6 +308,10 @@ namespace tutorias.Services
             }
 
             await _context.SaveChangesAsync();
+            if (anterior != null && modificado != null)
+            {
+                await _avisos.HorarioModificadoAsync(userId, anterior, modificado);
+            }
             return (true, null);
         }
 
@@ -307,6 +334,7 @@ namespace tutorias.Services
 
             _context.TutoresHorarios.Remove(horario);
             await _context.SaveChangesAsync();
+            if (horario.Activo) await _avisos.HorariosEliminadosAsync(userId, horario);
             return (true, null);
         }
 
@@ -359,7 +387,8 @@ namespace tutorias.Services
                 _context.TutoresMaterias.RemoveRange(perfil.MateriasImpartidas);
             }
 
-            foreach (var horario in perfil.Horarios.Where(h => h.Activo))
+            var desactivados = perfil.Horarios.Where(h => h.Activo).ToArray();
+            foreach (var horario in desactivados)
             {
                 horario.Activo = false;
             }
@@ -368,6 +397,7 @@ namespace tutorias.Services
             perfil.EsPublico = false;
 
             await _context.SaveChangesAsync();
+            await _avisos.HorariosEliminadosAsync(userId, desactivados);
             return (true, null);
         }
     }

@@ -373,7 +373,12 @@
                                             <span class="badge bg-secondary-subtle text-secondary" style="font-size: 0.65rem;">
                                                 ${escapeHtml(n.emisorRol)}: ${escapeHtml(n.emisorNombre)}
                                             </span>
+                                            <div class="d-flex align-items-center gap-2">
                                             ${!n.leida ? `<button type="button" class="btn btn-link p-0 text-decoration-none text-muted small btn-marcar-individual" data-id="${n.id}" style="font-size: 0.7rem;">Marcar leída</button>` : `<span class="text-success small" style="font-size: 0.65rem;"><i class="bi bi-check2"></i> Leída</span>`}
+                                                <button type="button" class="btn btn-link p-0 text-decoration-none text-danger small btn-eliminar-notificacion" data-id="${n.id}" style="font-size: 0.7rem;" aria-label="Eliminar notificación">
+                                                    <i class="bi bi-trash3"></i> Eliminar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>`;
                             });
@@ -396,6 +401,24 @@
                                 btn.addEventListener("click", async (e) => {
                                     e.stopPropagation();
                                     await marcarNotificacionLeida(btn.getAttribute("data-id"));
+                                });
+                            });
+
+                            contenedor.querySelectorAll(".btn-eliminar-notificacion").forEach(btn => {
+                                btn.addEventListener("click", async (e) => {
+                                    // No abrir el detalle ni cerrar la campana
+                                    e.stopPropagation();
+                                    btn.disabled = true;
+
+                                    const formData = new FormData();
+                                    formData.append("id", btn.getAttribute("data-id"));
+                                    formData.append("__RequestVerificationToken", token);
+
+                                    await fetch("@Url.Action("Eliminar", "Notificacion")", {
+                                        method: "POST",
+                                        body: formData
+                                    });
+                                    cargarNotificaciones();
                                 });
                             });
 

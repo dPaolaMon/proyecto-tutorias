@@ -8,3 +8,5 @@ Dockerfile
 .vscode/
 *.user
 .env
+publish/
+tests/

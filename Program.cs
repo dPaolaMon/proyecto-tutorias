@@ -114,6 +114,7 @@ builder.Services.AddScoped<tutorias.Services.IReportesMetricasService, tutorias.
 builder.Services.AddScoped<tutorias.Services.IQuestPdfService, tutorias.Services.QuestPdfService>();
 builder.Services.AddScoped<tutorias.Services.IEncuestasService, tutorias.Services.EncuestasService>();
 builder.Services.AddScoped<tutorias.Services.INotificacionService, tutorias.Services.NotificacionService>();
+builder.Services.AddScoped<tutorias.Services.INotificacionAutomaticaService, tutorias.Services.NotificacionAutomaticaService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {

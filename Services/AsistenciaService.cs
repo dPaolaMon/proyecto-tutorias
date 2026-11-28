@@ -15,8 +15,11 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly IQrCodeService _qrCodeService;
 
-        public AsistenciaService(ApplicationDbContext context, IQrCodeService qrCodeService)
+        private readonly INotificacionAutomaticaService _avisos;
+
+        public AsistenciaService(ApplicationDbContext context, IQrCodeService qrCodeService, INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _qrCodeService = qrCodeService;
         }
@@ -267,6 +270,7 @@ namespace tutorias.Services
 
             _context.Asistencias.Add(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaPorConfirmarAsync(asistencia.Id);
 
             return (true, null);
         }
@@ -431,6 +435,7 @@ namespace tutorias.Services
 
             _context.Asistencias.Add(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.InvitacionACalificarAsync(asistencia.SesionId, alumnoId);
 
             var ahoraMexico = TimeHelper.ConvertToMexico(ahoraUtc);
 
@@ -527,6 +532,8 @@ namespace tutorias.Services
             asistencia.FechaHoraConfirmacion = TimeHelper.UtcNow;
 
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaRespondidaAsync(asistencia.SesionId, alumnoId, true);
+            await _avisos.InvitacionACalificarAsync(asistencia.SesionId, alumnoId);
             return (true, null);
         }
 
@@ -547,6 +554,7 @@ namespace tutorias.Services
 
             _context.Asistencias.Remove(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaRespondidaAsync(asistencia.SesionId, alumnoId, false);
 
             return (true, null);
         }
@@ -572,6 +580,9 @@ namespace tutorias.Services
                 return (false, "Únicamente es posible calificar asistencias que hayan sido confirmadas.");
             }
 
+            // Avisar solo cuando pasa a ser baja, para no repetir el aviso si se vuelve a calificar
+            var pasaABaja = calificacion <= 2 && !(asistencia.CalificacionEncuesta <= 2);
+
             asistencia.CalificacionEncuesta = calificacion;
             await _context.SaveChangesAsync();
 
@@ -593,6 +604,8 @@ namespace tutorias.Services
                     await _context.SaveChangesAsync();
                 }
             }
+
+            if (pasaABaja) await _avisos.CalificacionBajaAsync(asistencia.SesionId, calificacion);
 
             return (true, null);
         }
