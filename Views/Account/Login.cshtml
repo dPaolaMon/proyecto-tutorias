@@ -25,7 +25,7 @@
                             <label asp-for="Password" class="form-label fw-medium mb-0"></label>
                             <a asp-action="ForgotPassword" class="small text-decoration-none text-ipn-guinda">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <input asp-for="Password" class="form-control form-control-lg" type="password" />
+                        <input asp-for="Password" class="form-control form-control-lg" type="password" maxlength="100" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 

@@ -21,7 +21,7 @@ namespace tutorias.Models
 
         public DateTime? FechaHoraConfirmacion { get; set; }
 
-        [Range(1, 5)]
+        [Range(0, 5)]
         public int? CalificacionEncuesta { get; set; }
 
         [StringLength(300)]

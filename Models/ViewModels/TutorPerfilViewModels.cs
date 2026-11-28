@@ -30,6 +30,10 @@ namespace tutorias.Models.ViewModels
 
         // Horarios
         public List<TutorHorarioItemViewModel> Horarios { get; set; } = new();
+
+        // Hay algo que eliminar (misma condición que valida el servicio)
+        public bool TienePerfilEliminable =>
+            EsPublico || !string.IsNullOrWhiteSpace(Biografia) || MateriasAsignadas.Count > 0 || Horarios.Count > 0;
     }
 
     public class MateriaItemViewModel

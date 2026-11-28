@@ -80,7 +80,7 @@ namespace tutorias.Controllers
 
             if (vm.TotalAsistenciasConfirmadas == 0)
             {
-                TempData["ErrorMessage"] = "No hay información suficiente en el periodo seleccionado para generar el reporte en PDF.";
+                TempData["WarningMessage"] = "No hay información suficiente en el periodo seleccionado para generar el reporte en PDF.";
                 return RedirectToAction(nameof(Metricas), filtro);
             }
 

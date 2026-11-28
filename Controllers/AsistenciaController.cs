@@ -144,7 +144,7 @@ namespace tutorias.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Calificar(int asistenciaId, int calificacion)
         {
-            if (asistenciaId <= 0 || calificacion < 1 || calificacion > 5)
+            if (asistenciaId <= 0 || calificacion < 0 || calificacion > 5)
             {
                 return BadRequest("Parámetros de calificación inválidos.");
             }

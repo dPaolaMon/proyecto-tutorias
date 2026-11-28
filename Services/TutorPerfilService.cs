@@ -307,10 +307,23 @@ namespace tutorias.Services
 
         public async Task<(bool Success, string? ErrorMessage)> CambiarVisibilidadAsync(string userId, bool esPublico)
         {
-            var perfil = await _context.TutoresPerfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+            var perfil = await _context.TutoresPerfiles
+                .Include(p => p.MateriasImpartidas)
+                .FirstOrDefaultAsync(p => p.UserId == userId);
             if (perfil == null)
             {
                 return (false, "Perfil de tutor no encontrado.");
+            }
+
+            // Publicar exige de 1 a 5 materias; despublicar siempre se permite
+            var totalMaterias = perfil.MateriasImpartidas.Count;
+            if (esPublico && totalMaterias < 1)
+            {
+                return (false, "Para publicar tu perfil, primero selecciona y guarda al menos una materia.");
+            }
+            if (esPublico && totalMaterias > 5)
+            {
+                return (false, "Para publicar tu perfil, deja un máximo de 5 materias.");
             }
 
             perfil.EsPublico = esPublico;

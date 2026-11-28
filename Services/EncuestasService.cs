@@ -46,7 +46,8 @@ namespace tutorias.Services
                 TotalEstrellas4 = evaluadas.Count(a => a.CalificacionEncuesta == 4),
                 TotalEstrellas3 = evaluadas.Count(a => a.CalificacionEncuesta == 3),
                 TotalEstrellas2 = evaluadas.Count(a => a.CalificacionEncuesta == 2),
-                TotalEstrellas1 = evaluadas.Count(a => a.CalificacionEncuesta == 1)
+                TotalEstrellas1 = evaluadas.Count(a => a.CalificacionEncuesta == 1),
+                TotalEstrellas0 = evaluadas.Count(a => a.CalificacionEncuesta == 0)
             };
 
             // 1. Detección de Áreas de Oportunidad: Tutores con Atención Prioritaria
@@ -73,7 +74,7 @@ namespace tutorias.Services
                     }
                     else
                     {
-                        motivo = $"{totalBajas} evaluación(es) con 1 o 2 estrellas.";
+                        motivo = $"{totalBajas} evaluación(es) con 2 estrellas o menos.";
                     }
 
                     return new TutorAtencionPrioritariaViewModel
