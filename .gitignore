@@ -29,3 +29,17 @@ Thumbs.db
 ## Docker & temporary DB data
 *.db
 *.sqlite
+
+## Salida de publicación
+publish/
+
+## Pruebas de carga: herramienta instalada, resultados y registros
+tests/jmeter/apache-jmeter-*/
+tests/jmeter/results/
+jmeter.log
+
+## Archivos subidos por usuarios (pueden contener datos personales)
+wwwroot/uploads/
+
+## Documento con nombres de profesores
+docs/horarios-271_copia.pdf

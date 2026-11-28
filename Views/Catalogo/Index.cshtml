@@ -174,11 +174,20 @@
                             </div>
                         </div>
 
-                        <!-- Pie de la Card: Botón a Detalle -->
+                        <!-- Pie de la Card: Botón a Detalle (solo autenticados) -->
                         <div class="card-footer bg-white border-top-0 p-3 pt-0 text-center">
-                            <a asp-action="Detalle" asp-route-id="@tutor.PerfilId" class="btn btn-ipn-guinda btn-sm fw-semibold w-100 shadow-sm py-2">
-                                Ver Detalle y Horarios &rarr;
-                            </a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-action="Detalle" asp-route-id="@tutor.PerfilId" class="btn btn-ipn-guinda btn-sm fw-semibold w-100 shadow-sm py-2">
+                                    Ver Detalle y Horarios &rarr;
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Url.Action("Detalle", "Catalogo", new { id = tutor.PerfilId })" class="btn btn-outline-secondary btn-sm fw-semibold w-100 py-2">
+                                    <i class="bi bi-lock me-1"></i> Inicia sesión para ver detalles
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>

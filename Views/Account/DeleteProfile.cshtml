@@ -37,7 +37,8 @@
                     </div>
 
                     <div class="mb-4 form-check p-3 bg-light rounded border">
-                        <input asp-for="ConfirmarBaja" class="form-check-input ms-0 me-2" type="checkbox" required />
+                        <input asp-for="ConfirmarBaja" class="form-check-input ms-0 me-2" type="checkbox" required
+                               data-val-required="Marca la casilla para confirmar la baja." data-msg-required="Marca la casilla para confirmar la baja." />
                         <label asp-for="ConfirmarBaja" class="form-check-label fw-semibold text-danger small">
                             Confirmo que deseo dar de baja mi cuenta y comprendo las consecuencias de la desactivación.
                         </label>

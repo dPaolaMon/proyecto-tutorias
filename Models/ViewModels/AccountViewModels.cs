@@ -31,11 +31,12 @@ namespace tutorias.Models.ViewModels
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} caracteres.", MinimumLength = 6)]
+        [StringLength(20, ErrorMessage = "La {0} debe tener entre {2} y {1} caracteres.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Confirma tu contraseña.")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la confirmación no coinciden.")]
@@ -50,6 +51,7 @@ namespace tutorias.Models.ViewModels
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [StringLength(20, ErrorMessage = "Correo o contraseña incorrectos.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; } = string.Empty;
@@ -179,15 +181,16 @@ namespace tutorias.Models.ViewModels
         [EmailAddress(ErrorMessage = "Formato de correo inválido.")]
         public string Email { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El enlace de restablecimiento no es válido. Solicita uno nuevo.")]
         public string Token { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} caracteres.", MinimumLength = 6)]
+        [StringLength(20, ErrorMessage = "La {0} debe tener entre {2} y {1} caracteres.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Nueva Contraseña")]
         public string Password { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Confirma tu contraseña.")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar nueva contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la confirmación no coinciden.")]

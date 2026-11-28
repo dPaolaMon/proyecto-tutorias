@@ -7,3 +7,6 @@ Dockerfile
 .vs/
 .vscode/
 *.user
+.env
+publish/
+tests/

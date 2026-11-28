@@ -11,8 +11,11 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TutorSolicitudService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly INotificacionAutomaticaService _avisos;
+
+        public TutorSolicitudService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _userManager = userManager;
         }
@@ -117,6 +120,7 @@ namespace tutorias.Services
 
             _context.SolicitudesTutor.Add(nuevaSolicitud);
             await _context.SaveChangesAsync();
+            await _avisos.SolicitudNuevaAsync(userId);
 
             return (true, null);
         }

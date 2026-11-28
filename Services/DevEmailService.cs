@@ -48,6 +48,7 @@ namespace tutorias.Services
                 <p>Hemos recibido una solicitud para restablecer tu contraseña en el Sistema de Tutorías UPIICSA.</p>
                 <p>Para crear una nueva contraseña, haz clic en el siguiente enlace:</p>
                 <p><a href='{resetLink}'>Restablecer mi contraseña</a></p>
+                <p>Por seguridad, este enlace vence en 5 minutos.</p>
                 <p>Si no solicitaste este cambio, puedes ignorar este mensaje de forma segura.</p>";
 
             return SendEmailAsync(toEmail, "Recuperación de Contraseña - Tutorías IPN", html);

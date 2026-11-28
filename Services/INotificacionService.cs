@@ -10,6 +10,7 @@ namespace tutorias.Services
         Task<CampanaNotificacionesViewModel> ObtenerNotificacionesCampanaAsync(string userId);
         Task<(bool Success, string? ErrorMessage)> MarcarComoLeidaAsync(int notificacionId, string userId);
         Task<(bool Success, string? ErrorMessage)> MarcarTodasComoLeidasAsync(string userId);
+        Task<(bool Success, string? ErrorMessage)> EliminarAsync(int notificacionId, string userId);
         Task<CrearNotificacionViewModel> PrepararFormularioCrearAsync(string emisorId, bool esCoordinador, string? filtroRol, int? filtroCarreraId);
         Task<(bool Success, string? ErrorMessage)> EnviarNotificacionAsync(string emisorId, bool esCoordinador, CrearNotificacionViewModel model);
     }

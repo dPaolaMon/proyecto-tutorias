@@ -11,10 +11,14 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private readonly INotificacionAutomaticaService _avisos;
+
         public CoordinacionService(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _userManager = userManager;
         }
@@ -133,6 +137,7 @@ namespace tutorias.Services
                 return (false, string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
+            await _avisos.CoordinadorCambiadoAsync(targetUser.Id, true);
             return (true, null);
         }
 
@@ -166,6 +171,7 @@ namespace tutorias.Services
                 return (false, string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
+            await _avisos.CoordinadorCambiadoAsync(targetUser.Id, false);
             return (true, null);
         }
 
@@ -314,6 +320,7 @@ namespace tutorias.Services
             solicitud.RespuestaCoordinacion = "Solicitud aprobada por la Coordinación de Tutorías.";
 
             await _context.SaveChangesAsync();
+            await _avisos.SolicitudResueltaAsync(user.Id, true);
             return (true, null);
         }
 
@@ -338,6 +345,7 @@ namespace tutorias.Services
             solicitud.RespuestaCoordinacion = "Pasa a Coordinación para validar tu situación";
 
             await _context.SaveChangesAsync();
+            await _avisos.SolicitudResueltaAsync(solicitud.UserId, false);
             return (true, null);
         }
 
@@ -351,6 +359,8 @@ namespace tutorias.Services
             {
                 return (false, "El tutor seleccionado no existe.");
             }
+
+            var eraTutor = await _userManager.IsInRoleAsync(user, "Tutor") || user.TipoTutor != TipoTutor.Ninguno;
 
             if (await _userManager.IsInRoleAsync(user, "Tutor"))
             {
@@ -369,6 +379,8 @@ namespace tutorias.Services
             }
 
             await _context.SaveChangesAsync();
+            await _userManager.UpdateSecurityStampAsync(user);
+            if (eraTutor) await _avisos.TutorRevocadoAsync(user.Id);
             return (true, null);
         }
     }

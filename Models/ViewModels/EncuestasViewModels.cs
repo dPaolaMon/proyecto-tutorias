@@ -16,12 +16,14 @@ namespace tutorias.Models.ViewModels
         public int TotalEstrellas3 { get; set; }
         public int TotalEstrellas2 { get; set; }
         public int TotalEstrellas1 { get; set; }
+        public int TotalEstrellas0 { get; set; }
 
         public double PorcentajeEstrellas5 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas5 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
         public double PorcentajeEstrellas4 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas4 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
         public double PorcentajeEstrellas3 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas3 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
         public double PorcentajeEstrellas2 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas2 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
         public double PorcentajeEstrellas1 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas1 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
+        public double PorcentajeEstrellas0 => TotalAsistenciasEvaluadas > 0 ? Math.Round((TotalEstrellas0 * 100.0) / TotalAsistenciasEvaluadas, 1) : 0;
 
         // Áreas de Oportunidad
         public List<TutorAtencionPrioritariaViewModel> TutoresAtencionPrioritaria { get; set; } = new();
@@ -40,7 +42,7 @@ namespace tutorias.Models.ViewModels
         public string TipoTutorTexto { get; set; } = string.Empty;
         public double PromedioCalificacion { get; set; }
         public int TotalEvaluaciones { get; set; }
-        public int TotalEvaluacionesBajas { get; set; } // Calificaciones de 1 y 2 estrellas
+        public int TotalEvaluacionesBajas { get; set; } // Calificaciones de 0 a 2 estrellas
         public string MotivoAlerta { get; set; } = string.Empty;
     }
 

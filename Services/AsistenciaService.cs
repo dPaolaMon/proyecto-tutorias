@@ -15,8 +15,11 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly IQrCodeService _qrCodeService;
 
-        public AsistenciaService(ApplicationDbContext context, IQrCodeService qrCodeService)
+        private readonly INotificacionAutomaticaService _avisos;
+
+        public AsistenciaService(ApplicationDbContext context, IQrCodeService qrCodeService, INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _qrCodeService = qrCodeService;
         }
@@ -28,16 +31,35 @@ namespace tutorias.Services
                 return new List<BuscarAlumnoResultViewModel>();
             }
 
-            var t = termino.Trim().ToLower();
+            var t = termino.Trim();
+            var esNumerico = t.All(char.IsDigit);
 
-            var alumnos = await _context.Users
+            // Si se busca por boleta (solo dígitos), exigir coincidencia exacta de 10 dígitos
+            if (esNumerico && t.Length != 10)
+            {
+                return new List<BuscarAlumnoResultViewModel>();
+            }
+
+            var tLower = t.ToLower();
+
+            var query = _context.Users
                 .Include(u => u.Carrera)
-                .Where(u => u.Activo && (
-                    u.Boleta.ToLower().Contains(t) ||
-                    u.Nombre.ToLower().Contains(t) ||
-                    u.ApellidoPaterno.ToLower().Contains(t) ||
-                    u.ApellidoMaterno.ToLower().Contains(t) ||
-                    (u.Email != null && u.Email.ToLower().Contains(t))))
+                .Where(u => u.Activo);
+
+            if (esNumerico)
+            {
+                query = query.Where(u => u.Boleta == t);
+            }
+            else
+            {
+                query = query.Where(u =>
+                    u.Nombre.ToLower().Contains(tLower) ||
+                    u.ApellidoPaterno.ToLower().Contains(tLower) ||
+                    u.ApellidoMaterno.ToLower().Contains(tLower) ||
+                    (u.Email != null && u.Email.ToLower().Contains(tLower)));
+            }
+
+            var alumnos = await query
                 .OrderBy(u => u.Nombre)
                 .ThenBy(u => u.ApellidoPaterno)
                 .Take(10)
@@ -248,6 +270,7 @@ namespace tutorias.Services
 
             _context.Asistencias.Add(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaPorConfirmarAsync(asistencia.Id);
 
             return (true, null);
         }
@@ -412,6 +435,7 @@ namespace tutorias.Services
 
             _context.Asistencias.Add(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.InvitacionACalificarAsync(asistencia.SesionId, alumnoId);
 
             var ahoraMexico = TimeHelper.ConvertToMexico(ahoraUtc);
 
@@ -508,6 +532,8 @@ namespace tutorias.Services
             asistencia.FechaHoraConfirmacion = TimeHelper.UtcNow;
 
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaRespondidaAsync(asistencia.SesionId, alumnoId, true);
+            await _avisos.InvitacionACalificarAsync(asistencia.SesionId, alumnoId);
             return (true, null);
         }
 
@@ -528,15 +554,16 @@ namespace tutorias.Services
 
             _context.Asistencias.Remove(asistencia);
             await _context.SaveChangesAsync();
+            await _avisos.AsistenciaRespondidaAsync(asistencia.SesionId, alumnoId, false);
 
             return (true, null);
         }
 
         public async Task<(bool Success, string? ErrorMessage)> CalificarAsistenciaAsync(int asistenciaId, string alumnoId, int calificacion)
         {
-            if (calificacion < 1 || calificacion > 5)
+            if (calificacion < 0 || calificacion > 5)
             {
-                return (false, "La calificación debe ser un valor numérico entre 1 y 5 estrellas.");
+                return (false, "La calificación debe ser un valor numérico entre 0 y 5 estrellas.");
             }
 
             var asistencia = await _context.Asistencias
@@ -552,6 +579,9 @@ namespace tutorias.Services
             {
                 return (false, "Únicamente es posible calificar asistencias que hayan sido confirmadas.");
             }
+
+            // Avisar solo cuando pasa a ser baja, para no repetir el aviso si se vuelve a calificar
+            var pasaABaja = calificacion <= 2 && !(asistencia.CalificacionEncuesta <= 2);
 
             asistencia.CalificacionEncuesta = calificacion;
             await _context.SaveChangesAsync();
@@ -574,6 +604,8 @@ namespace tutorias.Services
                     await _context.SaveChangesAsync();
                 }
             }
+
+            if (pasaABaja) await _avisos.CalificacionBajaAsync(asistencia.SesionId, calificacion);
 
             return (true, null);
         }

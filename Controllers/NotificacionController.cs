@@ -37,6 +37,16 @@ namespace tutorias.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            if (id <= 0) return BadRequest();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            var (success, error) = await _notificacionService.EliminarAsync(id, userId);
+            return Json(new { success, error });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarcarTodasLeidas()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;

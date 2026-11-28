@@ -62,7 +62,7 @@ namespace tutorias.Services
                     tiempoRelativo = fechaLocal.ToString("dd/MM/yyyy HH:mm");
                 }
 
-                string emisorRol = "Coordinacion";
+                string emisorRol = n.EmisorId == null ? "Aviso automático" : "Coordinacion";
                 if (n.Emisor != null)
                 {
                     if (n.Emisor.TipoTutor == TipoTutor.DocenteTutor)
@@ -83,7 +83,7 @@ namespace tutorias.Services
                     FechaEnvio = fechaLocal,
                     TiempoRelativo = tiempoRelativo,
                     Leida = n.Leida,
-                    EmisorNombre = n.Emisor?.NombreCompleto ?? "Coordinación Institucional",
+                    EmisorNombre = n.Emisor?.NombreCompleto ?? (n.EmisorId == null ? "Sistema" : "Coordinación Institucional"),
                     EmisorRol = emisorRol
                 };
             }).ToList();
@@ -131,6 +131,23 @@ namespace tutorias.Services
                 }
                 await _context.SaveChangesAsync();
             }
+
+            return (true, null);
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> EliminarAsync(int notificacionId, string userId)
+        {
+            // Filtrar por usuario impide eliminar notificaciones ajenas
+            var notif = await _context.Notificaciones
+                .FirstOrDefaultAsync(n => n.Id == notificacionId && n.UserId == userId);
+
+            if (notif == null)
+            {
+                return (false, "Notificación no encontrada.");
+            }
+
+            _context.Notificaciones.Remove(notif);
+            await _context.SaveChangesAsync();
 
             return (true, null);
         }

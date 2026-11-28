@@ -247,7 +247,7 @@
         <div class="tab-pane fade" id="perfilPane" role="tabpanel" aria-labelledby="perfil-tab">
             <div class="card border-0 shadow-sm rounded-3">
                 <div class="card-body p-4">
-                    <form asp-action="GuardarPerfil" method="post">
+                    <form asp-action="GuardarPerfil" method="post" id="formGuardarPerfil">
                         @Html.AntiForgeryToken()
 
                         <div class="row g-4">
@@ -267,12 +267,18 @@
 
                             <!-- Selector de Materias que Imparte -->
                             <div class="col-12">
-                                <label class="form-label fw-bold text-dark mb-1">
-                                    Unidades de Aprendizaje / Materias que Impartes
-                                </label>
-                                <p class="small text-muted mb-3">
-                                    Selecciona las materias que dominas y en las cuales brindarás tutorías académicas.
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label fw-bold text-dark mb-0">
+                                        Unidades de Aprendizaje / Materias que Impartes
+                                    </label>
+                                    <span id="contadorMateriasBadge" class="badge bg-light text-dark border">
+                                        <span id="materiasCount">@Model.MateriasSeleccionadasIds.Count</span> / 5 seleccionadas
+                                    </span>
+                                </div>
+                                <p class="small text-muted mb-2">
+                                    Selecciona entre <strong>1 y 5 materias</strong> que dominas y en las cuales brindarás tutorías académicas.
                                 </p>
+                                <div id="materiasErrorAlert" class="alert alert-danger py-2 px-3 small d-none mb-2" role="alert"></div>
 
                                 <div class="mb-3">
                                     <input type="text" id="buscadorMaterias" class="form-control form-control-sm" placeholder="Filtrar materias por nombre o clave..." />
@@ -315,7 +321,7 @@
                             </div>
 
                             <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                <button type="button" class="btn btn-outline-danger fw-semibold px-3" data-bs-toggle="modal" data-bs-target="#modalEliminarPerfil">
+                                <button type="button" class="btn btn-outline-danger fw-semibold px-3" data-bs-toggle="modal" data-bs-target="#modalEliminarPerfil" disabled="@(!Model.TienePerfilEliminable)">
                                     <i class="bi bi-trash3 me-1"></i> Eliminar Perfil Académico
                                 </button>
                                 <button type="submit" class="btn btn-ipn-guinda fw-semibold px-4 shadow-sm">
@@ -355,12 +361,12 @@
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label for="horaInicioInput" class="form-label fw-bold small">Hora de Inicio:</label>
-                            <input type="time" id="horaInicioInput" name="HoraInicio" class="form-control" min="07:00" max="21:00" value="09:00" required />
+                            <input type="time" id="horaInicioInput" name="HoraInicio" class="form-control" min="07:00" max="21:00" step="60" value="09:00" required />
                             <div class="form-text small">Desde las 07:00</div>
                         </div>
                         <div class="col-6">
                             <label for="horaFinInput" class="form-label fw-bold small">Hora de Fin:</label>
-                            <input type="time" id="horaFinInput" name="HoraFin" class="form-control" min="08:00" max="22:00" value="11:00" required />
+                            <input type="time" id="horaFinInput" name="HoraFin" class="form-control" min="08:00" max="22:00" step="60" value="11:00" required />
                             <div class="form-text small">Hasta las 22:00</div>
                         </div>
                     </div>
@@ -420,12 +426,12 @@
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label fw-bold small">Hora de Inicio:</label>
-                                <input type="time" name="HoraInicio" class="form-control" min="07:00" max="21:00" value="@h.HoraInicio.ToString(@"hh\:mm")" required />
+                                <input type="time" name="HoraInicio" class="form-control" min="07:00" max="21:00" step="60" value="@h.HoraInicio.ToString(@"hh\:mm")" required />
                                 <div class="form-text small">Desde las 07:00</div>
                             </div>
                             <div class="col-6">
                                 <label class="form-label fw-bold small">Hora de Fin:</label>
-                                <input type="time" name="HoraFin" class="form-control" min="08:00" max="22:00" value="@h.HoraFin.ToString(@"hh\:mm")" required />
+                                <input type="time" name="HoraFin" class="form-control" min="08:00" max="22:00" step="60" value="@h.HoraFin.ToString(@"hh\:mm")" required />
                                 <div class="form-text small">Hasta las 22:00</div>
                             </div>
                         </div>
@@ -549,6 +555,59 @@
                         el.style.display = 'none';
                     }
                 });
+            });
+        }
+
+        // Validación de cantidad de materias (1 a 5)
+        var checkboxesMaterias = document.querySelectorAll('input[name="MateriasSeleccionadasIds"]');
+        var materiasCountEl = document.getElementById('materiasCount');
+        var materiasErrorAlert = document.getElementById('materiasErrorAlert');
+        var formPerfil = document.getElementById('formGuardarPerfil');
+
+        function actualizarContadorMaterias() {
+            var count = document.querySelectorAll('input[name="MateriasSeleccionadasIds"]:checked').length;
+            if (materiasCountEl) materiasCountEl.textContent = count;
+            if (materiasErrorAlert) {
+                if (count > 5) {
+                    materiasErrorAlert.textContent = 'Solo puedes seleccionar un máximo de 5 materias.';
+                    materiasErrorAlert.classList.remove('d-none');
+                } else {
+                    materiasErrorAlert.classList.add('d-none');
+                }
+            }
+            return count;
+        }
+
+        checkboxesMaterias.forEach(function (cb) {
+            cb.addEventListener('change', function () {
+                var count = actualizarContadorMaterias();
+                if (count > 5) {
+                    cb.checked = false;
+                    actualizarContadorMaterias();
+                    if (materiasErrorAlert) {
+                        materiasErrorAlert.textContent = 'Solo puedes seleccionar un máximo de 5 materias.';
+                        materiasErrorAlert.classList.remove('d-none');
+                    }
+                }
+            });
+        });
+
+        if (formPerfil) {
+            formPerfil.addEventListener('submit', function (e) {
+                var count = actualizarContadorMaterias();
+                if (count < 1) {
+                    e.preventDefault();
+                    if (materiasErrorAlert) {
+                        materiasErrorAlert.textContent = 'Por favor selecciona al menos una materia para tu perfil académico.';
+                        materiasErrorAlert.classList.remove('d-none');
+                    }
+                } else if (count > 5) {
+                    e.preventDefault();
+                    if (materiasErrorAlert) {
+                        materiasErrorAlert.textContent = 'Solo puedes seleccionar un máximo de 5 materias.';
+                        materiasErrorAlert.classList.remove('d-none');
+                    }
+                }
             });
         }
     });

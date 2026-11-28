@@ -11,10 +11,14 @@ namespace tutorias.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private readonly INotificacionAutomaticaService _avisos;
+
         public TutorPerfilService(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            INotificacionAutomaticaService avisos)
         {
+            _avisos = avisos;
             _context = context;
             _userManager = userManager;
         }
@@ -147,11 +151,19 @@ namespace tutorias.Services
                 return (false, "Perfil de tutor no encontrado.");
             }
 
+            // Actualizar materias impartidas (mínimo 1, máximo 5)
+            var seleccionadas = (model.MateriasSeleccionadasIds ?? new List<int>()).Distinct().ToList();
+            if (seleccionadas.Count < 1)
+            {
+                return (false, "Por favor selecciona al menos una materia para tu perfil académico.");
+            }
+            if (seleccionadas.Count > 5)
+            {
+                return (false, "Solo puedes registrar un máximo de 5 materias en tu perfil.");
+            }
+
             perfil.Biografia = model.Biografia?.Trim();
             perfil.EsPublico = model.EsPublico;
-
-            // Actualizar materias impartidas
-            var seleccionadas = model.MateriasSeleccionadasIds ?? new List<int>();
 
             // Remover materias desmarcadas
             var aEliminar = perfil.MateriasImpartidas
@@ -193,21 +205,29 @@ namespace tutorias.Services
                 return (false, "Perfil de tutor no encontrado.");
             }
 
+            if (model.DiaSemana is not { } dia || model.HoraInicio is not { } inicio || model.HoraFin is not { } fin)
+            {
+                return (false, "Completa el día y las horas del horario.");
+            }
+
             // Validaciones de día y rango
-            if (model.DiaSemana < DiaSemana.Lunes || model.DiaSemana > DiaSemana.Viernes)
+            if (dia < DiaSemana.Lunes || dia > DiaSemana.Viernes)
             {
                 return (false, "Las tutorías solo pueden programarse de Lunes a Viernes.");
             }
 
+            var horaInicio = new TimeSpan(inicio.Hours, inicio.Minutes, 0);
+            var horaFin = new TimeSpan(fin.Hours, fin.Minutes, 0);
+
             var horaMin = TimeSpan.FromHours(7);
             var horaMax = TimeSpan.FromHours(22);
 
-            if (model.HoraInicio < horaMin || model.HoraFin > horaMax)
+            if (horaInicio < horaMin || horaFin > horaMax)
             {
                 return (false, "El horario de atención debe ubicarse dentro del rango de 07:00 a 22:00.");
             }
 
-            if (model.HoraInicio >= model.HoraFin)
+            if (horaInicio >= horaFin)
             {
                 return (false, "La hora de inicio debe ser anterior a la hora de fin.");
             }
@@ -217,18 +237,30 @@ namespace tutorias.Services
                 return (false, "Debes especificar el salón o lugar físico asignado.");
             }
 
-            // Validar no solapamiento para el mismo tutor
-            var solapado = perfil.Horarios.Any(h =>
-                h.Activo &&
-                h.DiaSemana == model.DiaSemana &&
-                h.Id != (model.Id ?? 0) &&
-                h.HoraInicio < model.HoraFin &&
-                h.HoraFin > model.HoraInicio);
+            // Validar no solapamiento para el mismo tutor directamente contra BD (incluye cruces de 1 minuto)
+            var horariosDelDia = await _context.TutoresHorarios
+                .AsNoTracking()
+                .Where(h =>
+                    h.TutorPerfilId == perfil.Id &&
+                    h.Activo &&
+                    h.DiaSemana == dia &&
+                    h.Id != (model.Id ?? 0))
+                .ToListAsync();
+
+            var solapado = horariosDelDia.Any(h =>
+            {
+                var hInicio = new TimeSpan(h.HoraInicio.Hours, h.HoraInicio.Minutes, 0);
+                var hFin = new TimeSpan(h.HoraFin.Hours, h.HoraFin.Minutes, 0);
+                return hInicio < horaFin && hFin > horaInicio;
+            });
 
             if (solapado)
             {
-                return (false, $"Ya cuentas con un bloque de tutoría asignado en ese rango de horario el día {model.DiaSemana}.");
+                return (false, $"El horario seleccionado se cruza con otro existente el día {dia}.");
             }
+
+            TutorHorario? anterior = null;
+            TutorHorario? modificado = null;
 
             if (model.Id.HasValue && model.Id.Value > 0)
             {
@@ -238,9 +270,25 @@ namespace tutorias.Services
                     return (false, "El bloque de horario no fue encontrado.");
                 }
 
-                horarioExistente.DiaSemana = model.DiaSemana;
-                horarioExistente.HoraInicio = model.HoraInicio;
-                horarioExistente.HoraFin = model.HoraFin;
+                var cambio = horarioExistente.DiaSemana != dia
+                    || horarioExistente.HoraInicio != horaInicio
+                    || horarioExistente.HoraFin != horaFin
+                    || horarioExistente.Lugar != model.Lugar.Trim();
+                if (cambio)
+                {
+                    anterior = new TutorHorario
+                    {
+                        DiaSemana = horarioExistente.DiaSemana,
+                        HoraInicio = horarioExistente.HoraInicio,
+                        HoraFin = horarioExistente.HoraFin,
+                        Lugar = horarioExistente.Lugar
+                    };
+                    modificado = horarioExistente;
+                }
+
+                horarioExistente.DiaSemana = dia;
+                horarioExistente.HoraInicio = horaInicio;
+                horarioExistente.HoraFin = horaFin;
                 horarioExistente.Lugar = model.Lugar.Trim();
                 horarioExistente.MateriaId = model.MateriaId;
             }
@@ -249,9 +297,9 @@ namespace tutorias.Services
                 var nuevoHorario = new TutorHorario
                 {
                     TutorPerfilId = perfil.Id,
-                    DiaSemana = model.DiaSemana,
-                    HoraInicio = model.HoraInicio,
-                    HoraFin = model.HoraFin,
+                    DiaSemana = dia,
+                    HoraInicio = horaInicio,
+                    HoraFin = horaFin,
                     Lugar = model.Lugar.Trim(),
                     MateriaId = model.MateriaId,
                     Activo = true
@@ -260,6 +308,10 @@ namespace tutorias.Services
             }
 
             await _context.SaveChangesAsync();
+            if (anterior != null && modificado != null)
+            {
+                await _avisos.HorarioModificadoAsync(userId, anterior, modificado);
+            }
             return (true, null);
         }
 
@@ -282,15 +334,29 @@ namespace tutorias.Services
 
             _context.TutoresHorarios.Remove(horario);
             await _context.SaveChangesAsync();
+            if (horario.Activo) await _avisos.HorariosEliminadosAsync(userId, horario);
             return (true, null);
         }
 
         public async Task<(bool Success, string? ErrorMessage)> CambiarVisibilidadAsync(string userId, bool esPublico)
         {
-            var perfil = await _context.TutoresPerfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+            var perfil = await _context.TutoresPerfiles
+                .Include(p => p.MateriasImpartidas)
+                .FirstOrDefaultAsync(p => p.UserId == userId);
             if (perfil == null)
             {
                 return (false, "Perfil de tutor no encontrado.");
+            }
+
+            // Publicar exige de 1 a 5 materias; despublicar siempre se permite
+            var totalMaterias = perfil.MateriasImpartidas.Count;
+            if (esPublico && totalMaterias < 1)
+            {
+                return (false, "Para publicar tu perfil, primero selecciona y guarda al menos una materia.");
+            }
+            if (esPublico && totalMaterias > 5)
+            {
+                return (false, "Para publicar tu perfil, deja un máximo de 5 materias.");
             }
 
             perfil.EsPublico = esPublico;
@@ -302,6 +368,7 @@ namespace tutorias.Services
         {
             var perfil = await _context.TutoresPerfiles
                 .Include(p => p.MateriasImpartidas)
+                .Include(p => p.Horarios)
                 .FirstOrDefaultAsync(p => p.UserId == userId);
 
             if (perfil == null)
@@ -309,15 +376,28 @@ namespace tutorias.Services
                 return (false, "Perfil de tutor no encontrado.");
             }
 
+            var tieneHorariosActivos = perfil.Horarios.Any(h => h.Activo);
+            if (!perfil.EsPublico && string.IsNullOrWhiteSpace(perfil.Biografia) && !perfil.MateriasImpartidas.Any() && !tieneHorariosActivos)
+            {
+                return (false, "No hay un perfil público activo para eliminar.");
+            }
+
             if (perfil.MateriasImpartidas.Any())
             {
                 _context.TutoresMaterias.RemoveRange(perfil.MateriasImpartidas);
+            }
+
+            var desactivados = perfil.Horarios.Where(h => h.Activo).ToArray();
+            foreach (var horario in desactivados)
+            {
+                horario.Activo = false;
             }
 
             perfil.Biografia = null;
             perfil.EsPublico = false;
 
             await _context.SaveChangesAsync();
+            await _avisos.HorariosEliminadosAsync(userId, desactivados);
             return (true, null);
         }
     }

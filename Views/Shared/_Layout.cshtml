@@ -21,7 +21,7 @@
                     Tutorías IPN-UPIICSA
                 </a>
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-                        aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarMain" aria-expanded="false" aria-label="Mostrar u ocultar el menú">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarMain">
@@ -61,6 +61,14 @@
                                     </a>
                                 </li>
                             }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-semibold" asp-controller="Catalogo" asp-action="Index">
+                                    <i class="bi bi-grid me-1"></i> Catálogo de Tutorías
+                                </a>
+                            </li>
                         }
                         @if (User.IsInRole("Tutor"))
                         {
@@ -277,21 +285,21 @@
             {
                 <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
                     <span>@TempData["SuccessMessage"]</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             }
             @if (TempData["WarningMessage"] != null)
             {
                 <div class="alert alert-warning alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
                     <span>@TempData["WarningMessage"]</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             }
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
                     <span>@TempData["ErrorMessage"]</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             }
             @RenderBody()
@@ -348,10 +356,10 @@
                             }
 
                             let html = `<div class="list-group list-group-flush">`;
-                            data.notificaciones.forEach(n => {
+                            data.notificaciones.forEach((n, idx) => {
                                 const bgClass = n.leida ? "bg-white" : "bg-light border-start border-3 border-danger";
                                 html += `
-                                    <div class="list-group-item p-3 ${bgClass} item-notificacion" data-id="${n.id}">
+                                    <div class="list-group-item list-group-item-action p-3 ${bgClass} item-notificacion" data-id="${n.id}" data-idx="${idx}" role="button" style="cursor: pointer;">
                                         <div class="d-flex justify-content-between align-items-start mb-1">
                                             <h6 class="fw-bold text-dark mb-0 fs-6 text-truncate" style="max-width: 220px;">
                                                 ${escapeHtml(n.titulo)}
@@ -365,26 +373,75 @@
                                             <span class="badge bg-secondary-subtle text-secondary" style="font-size: 0.65rem;">
                                                 ${escapeHtml(n.emisorRol)}: ${escapeHtml(n.emisorNombre)}
                                             </span>
+                                            <div class="d-flex align-items-center gap-2">
                                             ${!n.leida ? `<button type="button" class="btn btn-link p-0 text-decoration-none text-muted small btn-marcar-individual" data-id="${n.id}" style="font-size: 0.7rem;">Marcar leída</button>` : `<span class="text-success small" style="font-size: 0.65rem;"><i class="bi bi-check2"></i> Leída</span>`}
+                                                <button type="button" class="btn btn-link p-0 text-decoration-none text-danger small btn-eliminar-notificacion" data-id="${n.id}" style="font-size: 0.7rem;" aria-label="Eliminar notificación">
+                                                    <i class="bi bi-trash3"></i> Eliminar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>`;
                             });
                             html += `</div>`;
                             contenedor.innerHTML = html;
 
+                            async function marcarNotificacionLeida(notifId) {
+                                const formData = new FormData();
+                                formData.append("id", notifId);
+                                formData.append("__RequestVerificationToken", token);
+
+                                await fetch("@Url.Action("MarcarLeida", "Notificacion")", {
+                                    method: "POST",
+                                    body: formData
+                                });
+                                cargarNotificaciones();
+                            }
+
                             contenedor.querySelectorAll(".btn-marcar-individual").forEach(btn => {
                                 btn.addEventListener("click", async (e) => {
                                     e.stopPropagation();
-                                    const notifId = btn.getAttribute("data-id");
+                                    await marcarNotificacionLeida(btn.getAttribute("data-id"));
+                                });
+                            });
+
+                            contenedor.querySelectorAll(".btn-eliminar-notificacion").forEach(btn => {
+                                btn.addEventListener("click", async (e) => {
+                                    // No abrir el detalle ni cerrar la campana
+                                    e.stopPropagation();
+                                    btn.disabled = true;
+
                                     const formData = new FormData();
-                                    formData.append("id", notifId);
+                                    formData.append("id", btn.getAttribute("data-id"));
                                     formData.append("__RequestVerificationToken", token);
 
-                                    await fetch("@Url.Action("MarcarLeida", "Notificacion")", {
+                                    await fetch("@Url.Action("Eliminar", "Notificacion")", {
                                         method: "POST",
                                         body: formData
                                     });
                                     cargarNotificaciones();
+                                });
+                            });
+
+                            contenedor.querySelectorAll(".item-notificacion").forEach(item => {
+                                item.addEventListener("click", async (e) => {
+                                    e.stopPropagation();
+                                    const idx = parseInt(item.getAttribute("data-idx"), 10);
+                                    const notif = data.notificaciones[idx];
+                                    if (!notif) return;
+
+                                    document.getElementById("notifModalTitulo").textContent = notif.titulo || "Notificación";
+                                    document.getElementById("notifModalEmisor").textContent = `${notif.emisorRol || ""}: ${notif.emisorNombre || ""}`;
+                                    document.getElementById("notifModalTiempo").textContent = notif.tiempoRelativo || "";
+                                    document.getElementById("notifModalMensaje").textContent = notif.mensaje || "";
+
+                                    const modalEl = document.getElementById("modalDetalleNotificacion");
+                                    if (modalEl && typeof bootstrap !== "undefined") {
+                                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                                    }
+
+                                    if (!notif.leida) {
+                                        await marcarNotificacionLeida(notif.id);
+                                    }
                                 });
                             });
                         }
@@ -420,6 +477,31 @@
             });
         </script>
     }
+    <!-- Modal de Detalle de Notificación Individual -->
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="modal fade" id="modalDetalleNotificacion" tabindex="-1" aria-labelledby="notifModalTitulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-ipn-guinda text-white">
+                        <h5 class="modal-title fw-bold" id="notifModalTitulo">Detalle de Notificación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 small text-muted">
+                            <span class="badge bg-secondary-subtle text-secondary" id="notifModalEmisor"></span>
+                            <span id="notifModalTiempo"></span>
+                        </div>
+                        <p class="text-dark mb-0 text-break" id="notifModalMensaje" style="white-space: pre-wrap;"></p>
+                    </div>
+                    <div class="modal-footer bg-light border-0">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

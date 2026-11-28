@@ -25,30 +25,6 @@
         </div>
     </div>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
-            <strong>Exito:</strong> @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
-    }
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
-            <strong>Error:</strong> @TempData["ErrorMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
-    }
-
-    @if (TempData["WarningMessage"] != null)
-    {
-        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm small mb-4" role="alert">
-            <strong>Aviso:</strong> @TempData["WarningMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
-    }
-
     <!-- SECCION 1: ASISTENCIAS PENDIENTES DE CONFIRMAR (RF-17) -->
     <div class="mb-5">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -143,7 +119,7 @@
                                 <th>Fecha de Tutoria</th>
                                 <th>Confirmacion</th>
                                 <th>Estatus</th>
-                                <th class="text-center pe-3">Evaluacion (1-5)</th>
+                                <th class="text-center pe-3">Evaluacion (0-5)</th>
                             </tr>
                         </thead>
                         <tbody class="small">
@@ -192,6 +168,11 @@
                                         else
                                         {
                                             <div class="star-rating-group d-inline-flex align-items-center gap-1" data-asistencia-id="@c.Id">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1 me-1 btn-star-action"
+                                                        data-star="0" title="Calificar con 0 estrellas"
+                                                        style="font-size: 0.75rem; line-height: 1.3;">
+                                                    0
+                                                </button>
                                                 @for (int star = 1; star <= 5; star++)
                                                 {
                                                     <button type="button" class="btn btn-sm p-0 border-0 btn-star-action text-secondary"
@@ -227,11 +208,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const buttons = group.querySelectorAll(".btn-star-action");
         const asistenciaId = group.getAttribute("data-asistencia-id");
 
-        buttons.forEach((btn, index) => {
+        buttons.forEach(btn => {
             btn.addEventListener("mouseenter", () => {
-                buttons.forEach((b, i) => {
+                const hoverVal = parseInt(btn.getAttribute("data-star"), 10);
+                buttons.forEach(b => {
                     const icon = b.querySelector("i");
-                    if (i <= index) {
+                    if (!icon) return;
+                    const starVal = parseInt(b.getAttribute("data-star"), 10);
+                    if (starVal <= hoverVal) {
                         icon.className = "bi bi-star-fill text-warning";
                     } else {
                         icon.className = "bi bi-star text-secondary";
@@ -281,7 +265,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         group.addEventListener("mouseleave", () => {
             buttons.forEach(b => {
-                b.querySelector("i").className = "bi bi-star text-secondary";
+                const icon = b.querySelector("i");
+                if (icon) icon.className = "bi bi-star text-secondary";
             });
         });
     });

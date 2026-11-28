@@ -1,7 +1,16 @@
 using System;
+using System.Globalization;
 
 namespace tutorias.Helpers
 {
+    public enum ResultadoSimulacionHora
+    {
+        SinConfigurar,
+        Activa,
+        IgnoradaFueraDeDesarrollo,
+        FormatoInvalido
+    }
+
     public static class TimeHelper
     {
         private static readonly TimeZoneInfo MexicoCityTimeZone = ResolverZonaHorariaMexico();
@@ -40,37 +49,47 @@ namespace tutorias.Helpers
             );
         }
 
-        public static DateTime NowMexico
-        {
-            get
-            {
-                var simuladaStr = Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV");
-                if (!string.IsNullOrWhiteSpace(simuladaStr) && DateTime.TryParse(simuladaStr, out var fechaSimulada))
-                {
-                    return fechaSimulada;
-                }
+        private const string FormatoFechaSimulada = "yyyy-MM-ddTHH:mm:ss";
 
-                return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, MexicoCityTimeZone);
+        // Diferencia entre el reloj simulado y el real; null cuando no hay simulación.
+        private static TimeSpan? _desfaseSimulacion;
+
+        /// <summary>
+        /// Activa el reloj simulado, que avanza a partir de la fecha indicada (hora de México).
+        /// Solo tiene efecto en el entorno Development.
+        /// </summary>
+        public static ResultadoSimulacionHora ConfigurarSimulacion(string? valor, bool esDesarrollo)
+        {
+            _desfaseSimulacion = null;
+
+            var texto = valor?.Trim().Trim('"', '\'');
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                return ResultadoSimulacionHora.SinConfigurar;
             }
+
+            if (!esDesarrollo)
+            {
+                return ResultadoSimulacionHora.IgnoradaFueraDeDesarrollo;
+            }
+
+            if (!DateTime.TryParseExact(texto, FormatoFechaSimulada, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fechaSimulada)
+                || MexicoCityTimeZone.IsInvalidTime(fechaSimulada))
+            {
+                return ResultadoSimulacionHora.FormatoInvalido;
+            }
+
+            _desfaseSimulacion = TimeZoneInfo.ConvertTimeToUtc(fechaSimulada, MexicoCityTimeZone) - DateTime.UtcNow;
+            return ResultadoSimulacionHora.Activa;
         }
 
-        public static DateTime UtcNow
-        {
-            get
-            {
-                var simuladaStr = Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV");
-                if (!string.IsNullOrWhiteSpace(simuladaStr) && DateTime.TryParse(simuladaStr, out var fechaSimulada))
-                {
-                    return TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(fechaSimulada, DateTimeKind.Unspecified), MexicoCityTimeZone);
-                }
+        public static DateTime UtcNow => DateTime.UtcNow + (_desfaseSimulacion ?? TimeSpan.Zero);
 
-                return DateTime.UtcNow;
-            }
-        }
+        public static DateTime NowMexico => ConvertToMexico(UtcNow);
 
         public static DateTime TodayMexico => NowMexico.Date;
 
-        public static bool EstaSimulandoHora => !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FECHA_SIMULADA_DEV"));
+        public static bool EstaSimulandoHora => _desfaseSimulacion.HasValue;
 
         public static DateTime ConvertToMexico(DateTime utcDateTime)
         {

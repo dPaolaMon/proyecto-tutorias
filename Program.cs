@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tutorias.Data;
+using tutorias.Helpers;
 using tutorias.Models;
 
 // Cargar variables de entorno locales desde .env si existe
@@ -24,6 +25,11 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Reloj simulado para pruebas de horarios (solo Development)
+var resultadoSimulacion = TimeHelper.ConfigurarSimulacion(
+    builder.Configuration["FECHA_SIMULADA_DEV"],
+    builder.Environment.IsDevelopment());
+
 // Configuración de DbContext con SQL Server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("La cadena de conexión 'DefaultConnection' no fue encontrada.");
@@ -38,19 +44,46 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
+.AddErrorDescriber<IdentityErrorDescriberEs>()
 .AddDefaultTokenProviders();
+
+// Validación inmediata de SecurityStamp para revocación de roles en sesiones activas
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
+
+// El enlace de recuperación de contraseña vence a los 5 minutos
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(5);
+});
 
 // Configuración de cookies de autenticación
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
+
+    // La sesión se cierra tras 30 minutos de inactividad
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+
+    // Con "Recordarme" la sesión dura 14 días sin actividad
+    options.Events.OnSigningIn = context =>
+    {
+        if (context.Properties.IsPersistent)
+        {
+            context.Properties.ExpiresUtc = context.Properties.IssuedUtc?.AddDays(14);
+        }
+        return Task.CompletedTask;
+    };
 });
 
 // Registro condicional del servicio de correo (Azure en producción / Dev simulador en local)
@@ -81,13 +114,28 @@ builder.Services.AddScoped<tutorias.Services.IReportesMetricasService, tutorias.
 builder.Services.AddScoped<tutorias.Services.IQuestPdfService, tutorias.Services.QuestPdfService>();
 builder.Services.AddScoped<tutorias.Services.IEncuestasService, tutorias.Services.EncuestasService>();
 builder.Services.AddScoped<tutorias.Services.INotificacionService, tutorias.Services.NotificacionService>();
+builder.Services.AddScoped<tutorias.Services.INotificacionAutomaticaService, tutorias.Services.NotificacionAutomaticaService>();
 builder.Services.AddScoped<tutorias.Filters.ActiveUserFilter>();
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<tutorias.Filters.ActiveUserFilter>();
+    options.UsarMensajesEnEspanol();
 });
 
 var app = builder.Build();
+
+switch (resultadoSimulacion)
+{
+    case ResultadoSimulacionHora.Activa:
+        app.Logger.LogWarning("Hora simulada ACTIVA. Hora actual de la aplicación (México): {HoraSimulada:yyyy-MM-dd HH:mm:ss}", TimeHelper.NowMexico);
+        break;
+    case ResultadoSimulacionHora.IgnoradaFueraDeDesarrollo:
+        app.Logger.LogWarning("FECHA_SIMULADA_DEV se ignoró porque el entorno no es Development. Se usa la hora real.");
+        break;
+    case ResultadoSimulacionHora.FormatoInvalido:
+        app.Logger.LogWarning("FECHA_SIMULADA_DEV no tiene el formato yyyy-MM-ddTHH:mm:ss. Se usa la hora real.");
+        break;
+}
 
 // Ejecutar Seeding de la Base de Datos
 using (var scope = app.Services.CreateScope())
@@ -110,6 +158,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+// Páginas propias para los errores sin contenido (400, 404, etc.)
+app.UseStatusCodePagesWithReExecute("/Home/Estado/{0}");
 
 app.UseStaticFiles();
 

@@ -14,6 +14,7 @@ namespace tutorias.Controllers
             _catalogoService = catalogoService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index(
             string? busqueda,
