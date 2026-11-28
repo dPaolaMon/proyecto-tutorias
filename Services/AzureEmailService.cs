@@ -79,6 +79,7 @@ namespace tutorias.Services
                     </p>
                     <p style='color: #666; font-size: 13px;'>Si no puedes hacer clic en el botón, copia y pega este enlace en tu navegador:</p>
                     <p style='word-break: break-all; font-size: 12px; color: #750946;'>{resetLink}</p>
+                    <p style='color: #666; font-size: 13px;'>Por seguridad, este enlace vence en 5 minutos.</p>
                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                     <p style='color: #999; font-size: 11px;'>Si no solicitaste restablecer tu contraseña, ignora este mensaje. Tu contraseña actual seguirá siendo válida.</p>
                 </div>";

@@ -58,11 +58,31 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
     options.ValidationInterval = TimeSpan.Zero;
 });
 
+// El enlace de recuperación de contraseña vence a los 5 minutos
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(5);
+});
+
 // Configuración de cookies de autenticación
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
+
+    // La sesión se cierra tras 30 minutos de inactividad
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+
+    // Con "Recordarme" la sesión dura 14 días sin actividad
+    options.Events.OnSigningIn = context =>
+    {
+        if (context.Properties.IsPersistent)
+        {
+            context.Properties.ExpiresUtc = context.Properties.IssuedUtc?.AddDays(14);
+        }
+        return Task.CompletedTask;
+    };
 });
 
 // Registro condicional del servicio de correo (Azure en producción / Dev simulador en local)

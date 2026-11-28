@@ -354,7 +354,7 @@ namespace tutorias.Controllers
             return RedirectToAction(nameof(Profile));
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Filters.SesionVencidaAlSalir]
         public async Task<IActionResult> Logout() { await _signInManager.SignOutAsync(); return RedirectToAction("Index", "Home"); }
 
         [HttpGet]

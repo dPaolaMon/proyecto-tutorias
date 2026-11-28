@@ -1,6 +1,6 @@
 # Correcciones pendientes — pruebas de caja negra
 
-Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **sección 1 hecha, sin commit**
+Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **sección 1 en commit `cf40e41`; sección 2 hecha, sin commit**
 
 ## Contexto
 - Fuentes: `openspec/changes/Pruebas.md`, `openspec/changes/Pruebas2_0.md` y el plan `plan_correccion_errores_pruebas.md` (HAL-001 a HAL-009).
@@ -26,8 +26,10 @@ Fecha: 2026-11-26 · Rama: `test/correcciones-pruebas` · Estado: **sección 1 h
 
 ## 2. Requisitos adicionales aceptados
 
-- [ ] **Código de recuperación de contraseña válido 5 minutos** (CP-04). Hoy no se configura la vigencia.
-- [ ] **Cierre de sesión tras 30 minutos de inactividad** (CP-03). **Decidido:** cuenta la inactividad, no el tiempo total. Hoy no se configura.
+- [x] **Código de recuperación de contraseña válido 5 minutos** (CP-04). Hoy no se configura la vigencia.
+  - Hecho y probado: aceptado a los 299 s y rechazado a los 301 s (aún con `Invalid token.`, ver 3.1). La app envía un enlace, no un código: ajustar la redacción de CP-04.
+- [x] **Cierre de sesión tras 30 minutos de inactividad** (CP-03). **Decidido:** cuenta la inactividad, no el tiempo total. Hoy no se configura.
+  - Hecho y probado: activa a los 29 min sin actividad y vencida a los 31; con actividad sigue activa a los 35. **Decidido:** con "Recordarme" la sesión dura 14 días. Se corrigió además el error 400 al pulsar "Cerrar sesión" con la sesión vencida (`Filters/SesionVencidaAlSalirAttribute.cs`).
   - En `Program.cs` (`ConfigureApplicationCookie`): `ExpireTimeSpan` de 30 minutos y `SlidingExpiration = true`.
   - Verificar el tiempo real: la renovación deslizante por sí sola solo ocurre pasada la mitad del plazo. La validación con `ValidationInterval = TimeSpan.Zero` (HAL-002) debería renovar en cada petición; si ese intervalo cambia, volver a comprobar.
   - Las pantallas que consultan al servidor solas cuentan como actividad. La del QR consulta cada 5 segundos, así que la sesión del tutor no expira mientras esté abierta. **Decidido: es aceptable**, no se cambia.
